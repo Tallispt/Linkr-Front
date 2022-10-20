@@ -1,15 +1,17 @@
 import styled from "styled-components";
-import { SearchBar } from "./SearchBar";
+import { DesktopSearchBar } from "./SearchBar/DesktopSearchBar";
 
 export function Header() {
   return (
-    <HeaderBox>
-      <Wrap>
-        <Title>linkr</Title>
-        <SearchBar placeholder={"Search for people"} />
-        <Image></Image>
-      </Wrap>
-    </HeaderBox>
+    <>
+      <HeaderBox>
+        <Wrap>
+          <Title>linkr</Title>
+          <DesktopSearchBar placeholder={"Search for people"} />
+          <Image></Image>
+        </Wrap>
+      </HeaderBox>
+    </>
   );
 }
 
@@ -17,6 +19,7 @@ const HeaderBox = styled.header`
   position: fixed;
   right: 0;
   top: 0;
+  z-index: 10;
   width: 100vw;
   font-family: "Passion One";
   height: 72px;
