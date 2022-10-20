@@ -131,8 +131,8 @@ const Title = styled.h1`
 
 const Image = styled.div`
   margin-top: -30px;
-  width: 44px;
-  height: 44px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: red;
   margin-right: 15px;
