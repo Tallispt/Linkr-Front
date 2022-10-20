@@ -50,8 +50,12 @@ table {
 }
 body {
     font-family: 'Lato';
-    box-sizing: border-box;
     background-color: #333333;
+}
+* {
+	box-sizing: border-box;
+
+	outline: none;
 }
 `;
 
