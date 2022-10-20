@@ -17,6 +17,10 @@ export function PublishPost() {
 
   async function sendForm(e) {
     e.preventDefault();
+    setError({
+      isError: false,
+      message: "",
+    });
     setLoading(!loading);
 
     try {
@@ -27,6 +31,7 @@ export function PublishPost() {
         description: "",
       });
     } catch (error) {
+      console.log(error);
       setError({
         isError: true,
         message: "There was an error publishing your link.",

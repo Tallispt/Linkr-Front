@@ -13,11 +13,7 @@ function createHeaders() {
 
 async function newPost(body) {
   const config = createHeaders();
-  const promise = await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/posts`,
-    body,
-    config
-  );
+  const promise = await axios.post(`http://localhost:5000/posts`, body, config);
   return promise;
 }
 
