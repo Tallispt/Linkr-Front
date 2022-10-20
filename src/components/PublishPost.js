@@ -9,9 +9,9 @@ export function PublishPost() {
 }
 
 const Container = styled.section`
-  margin-top: 20px;
-  width: 100vw;
-  height: 190px;
+  margin-top: 48px;
+  width: 611px;
+  height: 209px;
   background-color: #ffffff;
 `;
 

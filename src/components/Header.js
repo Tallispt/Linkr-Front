@@ -25,7 +25,8 @@ const HeaderBox = styled.header`
 `;
 
 const Wrap = styled.div`
-  width: 90%;
+  width: 100%;
+  padding: 0 17px 0 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -33,7 +34,8 @@ const Wrap = styled.div`
 
 const Title = styled.h1`
   color: #ffffff;
-  font-size: 45px;
+  font-size: 49px;
+  font-weight: 700;
 `;
 
 const Image = styled.div`

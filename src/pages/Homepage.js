@@ -14,5 +14,5 @@ export function Homepage() {
 }
 
 const Container = styled.main`
-  padding-top: 72px;
+  margin-top: 72px;
 `;
