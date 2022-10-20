@@ -43,6 +43,10 @@ export function Timeline() {
 const Container = styled.section`
   margin-top: 20px;
   width: 611px;
+
+  @media screen and (max-width: 600px) {
+    width: 100vw;
+  }
 `;
 
 const Title = styled.h1`
@@ -51,6 +55,10 @@ const Title = styled.h1`
   font-weight: 700;
   color: #ffffff;
   font-size: 43px;
+  @media screen and (max-width: 600px) {
+    font-size: 33px;
+    padding-left: 17px;
+  }
 `;
 
 const PostsSection = styled.section`
@@ -59,4 +67,7 @@ const PostsSection = styled.section`
   display: flex;
   flex-direction: column;
   row-gap: 16px;
+  @media screen and (max-width: 600px) {
+    margin-top: 16px;
+  }
 `;

@@ -22,7 +22,6 @@ export default function Post({
       },
     [link]
   );
-  console.log(metadata);
 
   const tagStyle = {
     color: "#ffffff",
@@ -68,6 +67,11 @@ const Container = styled.div`
   display: flex;
   background-color: #171717;
   border-radius: 16px;
+  @media screen and (max-width: 600px) {
+    min-height: 232px;
+    border-radius: 0;
+    padding: 9px 18px 15px 15px;
+  }
 `;
 
 const LeftWrapper = styled.div`
@@ -78,6 +82,14 @@ const LeftWrapper = styled.div`
     height: 50px;
     border-radius: 50%;
     margin-bottom: 19px;
+  }
+  @media screen and (max-width: 600px) {
+    width: 40px;
+    img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 17px;
+    }
   }
 `;
 
@@ -92,6 +104,15 @@ const LikeWrapper = styled.div`
   }
   p {
     font-size: 11px;
+  }
+  @media screen and (max-width: 600px) {
+    svg {
+      font-size: 17px;
+      margin-bottom: 12px;
+    }
+    p {
+      font-size: 9px;
+    }
   }
 `;
 
@@ -108,8 +129,8 @@ const ContentWrapper = styled.div`
   }
   > a {
     margin-top: 13px;
-    width: 503px;
-    height: 155px;
+    max-width: 503px;
+    min-height: 155px;
     display: flex;
     justify-content: space-between;
     border: 1px solid #4d4d4d;
@@ -121,7 +142,7 @@ const ContentWrapper = styled.div`
       font-size: 11px;
       color: #9b9595;
       height: 50px;
-      width: 300px;
+      width: 60%;
     }
 
     div {
@@ -135,7 +156,7 @@ const ContentWrapper = styled.div`
     top: -1px;
     right: -1px;
     width: 155px;
-    height: 155px;
+    height: 100%;
     border-radius: 0px 11px 11px 0px;
   }
   h1 {
@@ -146,9 +167,49 @@ const ContentWrapper = styled.div`
     font-size: 11px;
     color: #cecece;
     margin-top: 13px;
-    width: 300px;
+    width: 60%;
+    max-width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  @media screen and (max-width: 600px) {
+    margin-left: 14px;
+    width: calc(100% - 40px);
+    h2 {
+      font-size: 17px;
+    }
+    p {
+      font-size: 15px;
+    }
+    > a {
+      width: 90%;
+      padding: 8px 122px 8px 11px;
+      span {
+        font-size: 9px;
+        height: 60px;
+        max-width: 150px;
+        min-width: 110px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      min-height: 115px;
+    }
+    h1 {
+      font-size: 11px;
+    }
+    h4 {
+      font-size: 9px;
+      margin-top: 4px;
+      max-width: 100px;
+    }
+    img {
+      width: 40%;
+      height: calc(100% + 2px);
+    }
   }
 `;
