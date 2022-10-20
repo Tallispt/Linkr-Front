@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getTimeline } from "../services/linkr";
+import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 
 export function Timeline() {
@@ -22,6 +23,21 @@ export function Timeline() {
     <Container>
       <Title>timeline</Title>
       <PublishPost />
+      <PostsSection>
+        {posts.length === 0
+          ? "There are no posts yet"
+          : posts.map((value) => (
+              <Post
+                key={value.id}
+                id={value.id}
+                username={value.username}
+                image={value.image}
+                link={value.link}
+                description={value.description}
+                likes={value.likes}
+              />
+            ))}
+      </PostsSection>
     </Container>
   );
 }
@@ -37,4 +53,12 @@ const Title = styled.h1`
   font-weight: 700;
   color: #ffffff;
   font-size: 43px;
+`;
+
+const PostsSection = styled.section`
+  margin-top: 29px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
 `;
