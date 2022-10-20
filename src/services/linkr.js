@@ -11,10 +11,23 @@ function createHeaders() {
   return config;
 }
 
-async function newPost(body) {
+function getTimeline() {
   const config = createHeaders();
-  const promise = await axios.post(`http://localhost:5000/posts`, body, config);
+  const promise = axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/timeline`,
+    config
+  );
   return promise;
 }
 
-export { newPost };
+async function newPost(body) {
+  const config = createHeaders();
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/posts`,
+    body,
+    config
+  );
+  return promise;
+}
+
+export { newPost, getTimeline };

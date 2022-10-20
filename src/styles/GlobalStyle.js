@@ -48,10 +48,21 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+/* Other Global Styles */
+* {
+	box-sizing: border-box;
+}
 body {
     font-family: 'Lato';
-    box-sizing: border-box;
     background-color: #333333;
+}
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+a {
+	text-decoration: none;
 }
 `;
 
