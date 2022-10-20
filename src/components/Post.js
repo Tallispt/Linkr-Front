@@ -184,7 +184,7 @@ const ContentWrapper = styled.div`
       font-size: 15px;
     }
     > a {
-      width: 90%;
+      width: 100%;
       padding: 8px 122px 8px 11px;
       span {
         font-size: 9px;
