@@ -17,4 +17,9 @@ async function newPost(body) {
   return promise;
 }
 
-export { newPost };
+async function getUsersBySearch(params) {
+  const promise = await axios.get(`http://localhost:5000/search/${params}`);
+  return promise;
+}
+
+export { newPost, getUsersBySearch };

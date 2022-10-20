@@ -1,10 +1,12 @@
 import styled from "styled-components";
+import { SearchBar } from "./SearchBar";
 
 export function Header() {
   return (
     <HeaderBox>
       <Wrap>
         <Title>linkr</Title>
+        <SearchBar placeholder={"Search for people"} />
         <Image></Image>
       </Wrap>
     </HeaderBox>
