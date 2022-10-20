@@ -20,6 +20,13 @@ function getTimeline() {
   return promise;
 }
 
+async function getUsersBySearch(params) {
+  const promise = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/search/${params}`
+  );
+  return promise;
+}
+
 async function newPost(body) {
   const config = createHeaders();
   const promise = await axios.post(
@@ -30,4 +37,4 @@ async function newPost(body) {
   return promise;
 }
 
-export { newPost, getTimeline };
+export { newPost, getTimeline, getUsersBySearch };

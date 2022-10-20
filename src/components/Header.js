@@ -1,13 +1,17 @@
 import styled from "styled-components";
+import { DesktopSearchBar } from "./SearchBar/DesktopSearchBar";
 
 export function Header() {
   return (
-    <HeaderBox>
-      <Wrap>
-        <Title>linkr</Title>
-        <Image></Image>
-      </Wrap>
-    </HeaderBox>
+    <>
+      <HeaderBox>
+        <Wrap>
+          <Title>linkr</Title>
+          <DesktopSearchBar placeholder={"Search for people"} />
+          <Image></Image>
+        </Wrap>
+      </HeaderBox>
+    </>
   );
 }
 
