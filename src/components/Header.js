@@ -15,6 +15,7 @@ const HeaderBox = styled.header`
   position: fixed;
   right: 0;
   top: 0;
+  z-index: 10;
   width: 100vw;
   font-family: "Passion One";
   height: 72px;

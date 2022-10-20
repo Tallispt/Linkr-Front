@@ -9,6 +9,7 @@ export function Timeline() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     setLoader(true);
@@ -24,12 +25,12 @@ export function Timeline() {
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
-  }, []);
+  }, [refresh]);
 
   return (
     <Container>
       <Title>timeline</Title>
-      <PublishPost />
+      <PublishPost refresh={refresh} setRefresh={setRefresh} />
       <PostsSection>
         {loader ? (
           <>
