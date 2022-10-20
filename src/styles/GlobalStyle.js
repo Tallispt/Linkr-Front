@@ -48,14 +48,21 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+/* Other Global Styles */
+* {
+	box-sizing: border-box;
+}
 body {
     font-family: 'Lato';
     background-color: #333333;
 }
-* {
-	box-sizing: border-box;
-
-	outline: none;
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+a {
+	text-decoration: none;
 }
 `;
 

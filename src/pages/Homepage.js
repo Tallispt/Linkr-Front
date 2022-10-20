@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import { Timeline } from "../components/Timeline";
 import { Header } from "../components/Header";
+import { MobileSearchBar } from "../components/SearchBar/MobileSearchBar";
 
 export function Homepage() {
   return (
     <>
       <Container>
         <Header />
+        <MobileSearchBar placeholder={"Search for people and friends"} />
         <Timeline />
       </Container>
     </>
@@ -14,5 +16,5 @@ export function Homepage() {
 }
 
 const Container = styled.main`
-  padding-top: 72px;
+  margin-top: 72px;
 `;
