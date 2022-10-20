@@ -17,8 +17,6 @@ export function Timeline() {
       });
   }, []);
 
-  console.log(posts);
-
   return (
     <Container>
       <Title>timeline</Title>

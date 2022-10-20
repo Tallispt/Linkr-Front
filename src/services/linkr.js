@@ -22,7 +22,11 @@ function getTimeline() {
 
 async function newPost(body) {
   const config = createHeaders();
-  const promise = await axios.post(`http://localhost:5000/posts`, body, config);
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/posts`,
+    body,
+    config
+  );
   return promise;
 }
 

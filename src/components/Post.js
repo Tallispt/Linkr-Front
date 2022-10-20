@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { FiHeart } from "react-icons/fi";
 import { ReactTagify } from "react-tagify";
+import mql from "@microlink/mql";
+import { useEffect, useState } from "react";
 
 export default function Post({
   id,
@@ -10,6 +12,18 @@ export default function Post({
   description,
   likes,
 }) {
+  const [metadata, setMetadata] = useState({});
+
+  useEffect(
+    () =>
+      async function getMetadata() {
+        const { data } = await mql(link, { meta: "true" });
+        setMetadata(data);
+      },
+    [link]
+  );
+  console.log(metadata);
+
   const tagStyle = {
     color: "#ffffff",
     fontWeight: 700,
@@ -34,6 +48,14 @@ export default function Post({
         <ReactTagify tagStyle={tagStyle}>
           <p>{description}</p>
         </ReactTagify>
+        <a href={link} target="_blank" rel="noreferrer">
+          <div>
+            <h1>{metadata.title}</h1>
+            <span>{metadata.description}</span>
+            <h4>{metadata.url}</h4>
+          </div>
+          <img src={metadata.image?.url} alt="" />
+        </a>
       </ContentWrapper>
     </Container>
   );
@@ -83,5 +105,50 @@ const ContentWrapper = styled.div`
   p {
     font-size: 17px;
     color: #b7b7b7;
+  }
+  > a {
+    margin-top: 13px;
+    width: 503px;
+    height: 155px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #4d4d4d;
+    border-radius: 11px;
+    padding: 25px 182px 23px 19px;
+    position: relative;
+
+    span {
+      font-size: 11px;
+      color: #9b9595;
+      height: 50px;
+      width: 300px;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+  img {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 155px;
+    height: 155px;
+    border-radius: 0px 11px 11px 0px;
+  }
+  h1 {
+    font-size: 16px;
+    color: #cecece;
+  }
+  h4 {
+    font-size: 11px;
+    color: #cecece;
+    margin-top: 13px;
+    width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
