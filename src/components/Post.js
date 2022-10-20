@@ -11,6 +11,7 @@ export default function Post({
   link,
   description,
   likes,
+  hashtags
 }) {
   const [metadata, setMetadata] = useState({});
 
@@ -45,7 +46,7 @@ export default function Post({
       <ContentWrapper>
         <h2>{username}</h2>
         <ReactTagify tagStyle={tagStyle}>
-          <p>{description}</p>
+          <p>{"#"+hashtags}</p>
         </ReactTagify>
         <a href={link} target="_blank" rel="noreferrer">
           <div>
