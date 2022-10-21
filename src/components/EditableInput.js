@@ -2,7 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { editPostDescription } from "../services/linkr";
 
-const EditableInput = ({ id, isEditing, setIsEditing, description, setRefresh, refresh }) => {
+const EditableInput = ({
+    id,
+    isEditing,
+    setIsEditing,
+    description,
+    setRefresh,
+    refresh
+}) => {
     const [inputText, setInputText] = useState(description);
     const inputRef = useRef(null)
 

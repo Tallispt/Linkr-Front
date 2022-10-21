@@ -20,6 +20,13 @@ function getTimeline() {
   return promise;
 }
 
+async function getUsersBySearch(params) {
+  const promise = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/search/${params}`
+  );
+  return promise;
+}
+
 async function newPost(body) {
   const config = createHeaders();
   const promise = await axios.post(
@@ -30,6 +37,7 @@ async function newPost(body) {
   return promise;
 }
 
+<<<<<<< HEAD
 async function editPostDescription({ body, id }) {
   const config = createHeaders()
   return await axios.put(`
@@ -46,3 +54,50 @@ async function deletePost(id) {
 }
 
 export { newPost, getTimeline, editPostDescription, deletePost };
+=======
+function getUserPosts(id) {
+  const config = createHeaders();
+  const promise = axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/user/${id}`,
+    config
+  );
+  return promise;
+}
+
+async function signIn(login) {
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/signin`,
+    login
+  );
+  return promise;
+}
+
+async function likePost(body) {
+  const config = createHeaders();
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/posts/like`,
+    body,
+    config
+  );
+  return promise;
+}
+async function dislikePost(body) {
+  const config = createHeaders();
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/posts/dislike`,
+    body,
+    config
+  );
+  return promise;
+}
+
+export {
+  newPost,
+  getTimeline,
+  getUsersBySearch,
+  getUserPosts,
+  signIn,
+  likePost,
+  dislikePost,
+};
+>>>>>>> 2100c0c4974018a9fe0a106fa944ffd616f1e7f4

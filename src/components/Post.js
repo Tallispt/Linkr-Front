@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import mql from "@microlink/mql";
-import { FiHeart } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import { TiPencil } from "react-icons/ti";
 import { RiDeleteBin7Fill } from "react-icons/ri"
 import { ReactTagify } from "react-tagify";
-
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import EditableInput from "./EditableInput";
+import { dislikePost, likePost } from "../services/linkr";
 
 export default function Post({
   id,
   username,
+  userId,
   image,
   link,
   description,
@@ -21,15 +23,27 @@ export default function Post({
   setIsModalVisible,
   setPostIdDelete
 }) {
-  const [metadata, setMetadata] = useState({});
-  const [isEditing, setIsEditing] = useState(false);
+  const user = JSON.parse(localStorage.getItem("linkr"));
 
-  useEffect(() =>
-    async function getMetadata() {
-      const { data } = await mql(link, { meta: "true" });
-      setMetadata(data);
-    },
-    [link]
+  const [metadata, setMetadata] = useState({});
+  const [like, setLike] = useState(false);
+  const [likeCount, setLikeCount] = useState(likes.length);
+  const [disabled, setDisabled] = useState(false);
+
+  const userLiked = likes.filter((like) => like === user.username).length;
+
+  useEffect(
+    () =>
+      async function getMetadata() {
+        const { data } = await mql(link, { meta: "true" });
+        setMetadata(data);
+
+        if (userLiked > 0) {
+          setLike(true);
+        }
+      },
+
+    [link, userLiked]
   );
 
   const tagStyle = {
@@ -38,22 +52,64 @@ export default function Post({
     cursor: "pointer",
   };
 
+  async function LikeOrDislikePost(option) {
+    if (option === "like" && disabled === false) {
+      setDisabled(true);
+      setLike(true);
+      try {
+        await likePost({ postId: id });
+        setDisabled(false);
+      } catch (error) {
+        setDisabled(false);
+        console.log(error);
+      }
+    }
+    if (option === "dislike" && disabled === false) {
+      setDisabled(true);
+      setLike(false);
+      try {
+        await dislikePost({ postId: id });
+        setDisabled(false);
+      } catch (error) {
+        setDisabled(false);
+        console.log(error);
+      }
+    }
+  }
+
   return (
     <Container>
       <LeftWrapper>
-        <img src={image} alt="" />
+        <Link to={`/user/${userId}`}>
+          <img src={image} alt="" />
+        </Link>
         <LikeWrapper>
-          <FiHeart />
-          <p>
-            {likes.length > 1
-              ? `${likes.length} likes`
-              : `${likes.length} like`}
-          </p>
+          {like ? (
+            <AiFillHeart
+              size={30}
+              color="#AC0000"
+              onClick={() => {
+                LikeOrDislikePost("dislike");
+                setLikeCount(likeCount - 1);
+              }}
+            />
+          ) : (
+            <AiOutlineHeart
+              size={30}
+              onClick={() => {
+                LikeOrDislikePost("like");
+                setLikeCount(likeCount + 1);
+              }}
+            />
+          )}
+          <p>{likes.length > 1 ? `${likeCount} likes` : `${likeCount} like`}</p>
         </LikeWrapper>
       </LeftWrapper>
       <ContentWrapper>
         <TopWrapper>
-          <h2>{username}</h2>
+          <Link to={`/user/${userId}`}>
+            <h2>{username}</h2>
+          </Link>
           <span>
             <TiPencil onClick={() => setIsEditing(!isEditing)} />
             <RiDeleteBin7Fill onClick={() => {
@@ -94,13 +150,13 @@ export default function Post({
 
 const Container = styled.div`
   width: 100%;
-  /* min-height: 276px; */
+  min-height: 240px;
   padding: 17px 21px 20px 18px;
   display: flex;
   background-color: #171717;
   border-radius: 16px;
   @media screen and (max-width: 600px) {
-    /* min-height: 232px; */
+    min-height: 200px;
     border-radius: 0;
     padding: 9px 18px 15px 15px;
   }
@@ -152,10 +208,42 @@ const ContentWrapper = styled.div`
   margin-left: 18px;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  h2 {
+    font-size: 19px;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
   p {
     font-size: 17px;
     color: #b7b7b7;
   }
+  /* a:nth-child(3) {
+    margin-top: 13px;
+    max-width: 503px;
+    min-height: 155px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #4d4d4d;
+    border-radius: 11px;
+    padding: 25px 182px 23px 19px;
+    position: relative;
+
+    span {
+      font-size: 11px;
+      color: #9b9595;
+      height: 50px;
+      width: 60%;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  } */
   img {
     object-fit: cover;
     height: 100%;

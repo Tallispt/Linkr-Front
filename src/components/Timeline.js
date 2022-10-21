@@ -11,6 +11,7 @@ export function Timeline() {
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  console.log(posts);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postIdDelete, setPostIdDelete] = useState()
@@ -32,8 +33,8 @@ export function Timeline() {
   }, [refresh]);
 
   return (
-    <Container isModalVisible={isModalVisible}>
-      <Title>timeline</Title>
+    <TimelineContainer isModalVisible={isModalVisible}>
+      <TimelineTitle>timeline</TimelineTitle>
       <PublishPost refresh={refresh} setRefresh={setRefresh} />
       <PostsSection>
         {loader ? (
@@ -56,6 +57,7 @@ export function Timeline() {
               key={value.id}
               id={value.id}
               username={value.username}
+              userId={value.user_id}
               image={value.image}
               link={value.link}
               description={value.description}
@@ -69,21 +71,23 @@ export function Timeline() {
           ))
         )}
       </PostsSection>
-      {isModalVisible
-        ? <DeleteModal
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
-          postIdDelete={postIdDelete}
-          setPostIdDelete={setPostIdDelete}
-          refresh={refresh}
-          setRefresh={setRefresh}
-        />
-        : <></>}
-    </Container>
+      {
+        isModalVisible
+          ? <DeleteModal
+            isModalVisible={isModalVisible}
+            setIsModalVisible={setIsModalVisible}
+            postIdDelete={postIdDelete}
+            setPostIdDelete={setPostIdDelete}
+            refresh={refresh}
+            setRefresh={setRefresh}
+          />
+          : <></>
+      }
+    </TimelineContainer>
   );
 }
 
-const Container = styled.section`
+export const TimelineContainer = styled.section`
   margin-top: 20px;
   width: 611px;
   /* pointer-events: ${props => props.isModalVisible ? 'none' : 'inherit'}; */
@@ -93,7 +97,7 @@ const Container = styled.section`
   }
 `;
 
-const Title = styled.h1`
+export const TimelineTitle = styled.h1`
   margin-inline: auto;
   font-family: "Oswald";
   font-weight: 700;
@@ -105,7 +109,7 @@ const Title = styled.h1`
   }
 `;
 
-const PostsSection = styled.section`
+export const PostsSection = styled.section`
   margin-top: 29px;
   width: 100%;
   display: flex;
@@ -117,7 +121,7 @@ const PostsSection = styled.section`
   }
 `;
 
-const Message = styled.h6`
+export const Message = styled.h6`
   font-size: 20px;
   text-align: center;
   font-weight: 700;
