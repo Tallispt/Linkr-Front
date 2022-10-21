@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
+import UserContext from "../context/userContext";
 import { newPost } from "../services/linkr";
 
 export function PublishPost({ refresh, setRefresh }) {
+  const { dataUser } = useContext(UserContext);
+
   const [postBody, setPostBody] = useState({
     link: "",
     description: "",
@@ -12,7 +15,6 @@ export function PublishPost({ refresh, setRefresh }) {
     isError: false,
     message: "",
   });
-
   const [loading, setLoading] = useState(false);
 
   async function sendForm(e) {
@@ -51,7 +53,7 @@ export function PublishPost({ refresh, setRefresh }) {
       <ContentBox>
         <Title>What are you going to share today?</Title>
         <Box>
-          <Image></Image>
+          <Image src={dataUser.image} alt="Profile image" />
           <Form onSubmit={sendForm}>
             <input
               disabled={loading}
@@ -130,7 +132,7 @@ const Title = styled.h1`
   }
 `;
 
-const Image = styled.div`
+const Image = styled.img`
   margin-top: -30px;
   width: 50px;
   height: 50px;
