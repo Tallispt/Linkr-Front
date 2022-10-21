@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { DesktopSearchBar } from "./SearchBar/DesktopSearchBar";
 
@@ -6,7 +7,9 @@ export function Header() {
     <>
       <HeaderBox>
         <Wrap>
-          <Title>linkr</Title>
+          <Link to="/timeline">
+            <Title>linkr</Title>
+          </Link>
           <DesktopSearchBar placeholder={"Search for people"} />
           <Image></Image>
         </Wrap>

@@ -28,8 +28,8 @@ export function Timeline() {
   }, [refresh]);
 
   return (
-    <Container>
-      <Title>timeline</Title>
+    <TimelineContainer>
+      <TimelineTitle>timeline</TimelineTitle>
       <PublishPost refresh={refresh} setRefresh={setRefresh} />
       <PostsSection>
         {loader ? (
@@ -52,6 +52,7 @@ export function Timeline() {
               key={value.id}
               id={value.id}
               username={value.username}
+              userId={value.user_id}
               image={value.image}
               link={value.link}
               description={value.description}
@@ -60,11 +61,11 @@ export function Timeline() {
           ))
         )}
       </PostsSection>
-    </Container>
+    </TimelineContainer>
   );
 }
 
-const Container = styled.section`
+export const TimelineContainer = styled.section`
   margin-top: 20px;
   width: 611px;
 
@@ -73,7 +74,7 @@ const Container = styled.section`
   }
 `;
 
-const Title = styled.h1`
+export const TimelineTitle = styled.h1`
   margin-inline: auto;
   font-family: "Oswald";
   font-weight: 700;
@@ -85,7 +86,7 @@ const Title = styled.h1`
   }
 `;
 
-const PostsSection = styled.section`
+export const PostsSection = styled.section`
   margin-top: 29px;
   width: 100%;
   display: flex;
@@ -97,7 +98,7 @@ const PostsSection = styled.section`
   }
 `;
 
-const Message = styled.h6`
+export const Message = styled.h6`
   font-size: 20px;
   text-align: center;
   font-weight: 700;

@@ -37,4 +37,13 @@ async function newPost(body) {
   return promise;
 }
 
-export { newPost, getTimeline, getUsersBySearch };
+function getUserPosts(id) {
+  const config = createHeaders();
+  const promise = axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/user/${id}`,
+    config
+  );
+  return promise;
+}
+
+export { newPost, getTimeline, getUsersBySearch, getUserPosts };
