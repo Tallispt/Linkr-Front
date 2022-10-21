@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";
 
-import { Form, Banner, Content } from "../../common/Reusable";
+import { Form, Container, Content } from "../../common/Reusable";
 
 const Registration = () => {
 
@@ -24,79 +24,9 @@ const Registration = () => {
 
         setLoading(true);
 
-        const regexEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-        const minSize = /[0-9a-zA-Z$*&@#]{8,}/;
-        const digit = /[0-9]{1,}/;
-        const charUppercase = /[A-Z]{1,}/;
-        const charLowercase = /[a-z]{1,}/;
-        const charSpecial = /[$*&@#]{1,}/;
-
         if(dataUser.email === "" || dataUser.image === "" || dataUser.username === "" || dataUser.password === "")    {
             
             toast.warn("Fill in all fields!");
-            setTimeout(timeInterval, 2000);
-            return;
-        }
-
-        if(!dataUser.email.match(regexEmail))   {
-
-            toast.warn("Invalid email!");
-            setTimeout(timeInterval, 2000);
-            return;
-
-        } 
-        
-        if(!dataUser.password.match(minSize)) {
-
-            toast.warn("Your password must be at least 8 characters long!");
-            setTimeout(timeInterval, 2000);
-            return;
-
-        } 
-        
-        if(!dataUser.password.match(digit)) {
-
-            toast.warn("SYour password must contain at least one digit numeric!");
-            setTimeout(timeInterval, 2000);
-            return;
-
-        }
-        
-        if(!dataUser.password.match(charUppercase)) {
-
-            toast.warn("Your password must contain at least one capital letter!");
-            setTimeout(timeInterval, 2000);
-            return;
-            
-        } 
-        
-        if(!dataUser.password.match(charLowercase)) {
-
-            toast.warn("Your password must contain at least one lowercase letter!");
-            setTimeout(timeInterval, 2000);
-            return;
-            
-        } 
-        
-        if(!dataUser.password.match(charSpecial)) {
-
-            toast.warn("Your password must contain at least a special character ($, *, &, @, #)!");
-            setTimeout(timeInterval, 2000);
-            return;
-            
-        } 
-
-        if(dataUser.password !== dataUser.confirmPassword)    {
-
-            toast.warn("Password and password confirmation must match!");
-            setTimeout(timeInterval, 2000);
-            return;
-
-        }
-        
-        if(dataUser.username.length < 4) {
-
-            toast.warn("Your username must be at least 3 characters long!!");
             setTimeout(timeInterval, 2000);
             return;
             
@@ -112,7 +42,7 @@ const Registration = () => {
 
             toast.success("Account created successfully!!");
 
-            navigate("/signin");
+            navigate("/");
 
         })
         promise.catch(error => {
@@ -135,7 +65,7 @@ const Registration = () => {
 
     return(
         <>
-            <Banner>
+            <Container>
                 <Content>
                     <div className="text">
                         <h1>linkr</h1>
@@ -201,12 +131,12 @@ const Registration = () => {
                         </button>
                     </div>
                     <div className="message">
-                        <Link to={"/sign-in"}>
+                        <Link to={"/"}>
                             Switch back to log in
                         </Link>
                     </div>
                 </Form>
-            </Banner>
+            </Container>
         </>
     )
 

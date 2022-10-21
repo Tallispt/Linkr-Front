@@ -2,9 +2,10 @@ import axios from "axios";
 
 function createHeaders() {
   const auth = JSON.parse(localStorage.getItem("linkr"));
+  console.log(auth);
   const config = {
     headers: {
-      Authorization: `Bearer ${auth.token}`,
+      Authorization: `Bearer ${auth}`,
     },
   };
 
@@ -13,6 +14,7 @@ function createHeaders() {
 
 function getTimeline() {
   const config = createHeaders();
+  console.log(config);
   const promise = axios.get(
     `${process.env.REACT_APP_API_BASE_URL}/timeline`,
     config

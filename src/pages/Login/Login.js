@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";
 
-import { Form, Banner, Content } from "../../common/Reusable";
+import { Form, Container, Content } from "../../common/Reusable";
 
 import UserContext from "../../context/User";
 
@@ -27,28 +27,9 @@ const Login = () => {
 
         setLoading(true);
 
-        const regexEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-        const minSize = /[0-9a-zA-Z$*&@#]{8,}/;
-
         if(dataLogin.email === "" || dataLogin.password === "") {
 
             toast.warn("Fill in all fields!");
-            setTimeout(timeInterval, 2000);
-            return;
-
-        }
-
-        if(!dataLogin.email.match(regexEmail)) {
-
-            toast.warn("Invalid email!");
-            setTimeout(timeInterval, 3000);
-            return;
-
-        }
-
-        if(!dataLogin.password.match(minSize)) {
-
-            toast.warn("Your password must be at least 8 characters long!");
             setTimeout(timeInterval, 2000);
             return;
 
@@ -73,7 +54,7 @@ const Login = () => {
 
             localStorage.setItem("linkr", JSON.stringify(data.token));
 
-            navigate("/");
+            navigate("/timeline");
 
         });
 
@@ -105,7 +86,7 @@ const Login = () => {
 
     return(
         <>
-            <Banner>
+            <Container>
                 <Content>
                     <div className="text">
                         <h1>linkr</h1>
@@ -149,13 +130,13 @@ const Login = () => {
                                                             "Log In"}
                         </button>
                     </div>
-                    <div className="message">
-                        <Link to={"/sign-up"}>
+                    <div className="message mb">
+                        <Link to={"/signup"}>
                             First time? Create an account!
                         </Link>
                     </div>
                 </Form>
-            </Banner>
+            </Container>
         </>
     )
 

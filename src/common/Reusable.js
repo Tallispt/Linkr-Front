@@ -15,6 +15,16 @@ export const Form = styled.form`
 
     width: 40%;
 
+    .field, .btn {
+        align-items: center;
+
+        display: flex;
+
+        justify-content: center;
+
+        width: 100%;
+    }
+
     .field input, .btn button {
         border: none;
 
@@ -26,7 +36,7 @@ export const Form = styled.form`
 
         height: 65px;
 
-        width: 429px;
+        width: 80%;
     }
 
     .field input {
@@ -47,10 +57,13 @@ export const Form = styled.form`
 
     .message {
         margin-top: 22px;
-
     }
     .message a {
         color: #FFFFFF;
+
+        font-size: 22px;
+
+        text-decoration: underline;
     }
 
     // Campos desabilitados
@@ -61,14 +74,40 @@ export const Form = styled.form`
     .disabled_button {
         opacity: 0.7;
     }
+
+    @media screen and (max-width: 900px) {
+        height: 70vh;
+
+        justify-content: flex-start;
+
+        margin-top: 40px;
+
+        width: 100%;
+
+        .field input, .btn button {
+            font-size: 22px;
+
+            height: 55px;
+
+            width: 60%;
+        }
+
+        .message a {
+            font-size: 17px;
+        }
+    }
 `;
 
-export const Banner = styled.div`
+export const Container = styled.div`
     display: flex;
 
     height: 100vh;
 
     width: 100%;
+
+    @media screen and (max-width: 900px) {
+        flex-direction: column
+    }
 `;
 
 export const Content = styled.div`
@@ -87,9 +126,7 @@ export const Content = styled.div`
     width: 60%;
 
     .text {
-        margin-bottom: 250px;
-
-        margin-right: 250px;
+        margin: 0 200px 260px 50px;
     }
 
     .text h1 {
@@ -108,5 +145,35 @@ export const Content = styled.div`
         font-size: 43px;
 
         font-weight: 700;
+    }
+
+    @media screen and (max-width: 1024px) {
+        .text {
+            margin: 0 100px 250px 50px;
+        }
+    }
+
+    @media screen and (max-width: 1000px) {
+        .text {
+            margin: 0 50px 250px 50px;
+        }
+    }
+
+    @media screen and (max-width: 900px) {
+        height: 30vh;
+
+        width: 100%;
+
+        .text {
+            margin: 0;
+        }
+
+        .text h1 {
+            font-size: 76px;
+        }
+
+        .text p {
+            font-size: 23px;
+        }
     }
 `;
