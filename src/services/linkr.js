@@ -30,10 +30,10 @@ async function newPost(body) {
   return promise;
 }
 
-async function editPostDescription(body) {
+async function editPostDescription({ body, id }) {
   const config = createHeaders()
   return await axios.put(`
-  ${process.env.REACT_APP_API_BASE_URL}/posts/edit`,
+  ${process.env.REACT_APP_API_BASE_URL}/posts/${id}`,
     body,
     config)
 }

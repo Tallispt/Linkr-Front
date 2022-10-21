@@ -17,11 +17,10 @@ const EditableInput = ({ id, isEditing, setIsEditing, description, setRefresh, r
             if (inputText.trim() === "") return setIsEditing(!isEditing)
 
             const body = {
-                id: id,
                 description: inputText
             }
             try {
-                await editPostDescription(body)
+                await editPostDescription({ body, id })
             } catch (error) {
                 alert('Description could not be edited')
             }
