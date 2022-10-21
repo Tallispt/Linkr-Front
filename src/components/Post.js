@@ -233,30 +233,6 @@ const ContentWrapper = styled.div`
     font-size: 17px;
     color: #b7b7b7;
   }
-  /* a:nth-child(3) {
-    margin-top: 13px;
-    max-width: 503px;
-    min-height: 155px;
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid #4d4d4d;
-    border-radius: 11px;
-    padding: 25px 182px 23px 19px;
-    position: relative;
-
-    span {
-      font-size: 11px;
-      color: #9b9595;
-      height: 50px;
-      width: 60%;
-    }
-
-    div {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-  } */
   img {
     object-fit: cover;
     height: 100%;

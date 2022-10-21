@@ -14,7 +14,7 @@ export function Timeline() {
   console.log(posts);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [postIdDelete, setPostIdDelete] = useState()
+  const [postIdDelete, setPostIdDelete] = useState();
 
   useEffect(() => {
     setLoader(true);
@@ -71,18 +71,18 @@ export function Timeline() {
           ))
         )}
       </PostsSection>
-      {
-        isModalVisible
-          ? <DeleteModal
-            isModalVisible={isModalVisible}
-            setIsModalVisible={setIsModalVisible}
-            postIdDelete={postIdDelete}
-            setPostIdDelete={setPostIdDelete}
-            refresh={refresh}
-            setRefresh={setRefresh}
-          />
-          : <></>
-      }
+      {isModalVisible ? (
+        <DeleteModal
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          postIdDelete={postIdDelete}
+          setPostIdDelete={setPostIdDelete}
+          refresh={refresh}
+          setRefresh={setRefresh}
+        />
+      ) : (
+        <></>
+      )}
     </TimelineContainer>
   );
 }
@@ -90,7 +90,7 @@ export function Timeline() {
 export const TimelineContainer = styled.section`
   margin-top: 20px;
   width: 611px;
-  /* pointer-events: ${props => props.isModalVisible ? 'none' : 'inherit'}; */
+  margin-bottom: 20px;
 
   @media screen and (max-width: 600px) {
     width: 100vw;
