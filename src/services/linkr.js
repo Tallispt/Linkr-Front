@@ -37,7 +37,6 @@ async function newPost(body) {
   return promise;
 }
 
-<<<<<<< HEAD
 async function editPostDescription({ body, id }) {
   const config = createHeaders()
   return await axios.put(`
@@ -53,8 +52,6 @@ async function deletePost(id) {
     config)
 }
 
-export { newPost, getTimeline, editPostDescription, deletePost };
-=======
 function getUserPosts(id) {
   const config = createHeaders();
   const promise = axios.get(
@@ -99,5 +96,6 @@ export {
   signIn,
   likePost,
   dislikePost,
+  editPostDescription,
+  deletePost
 };
->>>>>>> 2100c0c4974018a9fe0a106fa944ffd616f1e7f4

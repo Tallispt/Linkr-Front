@@ -29,6 +29,7 @@ export default function Post({
   const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState(likes.length);
   const [disabled, setDisabled] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const userLiked = likes.filter((like) => like === user.username).length;
 
