@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { FiHeart } from "react-icons/fi";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
 import mql from "@microlink/mql";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
+import { dislikePost, likePost } from "../services/linkr";
 
 export default function Post({
   id,
@@ -15,15 +16,27 @@ export default function Post({
   description,
   likes,
 }) {
+  const user = JSON.parse(localStorage.getItem("linkr"));
+
   const [metadata, setMetadata] = useState({});
+  const [like, setLike] = useState(false);
+  const [likeCount, setLikeCount] = useState(likes.length);
+  const [disabled, setDisabled] = useState(false);
+
+  const userLiked = likes.filter((like) => like === user.username).length;
 
   useEffect(
     () =>
       async function getMetadata() {
         const { data } = await mql(link, { meta: "true" });
         setMetadata(data);
+
+        if (userLiked > 0) {
+          setLike(true);
+        }
       },
-    [link]
+
+    [link, userLiked]
   );
 
   const tagStyle = {
@@ -32,6 +45,31 @@ export default function Post({
     cursor: "pointer",
   };
 
+  async function LikeOrDislikePost(option) {
+    if (option === "like" && disabled === false) {
+      setDisabled(true);
+      setLike(true);
+      try {
+        await likePost({ postId: id });
+        setDisabled(false);
+      } catch (error) {
+        setDisabled(false);
+        console.log(error);
+      }
+    }
+    if (option === "dislike" && disabled === false) {
+      setDisabled(true);
+      setLike(false);
+      try {
+        await dislikePost({ postId: id });
+        setDisabled(false);
+      } catch (error) {
+        setDisabled(false);
+        console.log(error);
+      }
+    }
+  }
+
   return (
     <Container>
       <LeftWrapper>
@@ -39,11 +77,26 @@ export default function Post({
           <img src={image} alt="" />
         </Link>
         <LikeWrapper>
-          <FiHeart />
+          {like ? (
+            <AiFillHeart
+              size={30}
+              color="#AC0000"
+              onClick={() => {
+                LikeOrDislikePost("dislike");
+                setLikeCount(likeCount - 1);
+              }}
+            />
+          ) : (
+            <AiOutlineHeart
+              size={30}
+              onClick={() => {
+                LikeOrDislikePost("like");
+                setLikeCount(likeCount + 1);
+              }}
+            />
+          )}
           <p data-for="like" data-tip="test">
-            {likes.length > 1
-              ? `${likes.length} likes`
-              : `${likes.length} like`}
+            {likes.length > 1 ? `${likeCount} likes` : `${likeCount} like`}
           </p>
         </LikeWrapper>
         <ReactTooltip
