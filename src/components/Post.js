@@ -1,9 +1,12 @@
-import styled from "styled-components";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { ReactTagify } from "react-tagify";
-import mql from "@microlink/mql";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+import mql from "@microlink/mql";
 import { Link } from "react-router-dom";
+import { TiPencil } from "react-icons/ti";
+import { RiDeleteBin7Fill } from "react-icons/ri"
+import { ReactTagify } from "react-tagify";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import EditableInput from "./EditableInput";
 import { dislikePost, likePost } from "../services/linkr";
 
 export default function Post({
@@ -14,6 +17,11 @@ export default function Post({
   link,
   description,
   likes,
+  refresh,
+  setRefresh,
+  isModalVisible,
+  setIsModalVisible,
+  setPostIdDelete
 }) {
   const user = JSON.parse(localStorage.getItem("linkr"));
 
@@ -21,6 +29,7 @@ export default function Post({
   const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState(likes.length);
   const [disabled, setDisabled] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const userLiked = likes.filter((like) => like === user.username).length;
 
@@ -98,20 +107,43 @@ export default function Post({
         </LikeWrapper>
       </LeftWrapper>
       <ContentWrapper>
-        <Link to={`/user/${userId}`}>
-          <h2>{username}</h2>
-        </Link>
-        <ReactTagify tagStyle={tagStyle}>
-          <p>{description}</p>
-        </ReactTagify>
-        <a href={link} target="_blank" rel="noreferrer">
+        <TopWrapper>
+          <Link to={`/user/${userId}`}>
+            <h2>{username}</h2>
+          </Link>
+          <span>
+            <TiPencil onClick={() => setIsEditing(!isEditing)} />
+            <RiDeleteBin7Fill onClick={() => {
+              setIsModalVisible(!isModalVisible)
+              setPostIdDelete(id)
+            }} />
+          </span>
+        </TopWrapper>
+        {
+          !isEditing
+            ? <ReactTagify tagStyle={tagStyle}>
+              <p>{description}</p>
+            </ReactTagify>
+            : <EditableInput
+              id={id}
+              setIsEditing={setIsEditing}
+              isEditing={isEditing}
+              description={description}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
+
+        }
+        <MetadataWrapper href={link} target="_blank" rel="noreferrer">
           <div>
             <h1>{metadata.title}</h1>
             <span>{metadata.description}</span>
             <h4>{metadata.url}</h4>
           </div>
-          <img src={metadata.image?.url} alt="" />
-        </a>
+          <ImageContainer>
+            <img src={metadata.image?.url} alt="" />
+          </ImageContainer>
+        </MetadataWrapper>
       </ContentWrapper>
     </Container>
   );
@@ -175,6 +207,8 @@ const LikeWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   margin-left: 18px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -187,7 +221,7 @@ const ContentWrapper = styled.div`
     font-size: 17px;
     color: #b7b7b7;
   }
-  a:nth-child(3) {
+  /* a:nth-child(3) {
     margin-top: 13px;
     max-width: 503px;
     min-height: 155px;
@@ -210,12 +244,9 @@ const ContentWrapper = styled.div`
       flex-direction: column;
       justify-content: space-between;
     }
-  }
+  } */
   img {
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    width: 155px;
+    object-fit: cover;
     height: 100%;
     border-radius: 0px 11px 11px 0px;
   }
@@ -237,15 +268,80 @@ const ContentWrapper = styled.div`
   @media screen and (max-width: 600px) {
     margin-left: 14px;
     width: calc(100% - 40px);
-    h2 {
-      font-size: 17px;
-    }
     p {
       font-size: 15px;
     }
-    > a {
+    h1 {
+      font-size: 11px;
+    }
+    h4 {
+      font-size: 9px;
+      margin-top: 4px;
+      max-width: 100px;
+    }
+    img {
+      /* width: 40%;
+      height: calc(100% + 2px); */
+    }
+  }
+`;
+
+const TopWrapper = styled.span`
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+
+  h2 {
+    font-size: 19px;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+  
+  span {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 20px;
+  }
+  svg {
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 600px) {
+    h2 {
+      font-size: 17px;
+    }
+    
+  }
+`
+
+const MetadataWrapper = styled.a`
+    margin-top: 13px;
+    max-width: 503px;
+    min-height: 155px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #4d4d4d;
+    border-radius: 11px;
+    padding: 25px 182px 23px 19px;
+    position: relative;
+
+    span {
+      font-size: 11px;
+      color: #9b9595;
+      height: 50px;
+      width: 60%;
+    }
+    
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    @media screen and (max-width: 600px) {
       width: 100%;
       padding: 8px 122px 8px 11px;
+      /* min-height: 115px; */
       span {
         font-size: 9px;
         height: 60px;
@@ -257,19 +353,19 @@ const ContentWrapper = styled.div`
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      min-height: 115px;
-    }
-    h1 {
-      font-size: 11px;
-    }
-    h4 {
-      font-size: 9px;
-      margin-top: 4px;
-      max-width: 100px;
-    }
-    img {
+  }
+`
+
+const ImageContainer = styled.div`
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 155px;
+    height: calc(100% + 2px);
+    border-radius: 0px 11px 11px 0px;
+
+    @media screen and (max-width: 600px) {
       width: 40%;
       height: calc(100% + 2px);
     }
-  }
-`;
+`
