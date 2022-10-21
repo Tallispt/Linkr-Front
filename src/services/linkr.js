@@ -37,6 +37,21 @@ async function newPost(body) {
   return promise;
 }
 
+async function editPostDescription({ body, id }) {
+  const config = createHeaders()
+  return await axios.put(`
+  ${process.env.REACT_APP_API_BASE_URL}/posts/${id}`,
+    body,
+    config)
+}
+
+async function deletePost(id) {
+  const config = createHeaders()
+  return await axios.delete(`
+  ${process.env.REACT_APP_API_BASE_URL}/posts/${id}`,
+    config)
+}
+
 function getUserPosts(id) {
   const config = createHeaders();
   const promise = axios.get(
@@ -81,4 +96,6 @@ export {
   signIn,
   likePost,
   dislikePost,
+  editPostDescription,
+  deletePost
 };
