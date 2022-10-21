@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Homepage } from "../pages/Homepage";
+import UserPage from "../pages/UserPage";
 import GlobalStyle from "../styles/GlobalStyle";
 
 // Login
@@ -9,8 +10,8 @@ import Login from "../pages/Login/Login";
 import Registration from "../pages/Registration/Registration";
 
 // React-Toastify
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Context
 import UserContext from "../context/User";
@@ -25,9 +26,10 @@ function App() {
         <GlobalStyle />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/sign-in" element={<Login  />} />
-            <Route path="/sign-up" element={<Registration />} />
+            <Route path="/timeline" element={<Homepage />} />
+            <Route path="/user/:id" element={<UserPage />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/signup" element={<Registration />} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>
