@@ -4,6 +4,7 @@ import { GrClose } from "react-icons/gr";
 import { DebounceInput } from "react-debounce-input";
 import { useState } from "react";
 import { getUsersBySearch } from "../../services/linkr";
+import { Link } from "react-router-dom";
 
 export function DesktopSearchBar({ placeholder }) {
   const [wordEntered, setWordEntered] = useState("");
@@ -49,10 +50,10 @@ export function DesktopSearchBar({ placeholder }) {
       {search.length !== 0 && (
         <DataResult>
           {search.map((user, i) => (
-            <a key={i} href="/">
+            <Link key={i} to={`/user/${user.id}`}>
               <img src={user.image} alt={user.username} />
               <p>{user.username}</p>
-            </a>
+            </Link>
           ))}
         </DataResult>
       )}
