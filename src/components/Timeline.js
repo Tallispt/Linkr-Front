@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 import styled from "styled-components";
 import { getTimeline } from "../services/linkr";
+import DeleteModal from "./DeleteModal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 
@@ -10,6 +11,9 @@ export function Timeline() {
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const [refresh, setRefresh] = useState(false);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [postIdDelete, setPostIdDelete] = useState()
 
   useEffect(() => {
     setLoader(true);
@@ -28,7 +32,7 @@ export function Timeline() {
   }, [refresh]);
 
   return (
-    <Container>
+    <Container isModalVisible={isModalVisible}>
       <Title>timeline</Title>
       <PublishPost refresh={refresh} setRefresh={setRefresh} />
       <PostsSection>
@@ -58,10 +62,23 @@ export function Timeline() {
               likes={value.likes}
               refresh={refresh}
               setRefresh={setRefresh}
+              isModalVisible={isModalVisible}
+              setIsModalVisible={setIsModalVisible}
+              setPostIdDelete={setPostIdDelete}
             />
           ))
         )}
       </PostsSection>
+      {isModalVisible
+        ? <DeleteModal
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          postIdDelete={postIdDelete}
+          setPostIdDelete={setPostIdDelete}
+          refresh={refresh}
+          setRefresh={setRefresh}
+        />
+        : <></>}
     </Container>
   );
 }
@@ -69,6 +86,7 @@ export function Timeline() {
 const Container = styled.section`
   margin-top: 20px;
   width: 611px;
+  /* pointer-events: ${props => props.isModalVisible ? 'none' : 'inherit'}; */
 
   @media screen and (max-width: 600px) {
     width: 100vw;

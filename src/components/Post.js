@@ -16,15 +16,13 @@ export default function Post({
   description,
   likes,
   refresh,
-  setRefresh
+  setRefresh,
+  isModalVisible,
+  setIsModalVisible,
+  setPostIdDelete
 }) {
   const [metadata, setMetadata] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-
-
-  function handleDelete() {
-    console.log('lixo')
-  }
 
   useEffect(() =>
     async function getMetadata() {
@@ -58,7 +56,10 @@ export default function Post({
           <h2>{username}</h2>
           <span>
             <TiPencil onClick={() => setIsEditing(!isEditing)} />
-            <RiDeleteBin7Fill onClick={handleDelete} />
+            <RiDeleteBin7Fill onClick={() => {
+              setIsModalVisible(!isModalVisible)
+              setPostIdDelete(id)
+            }} />
           </span>
         </TopWrapper>
         {

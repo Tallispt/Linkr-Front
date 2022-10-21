@@ -38,4 +38,11 @@ async function editPostDescription({ body, id }) {
     config)
 }
 
-export { newPost, getTimeline, editPostDescription };
+async function deletePost(id) {
+  const config = createHeaders()
+  return await axios.delete(`
+  ${process.env.REACT_APP_API_BASE_URL}/posts/${id}`,
+    config)
+}
+
+export { newPost, getTimeline, editPostDescription, deletePost };
