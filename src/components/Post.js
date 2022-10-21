@@ -3,6 +3,7 @@ import { FiHeart } from "react-icons/fi";
 import { ReactTagify } from "react-tagify";
 import mql from "@microlink/mql";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Post({
   id,
@@ -45,9 +46,11 @@ export default function Post({
       </LeftWrapper>
       <ContentWrapper>
         <h2>{username}</h2>
+        <p>{description}</p>
+        {hashtags.map((hashtag)=>(
         <ReactTagify tagStyle={tagStyle}>
-          <p>{"#"+hashtags}</p>
-        </ReactTagify>
+        <Link to ={'/home/'}><p>{"#"+`${hashtag}`}</p></Link>
+        </ReactTagify>))}
         <a href={link} target="_blank" rel="noreferrer">
           <div>
             <h1>{metadata.title}</h1>
