@@ -73,6 +73,7 @@ const Container = styled.div`
   display: flex;
   background-color: #171717;
   border-radius: 16px;
+  margin-bottom: 16px;
   @media screen and (max-width: 600px) {
     min-height: 200px;
     border-radius: 0;

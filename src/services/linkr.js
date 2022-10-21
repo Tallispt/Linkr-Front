@@ -54,4 +54,12 @@ async function signIn(login) {
   return promise;
 }
 
-export { newPost, getTimeline, getUsersBySearch, getUserPosts, signIn };
+async function signUp(data) {
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/signup`,
+    data
+  );
+  return promise;
+}
+
+export { newPost, getTimeline, getUsersBySearch, getUserPosts, signIn, signUp };

@@ -20,6 +20,12 @@ export default function UserPage() {
 
   const { id } = useParams();
 
+  const [ alterIcon, setAlterIcon ] = useState(false);
+
+  function handleIcon() {
+    if(alterIcon === true) setAlterIcon(false);
+  }
+
   useEffect(() => {
     setLoader(true);
     getUserPosts(id)
@@ -37,46 +43,48 @@ export default function UserPage() {
   }, [id]);
 
   return (
-    <MainWrapper>
-      <Header />
-      <MobileSearchBar />
-      <TimelineContainer>
-        <UserTitle>
-          <img src={user.image} alt="" />
-          <span>{user.username}'s posts</span>
-        </UserTitle>
-        <PostsSection>
-          {loader ? (
-            <>
-              <HashLoader
-                color="#ffffff"
-                loading={loader}
-                cssOverride={true}
-                size={50}
-              />
-              <Message>Loading</Message>
-            </>
-          ) : error ? (
-            <Message>{error}</Message>
-          ) : user.posts?.length === 0 ? (
-            <Message>There are no posts yet</Message>
-          ) : (
-            user.posts?.map((value) => (
-              <Post
-                key={value.id}
-                id={value.id}
-                username={value.username}
-                user_id={value.user_id}
-                image={value.image}
-                link={value.link}
-                description={value.description}
-                likes={value.likes}
-              />
-            ))
-          )}
-        </PostsSection>
-      </TimelineContainer>
-    </MainWrapper>
+    <Overlap onClick={handleIcon}>
+        <MainWrapper>
+        <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
+        <MobileSearchBar />
+        <TimelineContainer>
+          <UserTitle>
+            <img src={user.image} alt="" />
+            <span>{user.username}'s posts</span>
+          </UserTitle>
+          <PostsSection>
+            {loader ? (
+              <>
+                <HashLoader
+                  color="#ffffff"
+                  loading={loader}
+                  cssOverride={true}
+                  size={50}
+                />
+                <Message>Loading</Message>
+              </>
+            ) : error ? (
+              <Message>{error}</Message>
+            ) : user.posts?.length === 0 ? (
+              <Message>There are no posts yet</Message>
+            ) : (
+              user.posts?.map((value) => (
+                <Post
+                  key={value.id}
+                  id={value.id}
+                  username={value.username}
+                  user_id={value.user_id}
+                  image={value.image}
+                  link={value.link}
+                  description={value.description}
+                  likes={value.likes}
+                />
+              ))
+            )}
+          </PostsSection>
+        </TimelineContainer>
+      </MainWrapper>
+    </Overlap>
   );
 }
 
@@ -106,4 +114,10 @@ const UserTitle = styled(TimelineTitle)`
       margin-right: 14px;
     }
   }
+`;
+
+const Overlap = styled.div`
+  min-height: 100vh;
+
+  z-index: 10;
 `;

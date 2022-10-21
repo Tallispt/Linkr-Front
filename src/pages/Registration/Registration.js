@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import axios from "axios";
+import { signUp } from "../../services/linkr";
 import BeatLoader from "react-spinners/BeatLoader";
 
 import { Form, Container, Content } from "../../common/Reusable";
@@ -22,7 +22,7 @@ const Registration = () => {
     setLoading(false);
   }
 
-  function signup(event) {
+  async function signup(event) {
     event.preventDefault();
 
     setLoading(true);
@@ -38,19 +38,19 @@ const Registration = () => {
       return;
     }
 
-    const URL = `${process.env.REACT_APP_API_BASE_URL}/signup`;
-
-    const promise = axios.post(URL, dataUser);
-
-    promise.then((response) => {
-      console.log(response);
+    try {
+      
+      await signUp(dataUser);
 
       toast.success("Account created successfully!!");
 
       navigate("/");
-    });
-    promise.catch((error) => {
+
+    } catch (error) {
+      
       const { response } = error;
+
+      console.log(error)
 
       if (response.data.message === "Usuário já cadastrado!") {
         toast.warn("Email entered already registered!");
@@ -59,8 +59,9 @@ const Registration = () => {
       }
 
       setLoading(false);
-    });
-  }
+
+    }
+}
 
   return (
     <>
