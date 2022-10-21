@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { DesktopSearchBar } from "./SearchBar/DesktopSearchBar";
-
 export function Header() {
+  const user = JSON.parse(localStorage.getItem("linkr"));
+
   return (
     <>
       <HeaderBox>
@@ -11,7 +12,7 @@ export function Header() {
             <Title>linkr</Title>
           </Link>
           <DesktopSearchBar placeholder={"Search for people"} />
-          <Image></Image>
+          <Image src={user.image} alt="Profile image" />
         </Wrap>
       </HeaderBox>
     </>
@@ -55,11 +56,10 @@ const Title = styled.h1`
   }
 `;
 
-const Image = styled.div`
+const Image = styled.img`
   width: 53px;
   height: 53px;
   border-radius: 50%;
-  background-color: red;
   @media screen and (max-width: 600px) {
     width: 44px;
     height: 44px;

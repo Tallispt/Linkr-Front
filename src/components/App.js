@@ -12,27 +12,45 @@ import Registration from "../pages/Registration/Registration";
 // React-Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-// Context
-import UserContext from "../context/User";
+import UserContext from "../context/userContext";
+import PrivatePage from "./PrivatePage";
 
 function App() {
-  const [ dataUser, setDataUser ] = useState({id: "", username: "", image: "", token: ""})
+  const [dataUser, setDataUser] = useState({
+    id: null,
+    username: null,
+    image: null,
+    token: null,
+  });
 
   return (
     <>
-      <UserContext.Provider value={{ dataUser, setDataUser }}>
-        <ToastContainer autoclose={1000} />
-        <GlobalStyle />
-        <BrowserRouter>
+      <ToastContainer autoclose={1000} />
+      <GlobalStyle />
+      <BrowserRouter>
+        <UserContext.Provider value={{ dataUser, setDataUser }}>
           <Routes>
-            <Route path="/timeline" element={<Homepage />} />
-            <Route path="/user/:id" element={<UserPage />} />
+            <Route
+              path="/timeline"
+              element={
+                <PrivatePage>
+                  <Homepage />
+                </PrivatePage>
+              }
+            />
+            <Route
+              path="/user/:id"
+              element={
+                <PrivatePage>
+                  <UserPage />
+                </PrivatePage>
+              }
+            />
             <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Registration />} />
+            <Route path="/sign-up" element={<Registration />} />
           </Routes>
-        </BrowserRouter>
-      </UserContext.Provider>
+        </UserContext.Provider>
+      </BrowserRouter>
     </>
   );
 }

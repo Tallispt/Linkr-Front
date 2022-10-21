@@ -2,10 +2,9 @@ import axios from "axios";
 
 function createHeaders() {
   const auth = JSON.parse(localStorage.getItem("linkr"));
-  console.log(auth);
   const config = {
     headers: {
-      Authorization: `Bearer ${auth}`,
+      Authorization: `Bearer ${auth.token}`,
     },
   };
 
@@ -14,7 +13,6 @@ function createHeaders() {
 
 function getTimeline() {
   const config = createHeaders();
-  console.log(config);
   const promise = axios.get(
     `${process.env.REACT_APP_API_BASE_URL}/timeline`,
     config
@@ -48,4 +46,12 @@ function getUserPosts(id) {
   return promise;
 }
 
-export { newPost, getTimeline, getUsersBySearch, getUserPosts };
+async function signIn(login) {
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/signin`,
+    login
+  );
+  return promise;
+}
+
+export { newPost, getTimeline, getUsersBySearch, getUserPosts, signIn };

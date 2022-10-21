@@ -11,9 +11,11 @@ export const Form = styled.form`
 
     height: 100vh;
 
-    justify-content: center;
-
     width: 40%;
+
+    .field:nth-child(1) {
+        margin-top: 26%;
+    }
 
     .field, .btn {
         align-items: center;
@@ -80,16 +82,22 @@ export const Form = styled.form`
 
         justify-content: flex-start;
 
-        margin-top: 40px;
-
         width: 100%;
+
+        .field:nth-child(1) {
+            margin-top: 8%;
+        }
 
         .field input, .btn button {
             font-size: 22px;
 
             height: 55px;
 
-            width: 60%;
+            width: 80%;
+        }
+
+        .message {
+            margin-top: 21px;
         }
 
         .message a {
@@ -121,12 +129,12 @@ export const Content = styled.div`
 
     height: 100%;
 
-    justify-content: center;
-
     width: 60%;
 
     .text {
-        margin: 0 200px 260px 50px;
+        margin-top: 18%;
+
+        width: 80%;
     }
 
     .text h1 {
@@ -147,29 +155,27 @@ export const Content = styled.div`
         font-weight: 700;
     }
 
-    @media screen and (max-width: 1024px) {
-        .text {
-            margin: 0 100px 250px 50px;
-        }
-    }
-
-    @media screen and (max-width: 1000px) {
-        .text {
-            margin: 0 50px 250px 50px;
-        }
-    }
-
     @media screen and (max-width: 900px) {
         height: 30vh;
+
+        justify-content: center;
 
         width: 100%;
 
         .text {
-            margin: 0;
+            line-height: 34px;
+
+            margin-top: 5%;
+
+            text-align: center;
+
+            width: auto;
         }
 
         .text h1 {
             font-size: 76px;
+
+            padding-bottom: 12px;
         }
 
         .text p {
