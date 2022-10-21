@@ -56,6 +56,8 @@ export function Timeline() {
               link={value.link}
               description={value.description}
               likes={value.likes}
+              refresh={refresh}
+              setRefresh={setRefresh}
             />
           ))
         )}

@@ -30,4 +30,12 @@ async function newPost(body) {
   return promise;
 }
 
-export { newPost, getTimeline };
+async function editPostDescription(body) {
+  const config = createHeaders()
+  return await axios.put(`
+  ${process.env.REACT_APP_API_BASE_URL}/posts/edit`,
+    body,
+    config)
+}
+
+export { newPost, getTimeline, editPostDescription };

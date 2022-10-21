@@ -1,8 +1,12 @@
-import styled from "styled-components";
-import { FiHeart } from "react-icons/fi";
-import { ReactTagify } from "react-tagify";
-import mql from "@microlink/mql";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+import mql from "@microlink/mql";
+import { FiHeart } from "react-icons/fi";
+import { TiPencil } from "react-icons/ti";
+import { RiDeleteBin7Fill } from "react-icons/ri"
+import { ReactTagify } from "react-tagify";
+
+import EditableInput from "./EditableInput";
 
 export default function Post({
   id,
@@ -11,15 +15,22 @@ export default function Post({
   link,
   description,
   likes,
+  refresh,
+  setRefresh
 }) {
   const [metadata, setMetadata] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(
-    () =>
-      async function getMetadata() {
-        const { data } = await mql(link, { meta: "true" });
-        setMetadata(data);
-      },
+
+  function handleDelete() {
+    console.log('lixo')
+  }
+
+  useEffect(() =>
+    async function getMetadata() {
+      const { data } = await mql(link, { meta: "true" });
+      setMetadata(data);
+    },
     [link]
   );
 
@@ -43,18 +54,36 @@ export default function Post({
         </LikeWrapper>
       </LeftWrapper>
       <ContentWrapper>
-        <h2>{username}</h2>
-        <ReactTagify tagStyle={tagStyle}>
-          <p>{description}</p>
-        </ReactTagify>
-        <a href={link} target="_blank" rel="noreferrer">
+        <TopWrapper>
+          <h2>{username}</h2>
+          <span>
+            <TiPencil onClick={() => setIsEditing(!isEditing)} />
+            <RiDeleteBin7Fill onClick={handleDelete} />
+          </span>
+        </TopWrapper>
+        {
+          !isEditing
+            ? <ReactTagify tagStyle={tagStyle}>
+              <p>{description}</p>
+            </ReactTagify>
+            : <EditableInput
+              id={id}
+              setIsEditing={setIsEditing}
+              isEditing={isEditing}
+              description={description}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
+
+        }
+        <MetadataWrapper href={link} target="_blank" rel="noreferrer">
           <div>
             <h1>{metadata.title}</h1>
             <span>{metadata.description}</span>
             <h4>{metadata.url}</h4>
           </div>
           <img src={metadata.image?.url} alt="" />
-        </a>
+        </MetadataWrapper>
       </ContentWrapper>
     </Container>
   );
@@ -62,13 +91,13 @@ export default function Post({
 
 const Container = styled.div`
   width: 100%;
-  min-height: 276px;
+  /* min-height: 276px; */
   padding: 17px 21px 20px 18px;
   display: flex;
   background-color: #171717;
   border-radius: 16px;
   @media screen and (max-width: 600px) {
-    min-height: 232px;
+    /* min-height: 232px; */
     border-radius: 0;
     padding: 9px 18px 15px 15px;
   }
@@ -118,38 +147,11 @@ const LikeWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   margin-left: 18px;
-  h2 {
-    font-size: 19px;
-    color: #ffffff;
-    margin-bottom: 8px;
-  }
+  width: 100%;
+  /* height: 100%; */
   p {
     font-size: 17px;
     color: #b7b7b7;
-  }
-  > a {
-    margin-top: 13px;
-    max-width: 503px;
-    min-height: 155px;
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid #4d4d4d;
-    border-radius: 11px;
-    padding: 25px 182px 23px 19px;
-    position: relative;
-
-    span {
-      font-size: 11px;
-      color: #9b9595;
-      height: 50px;
-      width: 60%;
-    }
-
-    div {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
   }
   img {
     position: absolute;
@@ -177,15 +179,81 @@ const ContentWrapper = styled.div`
   @media screen and (max-width: 600px) {
     margin-left: 14px;
     width: calc(100% - 40px);
-    h2 {
-      font-size: 17px;
-    }
     p {
       font-size: 15px;
     }
-    > a {
+    h1 {
+      font-size: 11px;
+    }
+    h4 {
+      font-size: 9px;
+      margin-top: 4px;
+      max-width: 100px;
+    }
+    img {
+      /* width: 40%; */
+      /* height: calc(100% + 2px); */
+      height: 100%;
+    }
+  }
+`;
+
+const TopWrapper = styled.span`
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+
+  h2 {
+    font-size: 19px;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+  
+  span {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 20px;
+  }
+  svg {
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 600px) {
+    h2 {
+      font-size: 17px;
+    }
+    
+  }
+`
+
+const MetadataWrapper = styled.a`
+    margin-top: 13px;
+    max-width: 503px;
+    min-height: 155px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #4d4d4d;
+    border-radius: 11px;
+    padding: 25px 182px 23px 19px;
+    position: relative;
+
+    span {
+      font-size: 11px;
+      color: #9b9595;
+      height: 50px;
+      width: 60%;
+    }
+    
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    @media screen and (max-width: 600px) {
       width: 100%;
       padding: 8px 122px 8px 11px;
+      /* min-height: 115px; */
       span {
         font-size: 9px;
         height: 60px;
@@ -197,19 +265,5 @@ const ContentWrapper = styled.div`
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      min-height: 115px;
-    }
-    h1 {
-      font-size: 11px;
-    }
-    h4 {
-      font-size: 9px;
-      margin-top: 4px;
-      max-width: 100px;
-    }
-    img {
-      width: 40%;
-      height: calc(100% + 2px);
-    }
   }
-`;
+`
