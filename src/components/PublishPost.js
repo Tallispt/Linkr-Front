@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { newPost } from "../services/linkr";
 
-export function PublishPost() {
+export function PublishPost({ refresh, setRefresh }) {
   const [postBody, setPostBody] = useState({
     link: "",
     description: "",
@@ -30,6 +30,7 @@ export function PublishPost() {
         link: "",
         description: "",
       });
+      setRefresh(!refresh);
     } catch (error) {
       console.log(error);
       setError({

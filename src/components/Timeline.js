@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { HashLoader } from "react-spinners";
 import styled from "styled-components";
 import { getTimeline } from "../services/linkr";
 import Post from "./Post";
@@ -6,51 +7,79 @@ import { PublishPost } from "./PublishPost";
 
 export function Timeline() {
   const [posts, setPosts] = useState([]);
+  const [error, setError] = useState("");
+  const [loader, setLoader] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
+    setLoader(true);
     getTimeline()
       .then((res) => {
         setPosts(res.data);
+        setLoader(false);
       })
       .catch((err) => {
         console.log(err.message);
+        setLoader(false);
+        setError(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        );
       });
-  }, []);
+  }, [refresh]);
 
   return (
-    <Container>
-      <Title>timeline</Title>
-      <PublishPost />
+   
+    <TimelineContainer>
+      <TimelineTitle>timeline</TimelineTitle>
+      <PublishPost refresh={refresh} setRefresh={setRefresh} />
       <PostsSection>
-        {posts.length === 0
-          ? "There are no posts yet"
-          : posts.map((value) => (
-              <Post
-                key={value.id}
-                id={value.id}
-                username={value.username}
-                image={value.image}
-                link={value.link}
-                description={value.description}
-                likes={value.likes}
-                hashtags={value.hashtags}
-              />
-            ))}
+        {loader ? (
+          <>
+            <HashLoader
+              color="#ffffff"
+              loading={loader}
+              cssOverride={true}
+              size={50}
+            />
+            <Message>Loading</Message>
+          </>
+        ) : error ? (
+          <Message>{error}</Message>
+        ) : posts.length === 0 ? (
+          <Message>There are no posts yet</Message>
+        ) : (
+          posts.map((value) => (
+            <Post
+              key={value.id}
+              id={value.id}
+              username={value.username}
+              userId={value.user_id}
+              image={value.image}
+              link={value.link}
+              description={value.description}
+              likes={value.likes}
+              hashtags={value.hashtags}
+            />
+          ))
+        )}
       </PostsSection>
-    </Container>
+     
+    </TimelineContainer>
   );
 }
 
-const Container = styled.section`
+export const TimelineContainer = styled.section`
   margin-top: 20px;
   width: 611px;
+  display: flex;
+  flex-direction: column;
 
   @media screen and (max-width: 600px) {
     width: 100vw;
   }
 `;
 
-const Title = styled.h1`
+export const TimelineTitle = styled.h1`
   margin-inline: auto;
   font-family: "Oswald";
   font-weight: 700;
@@ -62,13 +91,22 @@ const Title = styled.h1`
   }
 `;
 
-const PostsSection = styled.section`
+export const PostsSection = styled.section`
   margin-top: 29px;
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   row-gap: 16px;
   @media screen and (max-width: 600px) {
     margin-top: 16px;
   }
+`;
+
+export const Message = styled.h6`
+  font-size: 20px;
+  text-align: center;
+  font-weight: 700;
+  color: #ffffff;
+  max-width: 300px;
 `;

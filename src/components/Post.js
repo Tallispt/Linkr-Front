@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 export default function Post({
   id,
   username,
+  userId,
   image,
   link,
   description,
@@ -28,13 +29,17 @@ export default function Post({
   const tagStyle = {
     color: "#ffffff",
     fontWeight: 700,
-    cursor: "pointer",
+    cursor: "pointer"
+    ,
+    
   };
 
   return (
     <Container>
       <LeftWrapper>
-        <img src={image} alt="" />
+        <Link to={`/user/${userId}`}>
+          <img src={image} alt="" />
+        </Link>
         <LikeWrapper>
           <FiHeart />
           <p>
@@ -45,12 +50,16 @@ export default function Post({
         </LikeWrapper>
       </LeftWrapper>
       <ContentWrapper>
-        <h2>{username}</h2>
-        <p>{description}</p>
-        {hashtags.map((hashtag)=>(
+        <Link to={`/user/${userId}`}>
+          <h2>{username}</h2>
+        </Link>
+        <p>{description} {hashtags.map((hashtag)=>(
         <ReactTagify tagStyle={tagStyle}>
-        <Link to ={'/home/'}><p>{"#"+`${hashtag}`}</p></Link>
-        </ReactTagify>))}
+        <Link to={`/hashtag/${hashtag}`}>
+          {`#${hashtag}`}
+          </Link>
+        </ReactTagify>))}</p>
+        
         <a href={link} target="_blank" rel="noreferrer">
           <div>
             <h1>{metadata.title}</h1>
@@ -64,15 +73,16 @@ export default function Post({
   );
 }
 
+
 const Container = styled.div`
   width: 100%;
-  min-height: 276px;
+  min-height: 240px;
   padding: 17px 21px 20px 18px;
   display: flex;
   background-color: #171717;
   border-radius: 16px;
   @media screen and (max-width: 600px) {
-    min-height: 232px;
+    min-height: 200px;
     border-radius: 0;
     padding: 9px 18px 15px 15px;
   }
@@ -122,6 +132,9 @@ const LikeWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   margin-left: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   h2 {
     font-size: 19px;
     color: #ffffff;
@@ -131,7 +144,7 @@ const ContentWrapper = styled.div`
     font-size: 17px;
     color: #b7b7b7;
   }
-  > a {
+  a:nth-child(3) {
     margin-top: 13px;
     max-width: 503px;
     min-height: 155px;
@@ -188,7 +201,7 @@ const ContentWrapper = styled.div`
       font-size: 15px;
     }
     > a {
-      width: 90%;
+      width: 100%;
       padding: 8px 122px 8px 11px;
       span {
         font-size: 9px;
