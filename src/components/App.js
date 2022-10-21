@@ -30,6 +30,8 @@ function App() {
       <BrowserRouter>
         <UserContext.Provider value={{ dataUser, setDataUser }}>
           <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/sign-up" element={<Registration />} />
             <Route
               path="/timeline"
               element={
@@ -46,8 +48,6 @@ function App() {
                 </PrivatePage>
               }
             />
-            <Route path="/" element={<Login />} />
-            <Route path="/sign-up" element={<Registration />} />
           </Routes>
         </UserContext.Provider>
       </BrowserRouter>

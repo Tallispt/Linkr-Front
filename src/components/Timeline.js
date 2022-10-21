@@ -115,7 +115,7 @@ export const PostsSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 16px;
+  // row-gap: 16px;
   @media screen and (max-width: 600px) {
     margin-top: 16px;
   }
