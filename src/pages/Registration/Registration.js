@@ -116,6 +116,7 @@ const Registration = () => {
 
         })
         promise.catch(error => {
+
             const { response } = error;
 
             if(response.data.message === "Usuário já cadastrado!") {
@@ -126,9 +127,8 @@ const Registration = () => {
                 toast.error("Error. Try again later!");
             }
 
-            
-
             setLoading(false);
+            
         })
 
     }
@@ -201,7 +201,7 @@ const Registration = () => {
                         </button>
                     </div>
                     <div className="message">
-                        <Link to={"/signin"}>
+                        <Link to={"/sign-in"}>
                             Switch back to log in
                         </Link>
                     </div>

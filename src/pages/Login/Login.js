@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -7,7 +7,10 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 import { Form, Banner, Content } from "../../common/Reusable";
 
-const Login = ({ setDataUser }) => {
+import UserContext from "../../context/User";
+
+const Login = () => {
+    const { setDataUser } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -51,7 +54,7 @@ const Login = ({ setDataUser }) => {
 
         }
 
-        const URL = "http://localhost:4000/signin";
+        const URL = `${process.env.REACT_APP_API_BASE_URL}/signin`;
 
         const promise = axios.post(URL, dataLogin);
 
@@ -68,13 +71,34 @@ const Login = ({ setDataUser }) => {
 
             setLoading(false);
 
+            localStorage.setItem("linkr", JSON.stringify(data.token));
+
             navigate("/");
 
         });
 
         promise.catch(error => {
+
             console.log(error);
-            toast.error("Error. Try again later!")
+
+            const { response } = error;
+
+            if(response.data.message === "Senha inválida!") {
+
+                toast.warn("Invalid password!");
+
+            } else if(response.data.message === "E-mail não encontrado!") {
+
+                toast.warn("User not found!");
+
+            } else {
+
+                toast.error("Error. Try again later!");
+
+            }
+
+            setLoading(false);
+
         })
 
     }
@@ -101,7 +125,7 @@ const Login = ({ setDataUser }) => {
                         />
                     </div>
                     <div className="field">
-                        <input type="password" name="password" id="password" placeholder="password"
+                        <input type="password" name="password" id="password" placeholder="password" autoComplete="on"
                             onChange={event => setDataLogin({...dataLogin, password: event.target.value})}
                             disabled={(loading && loading === true) ? true : false}
                             className={(loading && loading === true) ? "disabled" : ""}
@@ -126,7 +150,7 @@ const Login = ({ setDataUser }) => {
                         </button>
                     </div>
                     <div className="message">
-                        <Link to={"/signup"}>
+                        <Link to={"/sign-up"}>
                             First time? Create an account!
                         </Link>
                     </div>
