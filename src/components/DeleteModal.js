@@ -1,4 +1,7 @@
+import { useState } from "react"
 import styled from "styled-components"
+import { HashLoader } from "react-spinners";
+
 import { deletePost } from "../services/linkr"
 
 const DeleteModal = ({
@@ -9,34 +12,51 @@ const DeleteModal = ({
     refresh,
     setRefresh
 }) => {
+    const [isLoading, setIsEditing] = useState(false)
 
-    function confirmDeletePost() {
-        deletePost(postIdDelete)
-        setPostIdDelete(undefined)
-        setIsModalVisible(!isModalVisible)
-        setRefresh(!refresh)
+    async function confirmDeletePost() {
+        setIsEditing(!isLoading)
+        try {
+            await deletePost(postIdDelete)
+            setIsEditing(!isLoading)
+            setPostIdDelete(undefined)
+            setIsModalVisible(!isModalVisible)
+            setRefresh(!refresh)
+        } catch (error) {
+            setIsModalVisible(!isModalVisible)
+            alert('Post could not be deleted')
+        }
     }
 
     return (
         <Container>
             <div>
-                <h2>Are you sure you want to delete this post?</h2>
-                <span>
-                    <button
-                        style={{
-                            backgroundColor: '#FFFFFF',
-                            color: '#1877F2'
-                        }}
-                        onClick={() => setIsModalVisible(!isModalVisible)}
-                    >No, go back</button>
-                    <button
-                        style={{
-                            backgroundColor: '#1877F2',
-                            color: '#FFFFFF'
-                        }}
-                        onClick={confirmDeletePost}
-                    >Yes, delete it</button>
-                </span>
+                {
+                    isLoading
+                        ? <HashLoader
+                            color="#FFFFFF"
+                            size={100}
+                        />
+                        : <>
+                            <h2>Are you sure you want to delete this post?</h2>
+                            <span>
+                                <button
+                                    style={{
+                                        backgroundColor: '#FFFFFF',
+                                        color: '#1877F2'
+                                    }}
+                                    onClick={() => setIsModalVisible(!isModalVisible)}
+                                >No, go back</button>
+                                <button
+                                    style={{
+                                        backgroundColor: '#1877F2',
+                                        color: '#FFFFFF'
+                                    }}
+                                    onClick={confirmDeletePost}
+                                >Yes, delete it</button>
+                            </span>
+                        </>
+                }
             </div>
         </Container>
     )
@@ -44,8 +64,9 @@ const DeleteModal = ({
 
 const Container = styled.div`
     position: absolute;
-    display: flex;        background-color: #FFFFFF;
-        color: #1877F2;
+    display: flex;        
+    background-color: #FFFFFF;
+    color: #1877F2;
     justify-content: center;
     align-items: center;
     top: 0;
@@ -61,6 +82,7 @@ const Container = styled.div`
         padding: 38px 0;
         gap: 40px;
         align-items: center;
+        justify-content: center;
         width: 597px;
         height: 262px;
         background: #333333;
@@ -94,6 +116,26 @@ const Container = styled.div`
         font-size: 18px;
         line-height: 22px;
         cursor: pointer;
+    }
+
+    @media screen and (max-width: 600px) {
+        width: 100%;
+        div {
+            margin: 30px;
+            gap: 20px
+        }
+        h2 {
+            font-size: 1.6rem;
+            min-width: 300px;
+        }
+        span {
+            flex-direction: column;
+            gap: 15px;
+        }
+        button {
+            width: 200px;
+            height: 50px;
+        }
     }
 `
 

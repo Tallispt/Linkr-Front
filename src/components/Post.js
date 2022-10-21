@@ -83,7 +83,9 @@ export default function Post({
             <span>{metadata.description}</span>
             <h4>{metadata.url}</h4>
           </div>
-          <img src={metadata.image?.url} alt="" />
+          <ImageContainer>
+            <img src={metadata.image?.url} alt="" />
+          </ImageContainer>
         </MetadataWrapper>
       </ContentWrapper>
     </Container>
@@ -149,16 +151,13 @@ const LikeWrapper = styled.div`
 const ContentWrapper = styled.div`
   margin-left: 18px;
   width: 100%;
-  /* height: 100%; */
+  height: 100%;
   p {
     font-size: 17px;
     color: #b7b7b7;
   }
   img {
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    width: 155px;
+    object-fit: cover;
     height: 100%;
     border-radius: 0px 11px 11px 0px;
   }
@@ -192,9 +191,8 @@ const ContentWrapper = styled.div`
       max-width: 100px;
     }
     img {
-      /* width: 40%; */
-      /* height: calc(100% + 2px); */
-      height: 100%;
+      /* width: 40%;
+      height: calc(100% + 2px); */
     }
   }
 `;
@@ -267,4 +265,18 @@ const MetadataWrapper = styled.a`
         text-overflow: ellipsis;
       }
   }
+`
+
+const ImageContainer = styled.div`
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 155px;
+    height: calc(100% + 2px);
+    border-radius: 0px 11px 11px 0px;
+
+    @media screen and (max-width: 600px) {
+      width: 40%;
+      height: calc(100% + 2px);
+    }
 `
