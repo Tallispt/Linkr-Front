@@ -4,6 +4,7 @@ import { ReactTagify } from "react-tagify";
 import mql from "@microlink/mql";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ReactTooltip from "react-tooltip";
 
 export default function Post({
   id,
@@ -39,12 +40,20 @@ export default function Post({
         </Link>
         <LikeWrapper>
           <FiHeart />
-          <p>
+          <p data-for="like" data-tip="test">
             {likes.length > 1
               ? `${likes.length} likes`
               : `${likes.length} like`}
           </p>
         </LikeWrapper>
+        <ReactTooltip
+          id="like"
+          place="bottom"
+          type="light"
+          effect="solid"
+          textColor="#505050"
+          multiline={true}
+        />
       </LeftWrapper>
       <ContentWrapper>
         <Link to={`/user/${userId}`}>
