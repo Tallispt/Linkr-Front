@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import BeatLoader from "react-spinners/BeatLoader";
 
-import { Form, Banner, Content } from "../../common/Reusable";
+import { Form, Container, Content } from "../../common/Reusable";
 import { signIn } from "../../services/linkr";
 import UserContext from "../../context/userContext";
 import { userIsLogged } from "../../components/PrivatePage";
@@ -31,23 +31,8 @@ const Login = () => {
 
     setLoading(true);
 
-    const regexEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    const minSize = /[0-9a-zA-Z$*&@#]{8,}/;
-
     if (dataLogin.email === "" || dataLogin.password === "") {
       toast.warn("Fill in all fields!");
-      setTimeout(timeInterval, 2000);
-      return;
-    }
-
-    if (!dataLogin.email.match(regexEmail)) {
-      toast.warn("Invalid email!");
-      setTimeout(timeInterval, 3000);
-      return;
-    }
-
-    if (!dataLogin.password.match(minSize)) {
-      toast.warn("Your password must be at least 8 characters long!");
       setTimeout(timeInterval, 2000);
       return;
     }
@@ -78,7 +63,7 @@ const Login = () => {
 
   return (
     <>
-      <Banner>
+      <Container>
         <Content>
           <div className="text">
             <h1>linkr</h1>
@@ -108,6 +93,7 @@ const Login = () => {
               name="password"
               id="password"
               placeholder="password"
+              autoComplete="on"
               onChange={(event) =>
                 setDataLogin({ ...dataLogin, password: event.target.value })
               }
@@ -136,10 +122,10 @@ const Login = () => {
             </button>
           </div>
           <div className="message">
-            <Link to={"/signup"}>First time? Create an account!</Link>
+            <Link to={"/sign-up"}>First time? Create an account!</Link>
           </div>
         </Form>
-      </Banner>
+      </Container>
     </>
   );
 };

@@ -11,9 +11,21 @@ export const Form = styled.form`
 
     height: 100vh;
 
-    justify-content: center;
-
     width: 40%;
+
+    .field:nth-child(1) {
+        margin-top: 26%;
+    }
+
+    .field, .btn {
+        align-items: center;
+
+        display: flex;
+
+        justify-content: center;
+
+        width: 100%;
+    }
 
     .field input, .btn button {
         border: none;
@@ -26,7 +38,7 @@ export const Form = styled.form`
 
         height: 65px;
 
-        width: 429px;
+        width: 80%;
     }
 
     .field input {
@@ -47,10 +59,13 @@ export const Form = styled.form`
 
     .message {
         margin-top: 22px;
-
     }
     .message a {
         color: #FFFFFF;
+
+        font-size: 22px;
+
+        text-decoration: underline;
     }
 
     // Campos desabilitados
@@ -61,14 +76,46 @@ export const Form = styled.form`
     .disabled_button {
         opacity: 0.7;
     }
+
+    @media screen and (max-width: 900px) {
+        height: 70vh;
+
+        justify-content: flex-start;
+
+        width: 100%;
+
+        .field:nth-child(1) {
+            margin-top: 8%;
+        }
+
+        .field input, .btn button {
+            font-size: 22px;
+
+            height: 55px;
+
+            width: 80%;
+        }
+
+        .message {
+            margin-top: 21px;
+        }
+
+        .message a {
+            font-size: 17px;
+        }
+    }
 `;
 
-export const Banner = styled.div`
+export const Container = styled.div`
     display: flex;
 
     height: 100vh;
 
     width: 100%;
+
+    @media screen and (max-width: 900px) {
+        flex-direction: column
+    }
 `;
 
 export const Content = styled.div`
@@ -82,14 +129,12 @@ export const Content = styled.div`
 
     height: 100%;
 
-    justify-content: center;
-
     width: 60%;
 
     .text {
-        margin-bottom: 250px;
+        margin-top: 18%;
 
-        margin-right: 250px;
+        width: 80%;
     }
 
     .text h1 {
@@ -108,5 +153,33 @@ export const Content = styled.div`
         font-size: 43px;
 
         font-weight: 700;
+    }
+
+    @media screen and (max-width: 900px) {
+        height: 30vh;
+
+        justify-content: center;
+
+        width: 100%;
+
+        .text {
+            line-height: 34px;
+
+            margin-top: 5%;
+
+            text-align: center;
+
+            width: auto;
+        }
+
+        .text h1 {
+            font-size: 76px;
+
+            padding-bottom: 12px;
+        }
+
+        .text p {
+            font-size: 23px;
+        }
     }
 `;

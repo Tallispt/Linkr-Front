@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Homepage } from "../pages/Homepage";
 import UserPage from "../pages/UserPage";
@@ -11,7 +12,6 @@ import Registration from "../pages/Registration/Registration";
 // React-Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
 import UserContext from "../context/userContext";
 import PrivatePage from "./PrivatePage";
 
@@ -47,7 +47,7 @@ function App() {
               }
             />
             <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Registration />} />
+            <Route path="/sign-up" element={<Registration />} />
           </Routes>
         </UserContext.Provider>
       </BrowserRouter>
