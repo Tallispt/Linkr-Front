@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -7,13 +7,20 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { Form, Banner, Content } from "../../common/Reusable";
 import { signIn } from "../../services/linkr";
 import UserContext from "../../context/userContext";
+import { userIsLogged } from "../../components/PrivatePage";
 
 const Login = () => {
   const navigate = useNavigate();
   const { setDataUser } = useContext(UserContext);
-
   const [loading, setLoading] = useState(null);
   const [dataLogin, setDataLogin] = useState({ email: "", password: "" });
+
+  useEffect(() => {
+    if (userIsLogged()) {
+      return navigate("/timeline");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function timeInterval() {
     setLoading(!loading);
@@ -50,6 +57,7 @@ const Login = () => {
 
       const JSONauth = JSON.stringify({
         token: data.token,
+        image: data.image,
       });
       localStorage.setItem("linkr", JSONauth);
 

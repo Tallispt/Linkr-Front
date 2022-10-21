@@ -1,10 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import UserContext from "../context/userContext";
 import { newPost } from "../services/linkr";
 
 export function PublishPost({ refresh, setRefresh }) {
-  const { dataUser } = useContext(UserContext);
+  const user = JSON.parse(localStorage.getItem("linkr"));
 
   const [postBody, setPostBody] = useState({
     link: "",
@@ -53,7 +52,7 @@ export function PublishPost({ refresh, setRefresh }) {
       <ContentBox>
         <Title>What are you going to share today?</Title>
         <Box>
-          <Image src={dataUser.image} alt="Profile image" />
+          <Image src={user.image} alt="Profile image" />
           <Form onSubmit={sendForm}>
             <input
               disabled={loading}

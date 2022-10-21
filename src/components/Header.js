@@ -1,11 +1,8 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import UserContext from "../context/userContext";
 import { DesktopSearchBar } from "./SearchBar/DesktopSearchBar";
-
 export function Header() {
-  const { dataUser } = useContext(UserContext);
+  const user = JSON.parse(localStorage.getItem("linkr"));
 
   return (
     <>
@@ -15,7 +12,7 @@ export function Header() {
             <Title>linkr</Title>
           </Link>
           <DesktopSearchBar placeholder={"Search for people"} />
-          <Image src={dataUser.image} alt="Profile image" />
+          <Image src={user.image} alt="Profile image" />
         </Wrap>
       </HeaderBox>
     </>

@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import UserContext from "../context/userContext";
+import PrivatePage from "./PrivatePage";
 
 function App() {
   const [dataUser, setDataUser] = useState({
@@ -29,8 +30,22 @@ function App() {
       <BrowserRouter>
         <UserContext.Provider value={{ dataUser, setDataUser }}>
           <Routes>
-            <Route path="/timeline" element={<Homepage />} />
-            <Route path="/user/:id" element={<UserPage />} />
+            <Route
+              path="/timeline"
+              element={
+                <PrivatePage>
+                  <Homepage />
+                </PrivatePage>
+              }
+            />
+            <Route
+              path="/user/:id"
+              element={
+                <PrivatePage>
+                  <UserPage />
+                </PrivatePage>
+              }
+            />
             <Route path="/" element={<Login />} />
             <Route path="/signup" element={<Registration />} />
           </Routes>
