@@ -54,4 +54,31 @@ async function signIn(login) {
   return promise;
 }
 
-export { newPost, getTimeline, getUsersBySearch, getUserPosts, signIn };
+async function likePost(body) {
+  const config = createHeaders();
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/posts/like`,
+    body,
+    config
+  );
+  return promise;
+}
+async function dislikePost(body) {
+  const config = createHeaders();
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/posts/dislike`,
+    body,
+    config
+  );
+  return promise;
+}
+
+export {
+  newPost,
+  getTimeline,
+  getUsersBySearch,
+  getUserPosts,
+  signIn,
+  likePost,
+  dislikePost,
+};
