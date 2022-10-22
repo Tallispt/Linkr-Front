@@ -5,17 +5,17 @@ import { Header } from "../components/Header";
 import { MobileSearchBar } from "../components/SearchBar/MobileSearchBar";
 
 export function Homepage() {
-  const [ alterIcon, setAlterIcon ] = useState(false);
+  const [alterIcon, setAlterIcon] = useState(false);
 
   function handleIcon() {
-    if(alterIcon === true) setAlterIcon(false);
+    if (alterIcon === true) setAlterIcon(false);
   }
 
   return (
     <>
       <Overlap onClick={handleIcon}>
         <Container>
-          <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon}/>
+          <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
           <MobileSearchBar placeholder={"Search for people and friends"} />
           <Timeline />
         </Container>
@@ -29,7 +29,7 @@ const Container = styled.main`
 `;
 
 const Overlap = styled.div`
-  min-height: 100vh;
+  min-height: calc(100vh - 72px);
 
   z-index: 10;
 `;

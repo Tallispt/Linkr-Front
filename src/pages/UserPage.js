@@ -20,10 +20,10 @@ export default function UserPage() {
 
   const { id } = useParams();
 
-  const [ alterIcon, setAlterIcon ] = useState(false);
+  const [alterIcon, setAlterIcon] = useState(false);
 
   function handleIcon() {
-    if(alterIcon === true) setAlterIcon(false);
+    if (alterIcon === true) setAlterIcon(false);
   }
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function UserPage() {
 
   return (
     <Overlap onClick={handleIcon}>
-        <MainWrapper>
+      <MainWrapper>
         <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
         <MobileSearchBar />
         <TimelineContainer>
@@ -117,7 +117,7 @@ const UserTitle = styled(TimelineTitle)`
 `;
 
 const Overlap = styled.div`
-  min-height: 100vh;
+  min-height: calc(100vh - 72px);
 
   z-index: 10;
 `;
