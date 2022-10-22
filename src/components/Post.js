@@ -34,10 +34,8 @@ export default function Post({
   const [isEditing, setIsEditing] = useState(false);
 
   const userLiked = likes.filter((like) => like === user.username).length;
-  console.log(userLiked);
   useEffect(() => {
     if (userLiked > 0) {
-      console.log("entrou");
       setLike(true);
     }
     return async function getMetadata() {
