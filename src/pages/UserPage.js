@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 import styled from "styled-components";
+import { device } from "../common/breakpoint";
 import { Header } from "../components/Header";
 import Post from "../components/Post";
 import { MobileSearchBar } from "../components/SearchBar/MobileSearchBar";
@@ -104,7 +105,7 @@ const UserTitle = styled(TimelineTitle)`
     margin-left: 20px;
     margin-right: 18px;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     margin-top: 10px;
     margin-bottom: 20px;
     img {

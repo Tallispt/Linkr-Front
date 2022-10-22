@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { device } from "../common/breakpoint";
 import { newPost } from "../services/linkr";
 
 export function PublishPost({ refresh, setRefresh }) {
@@ -100,7 +101,7 @@ const Container = styled.section`
     width: 611px;
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     border-radius: 0;
   }
 `;
@@ -112,7 +113,7 @@ const Box = styled.div`
 const ContentBox = styled.div`
   padding: 20px;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     padding: 14px;
   }
 `;
@@ -124,7 +125,7 @@ const Title = styled.h1`
   margin-left: 60px;
   font-size: 20px;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     text-align: center;
     font-size: 17px;
     margin-left: 0px;
@@ -138,7 +139,7 @@ const Image = styled.img`
   border-radius: 50%;
   margin-right: 15px;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     display: none;
   }
 `;
@@ -171,7 +172,7 @@ const Form = styled.form`
     text-align: center;
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     input:nth-child(2) {
       height: 57px;
     }
@@ -198,7 +199,7 @@ const Button = styled.button`
   font-weight: 500;
   background-color: ${(props) => (props.disabled ? "#87b8f8" : "#1877F2")};
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     height: 22px;
   }
 `;

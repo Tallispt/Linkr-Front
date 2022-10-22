@@ -16,7 +16,7 @@ export function Homepage() {
       <Overlap onClick={handleIcon}>
         <Container>
           <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
-          <MobileSearchBar placeholder={"Search for people and friends"} />
+          <MobileSearchBar />
           <Timeline />
         </Container>
       </Overlap>

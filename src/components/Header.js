@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { DesktopSearchBar } from "./SearchBar/DesktopSearchBar";
 
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { device } from "../common/breakpoint";
 
 export function Header({ alterIcon, setAlterIcon }) {
   const user = JSON.parse(localStorage.getItem("linkr"));
@@ -10,7 +11,7 @@ export function Header({ alterIcon, setAlterIcon }) {
   const navigate = useNavigate();
 
   function handleIcon() {
-    if(alterIcon === true) setAlterIcon(false);
+    if (alterIcon === true) setAlterIcon(false);
   }
 
   function logout() {
@@ -28,14 +29,38 @@ export function Header({ alterIcon, setAlterIcon }) {
           </Link>
           <DesktopSearchBar placeholder={"Search for people"} />
           <ActiveLogoutContainer>
-            {
-              alterIcon ? 
-                <IoIosArrowUp className="activeCursor" color="#FFFFFF" size={35} onClick={() => {setAlterIcon(!alterIcon)}} /> : 
-                <IoIosArrowDown className="activeCursor" color="#FFFFFF" size={35} onClick={() => {setAlterIcon(!alterIcon)}}/>
-            }
-            <Image src={user.image} alt="Profile image" onClick={() => {setAlterIcon(!alterIcon)}} />
+            {alterIcon ? (
+              <IoIosArrowUp
+                className="activeCursor"
+                color="#FFFFFF"
+                size={35}
+                onClick={() => {
+                  setAlterIcon(!alterIcon);
+                }}
+              />
+            ) : (
+              <IoIosArrowDown
+                className="activeCursor"
+                color="#FFFFFF"
+                size={35}
+                onClick={() => {
+                  setAlterIcon(!alterIcon);
+                }}
+              />
+            )}
+            <Image
+              src={user.image}
+              alt="Profile image"
+              onClick={() => {
+                setAlterIcon(!alterIcon);
+              }}
+            />
           </ActiveLogoutContainer>
-          {alterIcon && <LogoutContainer onClick={handleIcon}><span onClick={logout}>Logout</span></LogoutContainer>}
+          {alterIcon && (
+            <LogoutContainer onClick={handleIcon}>
+              <span onClick={logout}>Logout</span>
+            </LogoutContainer>
+          )}
         </Wrap>
       </HeaderBox>
     </>
@@ -66,7 +91,7 @@ const Wrap = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     padding-right: 14px;
   }
 `;
@@ -75,7 +100,7 @@ const Title = styled.h1`
   color: #ffffff;
   font-size: 49px;
   font-weight: 700;
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     font-size: 45px;
   }
 `;
@@ -97,9 +122,9 @@ const LogoutContainer = styled.div`
 
   border-radius: 0px 0px 20px 20px;
 
-  color: #FFFFFF;
+  color: #ffffff;
 
-  font-family: 'Lato';
+  font-family: "Lato";
 
   font-weight: 700;
 
@@ -121,7 +146,8 @@ const LogoutContainer = styled.div`
 
   z-index: 10;
 
-  span, p {
+  span,
+  p {
     cursor: pointer;
   }
 `;
@@ -131,7 +157,7 @@ const Image = styled.img`
   height: 53px;
   border-radius: 50%;
   cursor: pointer;
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     width: 44px;
     height: 44px;
   }
