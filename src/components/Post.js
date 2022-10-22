@@ -34,20 +34,17 @@ export default function Post({
   const [isEditing, setIsEditing] = useState(false);
 
   const userLiked = likes.filter((like) => like === user.username).length;
-
-  useEffect(
-    () =>
-      async function getMetadata() {
-        const { data } = await mql(link, { meta: "true" });
-        setMetadata(data);
-
-        if (userLiked > 0) {
-          setLike(true);
-        }
-      },
-
-    [link, userLiked]
-  );
+  console.log(userLiked);
+  useEffect(() => {
+    if (userLiked > 0) {
+      console.log("entrou");
+      setLike(true);
+    }
+    return async function getMetadata() {
+      const { data } = await mql(link, { meta: "true" });
+      setMetadata(data);
+    };
+  }, [link, userLiked]);
 
   let tooltip;
 
