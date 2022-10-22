@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Timeline } from "../components/Timeline";
 import { Header } from "../components/Header";
 import { MobileSearchBar } from "../components/SearchBar/MobileSearchBar";
-
+import TrendSideBar from "../components/TrendSideBar";
 export function Homepage() {
   const [alterIcon, setAlterIcon] = useState(false);
 
@@ -17,13 +17,18 @@ export function Homepage() {
         <Container>
           <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
           <MobileSearchBar />
+          <PageContent>
           <Timeline />
+          <TrendSideBar/>
+          </PageContent>
         </Container>
       </Overlap>
     </>
   );
 }
-
+const PageContent = styled.div`
+display: flex;
+`
 const Container = styled.main`
   margin-top: 72px;
 `;

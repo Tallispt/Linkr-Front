@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Homepage } from "../pages/Homepage";
 import UserPage from "../pages/UserPage";
 import GlobalStyle from "../styles/GlobalStyle";
+import HashtagPage from "../pages/HashtagPage";
 
 // Login
 import Login from "../pages/Login/Login";
@@ -45,6 +46,14 @@ function App() {
               element={
                 <PrivatePage>
                   <UserPage />
+                </PrivatePage>
+              }
+            />
+            <Route
+              path="/hashtag/:hashtag"
+              element={
+                <PrivatePage>
+                  <HashtagPage />
                 </PrivatePage>
               }
             />

@@ -18,6 +18,7 @@ export default function Post({
   image,
   link,
   description,
+  hashtags,
   likes,
   refresh,
   setRefresh,
@@ -169,9 +170,12 @@ export default function Post({
           </span>
         </TopWrapper>
         {!isEditing ? (
-          <ReactTagify tagStyle={tagStyle}>
-            <p>{description}</p>
-          </ReactTagify>
+          <p>{description} {hashtags?.map((hashtag)=>(
+            <ReactTagify tagStyle={tagStyle}>
+           <Link to={`/hashtag/${hashtag}`}>
+             {`#${hashtag}`}
+             </Link>
+            </ReactTagify>))}</p>
         ) : (
           <EditableInput
             id={id}
