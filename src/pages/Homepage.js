@@ -18,8 +18,8 @@ export function Homepage() {
           <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
           <MobileSearchBar />
           <PageContent>
-          <Timeline />
-          <TrendSideBar/>
+            <Timeline />
+            <TrendSideBar />
           </PageContent>
         </Container>
       </Overlap>
@@ -27,8 +27,9 @@ export function Homepage() {
   );
 }
 const PageContent = styled.div`
-display: flex;
-`
+  display: flex;
+  min-height: calc(100vh - 72px);
+`;
 const Container = styled.main`
   margin-top: 72px;
 `;
