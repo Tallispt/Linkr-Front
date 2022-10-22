@@ -136,7 +136,6 @@ const Image = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: red;
   margin-right: 15px;
 
   @media screen and (max-width: 600px) {

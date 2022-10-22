@@ -48,6 +48,36 @@ export default function Post({
     [link, userLiked]
   );
 
+  let tooltip;
+
+  switch (true) {
+    case likeCount === 0:
+      tooltip = "Nobody has ";
+      break;
+    case like && likeCount === 1:
+      tooltip = "You ";
+      break;
+    case like && likeCount > 1:
+      tooltip = `You, ${likes[0] === user.username ? likes[1] : likes[0]} `;
+      break;
+    case !like && likeCount === 1:
+      tooltip = `${likes[0]} `;
+      break;
+    case !like && likeCount > 1:
+      tooltip = `${likes[0]}, ${likes[1]} `;
+      break;
+    default:
+      return;
+  }
+
+  tooltip +=
+    likeCount > 2
+      ? likeCount > 3
+        ? `and ${likeCount - 2} other people `
+        : "and 1 other person "
+      : "";
+  tooltip += "liked this post";
+
   const tagStyle = {
     color: "#ffffff",
     fontWeight: 700,
@@ -104,7 +134,7 @@ export default function Post({
               }}
             />
           )}
-          <p data-for="like" data-tip="test">
+          <p data-for="like" data-tip={tooltip}>
             {likes.length > 1 ? `${likeCount} likes` : `${likeCount} like`}
           </p>
         </LikeWrapper>
@@ -115,6 +145,7 @@ export default function Post({
           effect="solid"
           textColor="#505050"
           multiline={true}
+          className="tooltip"
         />
       </LeftWrapper>
       <ContentWrapper>
@@ -169,6 +200,9 @@ const Container = styled.div`
   background-color: #171717;
   border-radius: 16px;
   margin-bottom: 16px;
+  .tooltip {
+    font-weight: 700;
+  }
   @media screen and (max-width: 600px) {
     min-height: 200px;
     border-radius: 0;
