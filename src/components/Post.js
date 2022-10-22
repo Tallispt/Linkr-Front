@@ -39,11 +39,12 @@ export default function Post({
     if (userLiked > 0) {
       setLike(true);
     }
-    return async function getMetadata() {
+    const getMetadata = async () => {
       const { data } = await mql(link, { meta: "true" });
       console.log(data);
       setMetadata(data);
     };
+    getMetadata();
   }, [link, userLiked]);
 
   let tooltip;
