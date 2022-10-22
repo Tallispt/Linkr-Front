@@ -1,8 +1,23 @@
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import { DesktopSearchBar } from "./SearchBar/DesktopSearchBar";
-export function Header() {
+
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+
+export function Header({ alterIcon, setAlterIcon }) {
   const user = JSON.parse(localStorage.getItem("linkr"));
+
+  const navigate = useNavigate();
+
+  function handleIcon() {
+    if(alterIcon === true) setAlterIcon(false);
+  }
+
+  function logout() {
+    localStorage.removeItem("linkr");
+
+    navigate("/");
+  }
 
   return (
     <>
@@ -12,7 +27,15 @@ export function Header() {
             <Title>linkr</Title>
           </Link>
           <DesktopSearchBar placeholder={"Search for people"} />
-          <Image src={user.image} alt="Profile image" />
+          <ActiveLogoutContainer>
+            {
+              alterIcon ? 
+                <IoIosArrowUp className="activeCursor" color="#FFFFFF" size={35} onClick={() => {setAlterIcon(!alterIcon)}} /> : 
+                <IoIosArrowDown className="activeCursor" color="#FFFFFF" size={35} onClick={() => {setAlterIcon(!alterIcon)}}/>
+            }
+            <Image src={user.image} alt="Profile image" onClick={() => {setAlterIcon(!alterIcon)}} />
+          </ActiveLogoutContainer>
+          {alterIcon && <LogoutContainer onClick={handleIcon}><span onClick={logout}>Logout</span></LogoutContainer>}
         </Wrap>
       </HeaderBox>
     </>
@@ -42,6 +65,7 @@ const Wrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   @media screen and (max-width: 600px) {
     padding-right: 14px;
   }
@@ -56,10 +80,57 @@ const Title = styled.h1`
   }
 `;
 
+const ActiveLogoutContainer = styled.div`
+  align-items: center;
+
+  display: flex;
+
+  gap: 10px;
+
+  .activeCursor {
+    cursor: pointer;
+  }
+`;
+
+const LogoutContainer = styled.div`
+  background: #171717;
+
+  border-radius: 0px 0px 20px 20px;
+
+  color: #FFFFFF;
+
+  font-family: 'Lato';
+
+  font-weight: 700;
+
+  font-size: 15px;
+
+  height: 47px;
+
+  line-height: 47px;
+
+  position: absolute;
+
+  right: -15px;
+
+  text-align: center;
+
+  top: 70px;
+
+  width: 150px;
+
+  z-index: 10;
+
+  span, p {
+    cursor: pointer;
+  }
+`;
+
 const Image = styled.img`
   width: 53px;
   height: 53px;
   border-radius: 50%;
+  cursor: pointer;
   @media screen and (max-width: 600px) {
     width: 44px;
     height: 44px;

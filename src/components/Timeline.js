@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 import styled from "styled-components";
 import { getTimeline } from "../services/linkr";
+import DeleteModal from "./DeleteModal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 
@@ -11,6 +12,9 @@ export function Timeline() {
   const [loader, setLoader] = useState(false);
   const [refresh, setRefresh] = useState(false);
   console.log(posts);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [postIdDelete, setPostIdDelete] = useState();
 
   useEffect(() => {
     setLoader(true);
@@ -29,7 +33,7 @@ export function Timeline() {
   }, [refresh]);
 
   return (
-    <TimelineContainer>
+    <TimelineContainer isModalVisible={isModalVisible}>
       <TimelineTitle>timeline</TimelineTitle>
       <PublishPost refresh={refresh} setRefresh={setRefresh} />
       <PostsSection>
@@ -58,10 +62,27 @@ export function Timeline() {
               link={value.link}
               description={value.description}
               likes={value.likes}
+              refresh={refresh}
+              setRefresh={setRefresh}
+              isModalVisible={isModalVisible}
+              setIsModalVisible={setIsModalVisible}
+              setPostIdDelete={setPostIdDelete}
             />
           ))
         )}
       </PostsSection>
+      {isModalVisible ? (
+        <DeleteModal
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+          postIdDelete={postIdDelete}
+          setPostIdDelete={setPostIdDelete}
+          refresh={refresh}
+          setRefresh={setRefresh}
+        />
+      ) : (
+        <></>
+      )}
     </TimelineContainer>
   );
 }
@@ -69,6 +90,7 @@ export function Timeline() {
 export const TimelineContainer = styled.section`
   margin-top: 20px;
   width: 611px;
+  margin-bottom: 20px;
 
   @media screen and (max-width: 600px) {
     width: 100vw;
@@ -93,7 +115,7 @@ export const PostsSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 16px;
+  // row-gap: 16px;
   @media screen and (max-width: 600px) {
     margin-top: 16px;
   }
