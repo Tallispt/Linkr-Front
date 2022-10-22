@@ -34,7 +34,7 @@ export default function Post({
   const [isEditing, setIsEditing] = useState(false);
 
   const userLiked = likes.filter((like) => like === user.username).length;
-
+  console.log(userLiked);
   useEffect(
     () =>
       async function getMetadata() {
@@ -42,6 +42,7 @@ export default function Post({
         setMetadata(data);
 
         if (userLiked > 0) {
+          console.log("entrou");
           setLike(true);
         }
       },
