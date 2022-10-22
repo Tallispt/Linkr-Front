@@ -90,11 +90,11 @@ export function Timeline() {
 }
 
 export const TimelineContainer = styled.section`
-  margin-top: 20px;
+  margin-top: 53px;
   width: 611px;
   margin-bottom: 20px;
 
-  @media screen and (${device.laptop}) {
+  @media screen and (${device.tablet}) {
     width: 100vw;
   }
 `;
@@ -105,7 +105,7 @@ export const TimelineTitle = styled.h1`
   font-weight: 700;
   color: #ffffff;
   font-size: 43px;
-  @media screen and (${device.laptop}) {
+  @media screen and (${device.tablet}) {
     font-size: 33px;
     padding-left: 17px;
   }
@@ -118,7 +118,7 @@ export const PostsSection = styled.section`
   flex-direction: column;
   align-items: center;
   // row-gap: 16px;
-  @media screen and (${device.laptop}) {
+  @media screen and (${device.tablet}) {
     margin-top: 16px;
   }
 `;

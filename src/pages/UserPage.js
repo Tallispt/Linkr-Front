@@ -50,44 +50,44 @@ export default function UserPage() {
         <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
         <MobileSearchBar />
         <PageContent>
-        <TimelineContainer>
-          <UserTitle>
-            <img src={user.image} alt="" />
-            <span>{user.username}'s posts</span>
-          </UserTitle>
-          <PostsSection>
-            {loader ? (
-              <>
-                <HashLoader
-                  color="#ffffff"
-                  loading={loader}
-                  cssOverride={true}
-                  size={50}
-                />
-                <Message>Loading</Message>
-              </>
-            ) : error ? (
-              <Message>{error}</Message>
-            ) : user.posts?.length === 0 ? (
-              <Message>There are no posts yet</Message>
-            ) : (
-              user.posts?.map((value) => (
-                <Post
-                  key={value.id}
-                  id={value.id}
-                  username={value.username}
-                  userId={value.user_id}
-                  image={value.image}
-                  link={value.link}
-                  description={value.description}
-                  likes={value.likes}
-                  hashtags={value.hashtags}
-                />
-              ))
-            )}
-          </PostsSection>
-        </TimelineContainer>
-        <TrendSideBar/>
+          <TimelineContainer>
+            <UserTitle>
+              <img src={user.image} alt="" />
+              <span>{user.username}'s posts</span>
+            </UserTitle>
+            <PostsSection>
+              {loader ? (
+                <>
+                  <HashLoader
+                    color="#ffffff"
+                    loading={loader}
+                    cssOverride={true}
+                    size={50}
+                  />
+                  <Message>Loading</Message>
+                </>
+              ) : error ? (
+                <Message>{error}</Message>
+              ) : user.posts?.length === 0 ? (
+                <Message>There are no posts yet</Message>
+              ) : (
+                user.posts?.map((value) => (
+                  <Post
+                    key={value.id}
+                    id={value.id}
+                    username={value.username}
+                    userId={value.user_id}
+                    image={value.image}
+                    link={value.link}
+                    description={value.description}
+                    likes={value.likes}
+                    hashtags={value.hashtags}
+                  />
+                ))
+              )}
+            </PostsSection>
+          </TimelineContainer>
+          <TrendSideBar />
         </PageContent>
       </MainWrapper>
     </Overlap>
@@ -101,8 +101,7 @@ const MainWrapper = styled.main`
 const UserTitle = styled(TimelineTitle)`
   display: flex;
   align-items: center;
-  margin-top: 40px;
-  margin-bottom: 48px;
+  margin-bottom: 41px;
   img {
     width: 50px;
     height: 50px;
@@ -110,7 +109,7 @@ const UserTitle = styled(TimelineTitle)`
     margin-left: 20px;
     margin-right: 18px;
   }
-  @media screen and (${device.laptop}) {
+  @media screen and (${device.tablet}) {
     margin-top: 10px;
     margin-bottom: 20px;
     img {
@@ -128,5 +127,6 @@ const Overlap = styled.div`
   z-index: 10;
 `;
 const PageContent = styled.div`
-display: flex;
-`
+  display: flex;
+  min-height: calc(100vh - 72px);
+`;
