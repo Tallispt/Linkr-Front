@@ -32,6 +32,7 @@ export default function Post({
   const [likeCount, setLikeCount] = useState(likes.length);
   const [disabled, setDisabled] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  console.log(metadata);
 
   const userLiked = likes.filter((like) => like === user.username).length;
   useEffect(() => {
@@ -40,6 +41,7 @@ export default function Post({
     }
     return async function getMetadata() {
       const { data } = await mql(link, { meta: "true" });
+      console.log(data);
       setMetadata(data);
     };
   }, [link, userLiked]);
