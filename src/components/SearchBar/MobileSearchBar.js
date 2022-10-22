@@ -6,7 +6,7 @@ import { useState } from "react";
 import { getUsersBySearch } from "../../services/linkr";
 import { Link } from "react-router-dom";
 
-export function MobileSearchBar({ placeholder }) {
+export function MobileSearchBar() {
   const [wordEntered, setWordEntered] = useState("");
   const [search, setSearch] = useState([]);
 
@@ -27,7 +27,7 @@ export function MobileSearchBar({ placeholder }) {
       <SearchInputs length={search.length}>
         <DebounceInput
           type="text"
-          placeholder={placeholder}
+          placeholder="Search for people and friends"
           minLength={3}
           value={wordEntered}
           debounceTimeout={350}

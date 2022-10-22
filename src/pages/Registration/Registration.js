@@ -39,18 +39,15 @@ const Registration = () => {
     }
 
     try {
-      
       await signUp(dataUser);
 
       toast.success("Account created successfully!!");
 
       navigate("/");
-
     } catch (error) {
-      
       const { response } = error;
 
-      console.log(error)
+      console.log(error);
 
       if (response.data.message === "Usuário já cadastrado!") {
         toast.warn("Email entered already registered!");
@@ -59,9 +56,8 @@ const Registration = () => {
       }
 
       setLoading(false);
-
     }
-}
+  }
 
   return (
     <>

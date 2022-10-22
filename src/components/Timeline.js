@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 import styled from "styled-components";
+import { device } from "../common/breakpoint";
 import { getTimeline } from "../services/linkr";
 import DeleteModal from "./DeleteModal";
 import Post from "./Post";
@@ -92,7 +93,7 @@ export const TimelineContainer = styled.section`
   width: 611px;
   margin-bottom: 20px;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     width: 100vw;
   }
 `;
@@ -103,7 +104,7 @@ export const TimelineTitle = styled.h1`
   font-weight: 700;
   color: #ffffff;
   font-size: 43px;
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     font-size: 33px;
     padding-left: 17px;
   }
@@ -116,7 +117,7 @@ export const PostsSection = styled.section`
   flex-direction: column;
   align-items: center;
   // row-gap: 16px;
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.laptop}) {
     margin-top: 16px;
   }
 `;
