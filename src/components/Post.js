@@ -78,6 +78,7 @@ export default function Post({
         <LikeWrapper>
           {like ? (
             <AiFillHeart
+              cursor="pointer"
               size={30}
               color="#AC0000"
               onClick={() => {
@@ -87,6 +88,7 @@ export default function Post({
             />
           ) : (
             <AiOutlineHeart
+              cursor="pointer"
               size={30}
               onClick={() => {
                 LikeOrDislikePost("like");
