@@ -62,6 +62,7 @@ export function Timeline() {
               image={value.image}
               link={value.link}
               description={value.description}
+              hashtags={value.hashtags}
               likes={value.likes}
               refresh={refresh}
               setRefresh={setRefresh}

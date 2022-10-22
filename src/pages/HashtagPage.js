@@ -2,37 +2,37 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 import styled from "styled-components";
-import { device } from "../common/breakpoint";
 import { Header } from "../components/Header";
 import Post from "../components/Post";
 import { MobileSearchBar } from "../components/SearchBar/MobileSearchBar";
-import TrendSideBar from "../components/TrendSideBar";
 import {
   Message,
   PostsSection,
   TimelineContainer,
   TimelineTitle,
 } from "../components/Timeline";
-import { getUserPosts } from "../services/linkr";
+import { getHashtagsPosts } from "../services/linkr";
+import TrendSideBar from "../components/TrendSideBar";
 
-export default function UserPage() {
-  const [user, setUser] = useState({});
+
+export default function HashtagPage() {
+  const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
 
-  const { id } = useParams();
+  const { hashtag } = useParams();
 
-  const [alterIcon, setAlterIcon] = useState(false);
+  const [ alterIcon, setAlterIcon ] = useState(false);
 
   function handleIcon() {
-    if (alterIcon === true) setAlterIcon(false);
+    if(alterIcon === true) setAlterIcon(false);
   }
 
   useEffect(() => {
     setLoader(true);
-    getUserPosts(id)
+    getHashtagsPosts(hashtag)
       .then((res) => {
-        setUser(res.data);
+        setPosts(res.data);
         setLoader(false);
       })
       .catch((err) => {
@@ -42,19 +42,18 @@ export default function UserPage() {
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
-  }, [id]);
-
+  }, [hashtag]);
+ 
   return (
     <Overlap onClick={handleIcon}>
-      <MainWrapper>
+        <MainWrapper>
         <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
         <MobileSearchBar />
         <PageContent>
         <TimelineContainer>
-          <UserTitle>
-            <img src={user.image} alt="" />
-            <span>{user.username}'s posts</span>
-          </UserTitle>
+          <HashtagTitle>
+            <span>{"#"+hashtag}</span>
+          </HashtagTitle>
           <PostsSection>
             {loader ? (
               <>
@@ -68,10 +67,10 @@ export default function UserPage() {
               </>
             ) : error ? (
               <Message>{error}</Message>
-            ) : user.posts?.length === 0 ? (
+            ) : posts?.length === 0 ? (
               <Message>There are no posts yet</Message>
             ) : (
-              user.posts?.map((value) => (
+              posts?.map((value) => (
                 <Post
                   key={value.id}
                   id={value.id}
@@ -98,7 +97,7 @@ const MainWrapper = styled.main`
   margin-top: 72px;
 `;
 
-const UserTitle = styled(TimelineTitle)`
+const HashtagTitle = styled(TimelineTitle)`
   display: flex;
   align-items: center;
   margin-top: 40px;
@@ -110,7 +109,7 @@ const UserTitle = styled(TimelineTitle)`
     margin-left: 20px;
     margin-right: 18px;
   }
-  @media screen and (${device.laptop}) {
+  @media screen and (max-width: 600px) {
     margin-top: 10px;
     margin-bottom: 20px;
     img {
@@ -123,7 +122,7 @@ const UserTitle = styled(TimelineTitle)`
 `;
 
 const Overlap = styled.div`
-  min-height: calc(100vh - 72px);
+  min-height: 100vh;
 
   z-index: 10;
 `;
