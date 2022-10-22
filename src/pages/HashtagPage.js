@@ -14,7 +14,6 @@ import {
 import { getHashtagsPosts } from "../services/linkr";
 import TrendSideBar from "../components/TrendSideBar";
 
-
 export default function HashtagPage() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
@@ -22,10 +21,10 @@ export default function HashtagPage() {
 
   const { hashtag } = useParams();
 
-  const [ alterIcon, setAlterIcon ] = useState(false);
+  const [alterIcon, setAlterIcon] = useState(false);
 
   function handleIcon() {
-    if(alterIcon === true) setAlterIcon(false);
+    if (alterIcon === true) setAlterIcon(false);
   }
 
   useEffect(() => {
@@ -43,50 +42,50 @@ export default function HashtagPage() {
         );
       });
   }, [hashtag]);
- 
+
   return (
     <Overlap onClick={handleIcon}>
-        <MainWrapper>
+      <MainWrapper>
         <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
         <MobileSearchBar />
         <PageContent>
-        <TimelineContainer>
-          <HashtagTitle>
-            <span>{"#"+hashtag}</span>
-          </HashtagTitle>
-          <PostsSection>
-            {loader ? (
-              <>
-                <HashLoader
-                  color="#ffffff"
-                  loading={loader}
-                  cssOverride={true}
-                  size={50}
-                />
-                <Message>Loading</Message>
-              </>
-            ) : error ? (
-              <Message>{error}</Message>
-            ) : posts?.length === 0 ? (
-              <Message>There are no posts yet</Message>
-            ) : (
-              posts?.map((value) => (
-                <Post
-                  key={value.id}
-                  id={value.id}
-                  username={value.username}
-                  userId={value.user_id}
-                  image={value.image}
-                  link={value.link}
-                  description={value.description}
-                  likes={value.likes}
-                  hashtags={value.hashtags}
-                />
-              ))
-            )}
-          </PostsSection>
-        </TimelineContainer>
-        <TrendSideBar/>
+          <TimelineContainer>
+            <HashtagTitle>
+              <span>{"#" + hashtag}</span>
+            </HashtagTitle>
+            <PostsSection>
+              {loader ? (
+                <>
+                  <HashLoader
+                    color="#ffffff"
+                    loading={loader}
+                    cssOverride={true}
+                    size={50}
+                  />
+                  <Message>Loading</Message>
+                </>
+              ) : error ? (
+                <Message>{error}</Message>
+              ) : posts?.length === 0 ? (
+                <Message>There are no posts yet</Message>
+              ) : (
+                posts?.map((value) => (
+                  <Post
+                    key={value.id}
+                    id={value.id}
+                    username={value.username}
+                    userId={value.user_id}
+                    image={value.image}
+                    link={value.link}
+                    description={value.description}
+                    likes={value.likes}
+                    hashtags={value.hashtags}
+                  />
+                ))
+              )}
+            </PostsSection>
+          </TimelineContainer>
+          <TrendSideBar />
         </PageContent>
       </MainWrapper>
     </Overlap>
@@ -100,32 +99,19 @@ const MainWrapper = styled.main`
 const HashtagTitle = styled(TimelineTitle)`
   display: flex;
   align-items: center;
-  margin-top: 40px;
   margin-bottom: 48px;
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-left: 20px;
-    margin-right: 18px;
-  }
   @media screen and (max-width: 600px) {
     margin-top: 10px;
     margin-bottom: 20px;
-    img {
-      width: 40px;
-      height: 40px;
-      margin-left: 0;
-      margin-right: 14px;
-    }
   }
 `;
 
 const Overlap = styled.div`
-  min-height: 100vh;
+  min-height: calc(100vh - 72px);
 
   z-index: 10;
 `;
 const PageContent = styled.div`
-display: flex;
-`
+  display: flex;
+  min-height: calc(100vh - 72px);
+`;

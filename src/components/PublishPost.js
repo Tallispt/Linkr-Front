@@ -87,7 +87,7 @@ export function PublishPost({ refresh, setRefresh }) {
 
 const Container = styled.section`
   font-family: "Lato";
-  margin-top: 20px;
+  margin-top: 43px;
   background-color: #ffffff;
   border-radius: 16px;
   margin-inline: auto;
