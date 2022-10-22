@@ -1,185 +1,190 @@
 import styled from "styled-components";
 
 export const Form = styled.form`
+  align-items: center;
+
+  background-color: #333333;
+
+  display: flex;
+
+  flex-direction: column;
+
+  height: 100vh;
+
+  width: 40%;
+
+  .field:nth-child(1) {
+    margin-top: 35%;
+  }
+
+  .field,
+  .btn {
     align-items: center;
 
-    background-color: #333333;
-
     display: flex;
 
-    flex-direction: column;
+    justify-content: center;
 
-    height: 100vh;
+    width: 100%;
+  }
 
-    width: 40%;
+  .field input,
+  .btn button {
+    border: none;
 
-    .field:nth-child(1) {
-        margin-top: 26%;
-    }
+    border-radius: 6px;
 
-    .field, .btn {
-        align-items: center;
+    font-family: "Oswald";
 
-        display: flex;
+    font-size: 27px;
 
-        justify-content: center;
+    height: 65px;
 
-        width: 100%;
-    }
+    width: 80%;
 
-    .field input, .btn button {
-        border: none;
+    font-weight: 700;
+  }
 
-        border-radius: 6px;
+  .field input {
+    background-color: #ffffff;
 
-        font-family: "Oswald";
+    color: #9f9f9f;
 
-        font-size: 27px;
+    margin-bottom: 13px;
 
-        height: 65px;
+    padding-left: 17px;
+  }
 
-        width: 80%;
-    }
+  .btn button {
+    background-color: #1877f2;
 
-    .field input {
-        background-color: #FFFFFF;
+    color: #ffffff;
+  }
 
-        color: #9F9F9F;
+  .message {
+    margin-top: 22px;
+  }
+  .message a {
+    color: #ffffff;
 
-        margin-bottom: 13px;
+    font-size: 22px;
 
-        padding-left: 17px;
-    }
+    text-decoration: underline;
+  }
 
-    .btn button {
-        background-color: #1877F2;
+  // Campos desabilitados
+  .disabled {
+    opacity: 0.7;
+  }
 
-        color: #FFFFFF;
-    }
+  .disabled_button {
+    opacity: 0.7;
+  }
 
-    .message {
-        margin-top: 22px;
-    }
-    .message a {
-        color: #FFFFFF;
+  @media screen and (max-width: 900px) {
+    height: 70vh;
 
-        font-size: 22px;
-
-        text-decoration: underline;
-    }
-
-    // Campos desabilitados
-    .disabled {
-        opacity: 0.7;
-    }
-
-    .disabled_button {
-        opacity: 0.7;
-    }
-
-    @media screen and (max-width: 900px) {
-        height: 70vh;
-
-        justify-content: flex-start;
-
-        width: 100%;
-
-        .field:nth-child(1) {
-            margin-top: 8%;
-        }
-
-        .field input, .btn button {
-            font-size: 22px;
-
-            height: 55px;
-
-            width: 80%;
-        }
-
-        .message {
-            margin-top: 21px;
-        }
-
-        .message a {
-            font-size: 17px;
-        }
-    }
-`;
-
-export const Container = styled.div`
-    display: flex;
-
-    height: 100vh;
+    justify-content: flex-start;
 
     width: 100%;
 
-    @media screen and (max-width: 900px) {
-        flex-direction: column
+    .field:nth-child(1) {
+      margin-top: 8%;
     }
+
+    .field input,
+    .btn button {
+      font-size: 22px;
+
+      height: 55px;
+
+      width: 80%;
+    }
+
+    .message {
+      margin-top: 21px;
+    }
+
+    .message a {
+      font-size: 17px;
+    }
+  }
+`;
+
+export const Container = styled.div`
+  display: flex;
+
+  height: 100vh;
+
+  width: 100%;
+
+  @media screen and (max-width: 900px) {
+    flex-direction: column;
+  }
 `;
 
 export const Content = styled.div`
-    align-items: center;
+  align-items: center;
 
-    background-color: #151515;
+  background-color: #151515;
 
-    display: flex;
+  display: flex;
 
-    flex-direction: column;
+  flex-direction: column;
 
-    height: 100%;
+  height: 100%;
 
-    width: 60%;
+  width: 60%;
+
+  .text {
+    margin-top: 24%;
+
+    width: 80%;
+  }
+
+  .text h1 {
+    color: #ffffff;
+
+    font-family: "Passion One";
+
+    font-size: 106px;
+  }
+
+  .text p {
+    color: #ffffff;
+
+    font-family: "Oswald";
+
+    font-size: 43px;
+
+    font-weight: 700;
+  }
+
+  @media screen and (max-width: 900px) {
+    height: 30vh;
+
+    justify-content: center;
+
+    width: 100%;
 
     .text {
-        margin-top: 18%;
+      line-height: 34px;
 
-        width: 80%;
+      margin-top: 5%;
+
+      text-align: center;
+
+      width: auto;
     }
 
     .text h1 {
-        color: #FFFFFF;
+      font-size: 76px;
 
-        font-family: "Passion One";
-
-        font-size: 106px;
+      padding-bottom: 12px;
     }
 
     .text p {
-        color: #FFFFFF;
-
-        font-family: "Oswald";
-
-        font-size: 43px;
-
-        font-weight: 700;
+      font-size: 23px;
     }
-
-    @media screen and (max-width: 900px) {
-        height: 30vh;
-
-        justify-content: center;
-
-        width: 100%;
-
-        .text {
-            line-height: 34px;
-
-            margin-top: 5%;
-
-            text-align: center;
-
-            width: auto;
-        }
-
-        .text h1 {
-            font-size: 76px;
-
-            padding-bottom: 12px;
-        }
-
-        .text p {
-            font-size: 23px;
-        }
-    }
+  }
 `;
