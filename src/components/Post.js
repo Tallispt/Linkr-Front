@@ -9,6 +9,7 @@ import { ReactTagify } from "react-tagify";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import EditableInput from "./EditableInput";
 import { dislikePost, likePost } from "../services/linkr";
+import { device } from "../common/breakpoint";
 
 export default function Post({
   id,
@@ -156,13 +157,19 @@ export default function Post({
             <h2>{username}</h2>
           </Link>
           <span>
-            <TiPencil onClick={() => setIsEditing(!isEditing)} />
-            <RiDeleteBin7Fill
-              onClick={() => {
-                setIsModalVisible(!isModalVisible);
-                setPostIdDelete(id);
-              }}
-            />
+            {user.username === username ? (
+              <>
+                <TiPencil onClick={() => setIsEditing(!isEditing)} />
+                <RiDeleteBin7Fill
+                  onClick={() => {
+                    setIsModalVisible(!isModalVisible);
+                    setPostIdDelete(id);
+                  }}
+                />
+              </>
+            ) : (
+              <></>
+            )}
           </span>
         </TopWrapper>
         {!isEditing ? (
@@ -205,7 +212,7 @@ const Container = styled.div`
   .tooltip {
     font-weight: 700;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.tablet}) {
     min-height: 200px;
     border-radius: 0;
     padding: 9px 18px 15px 15px;
@@ -221,7 +228,7 @@ const LeftWrapper = styled.div`
     border-radius: 50%;
     margin-bottom: 19px;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.tablet}) {
     width: 40px;
     img {
       width: 40px;
@@ -242,8 +249,9 @@ const LikeWrapper = styled.div`
   }
   p {
     font-size: 11px;
+    cursor: pointer;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.tablet}) {
     svg {
       font-size: 17px;
       margin-bottom: 12px;
@@ -290,7 +298,7 @@ const ContentWrapper = styled.div`
     text-overflow: ellipsis;
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.tablet}) {
     margin-left: 14px;
     width: calc(100% - 40px);
     p {
@@ -331,7 +339,7 @@ const TopWrapper = styled.span`
     cursor: pointer;
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.tablet}) {
     h2 {
       font-size: 17px;
     }
@@ -362,7 +370,7 @@ const MetadataWrapper = styled.a`
     justify-content: space-between;
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.tablet}) {
     width: 100%;
     padding: 8px 122px 8px 11px;
     /* min-height: 115px; */
@@ -388,7 +396,7 @@ const ImageContainer = styled.div`
   height: calc(100% + 2px);
   border-radius: 0px 11px 11px 0px;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (${device.tablet}) {
     width: 40%;
     height: calc(100% + 2px);
   }

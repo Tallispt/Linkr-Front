@@ -121,7 +121,7 @@ const Title = styled.h1`
   text-align: left;
   color: #707070;
   margin-bottom: 10px;
-  margin-left: 55px;
+  margin-left: 60px;
   font-size: 20px;
 
   @media screen and (max-width: 600px) {
