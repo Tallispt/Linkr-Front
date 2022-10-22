@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import mql from "@microlink/mql";
 import { Link } from "react-router-dom";
+import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
-import { RiDeleteBin7Fill } from "react-icons/ri"
+import { RiDeleteBin7Fill } from "react-icons/ri";
 import { ReactTagify } from "react-tagify";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import EditableInput from "./EditableInput";
@@ -21,7 +22,7 @@ export default function Post({
   setRefresh,
   isModalVisible,
   setIsModalVisible,
-  setPostIdDelete
+  setPostIdDelete,
 }) {
   const user = JSON.parse(localStorage.getItem("linkr"));
 
@@ -46,6 +47,36 @@ export default function Post({
 
     [link, userLiked]
   );
+
+  let tooltip;
+
+  switch (true) {
+    case likeCount === 0:
+      tooltip = "Nobody has ";
+      break;
+    case like && likeCount === 1:
+      tooltip = "You ";
+      break;
+    case like && likeCount > 1:
+      tooltip = `You, ${likes[0] === user.username ? likes[1] : likes[0]} `;
+      break;
+    case !like && likeCount === 1:
+      tooltip = `${likes[0]} `;
+      break;
+    case !like && likeCount > 1:
+      tooltip = `${likes[0]}, ${likes[1]} `;
+      break;
+    default:
+      return;
+  }
+
+  tooltip +=
+    likeCount > 2
+      ? likeCount > 3
+        ? `and ${likeCount - 2} other people `
+        : "and 1 other person "
+      : "";
+  tooltip += "liked this post";
 
   const tagStyle = {
     color: "#ffffff",
@@ -103,8 +134,19 @@ export default function Post({
               }}
             />
           )}
-          <p>{likes.length > 1 ? `${likeCount} likes` : `${likeCount} like`}</p>
+          <p data-for="like" data-tip={tooltip}>
+            {likes.length > 1 ? `${likeCount} likes` : `${likeCount} like`}
+          </p>
         </LikeWrapper>
+        <ReactTooltip
+          id="like"
+          place="bottom"
+          type="light"
+          effect="solid"
+          textColor="#505050"
+          multiline={true}
+          className="tooltip"
+        />
       </LeftWrapper>
       <ContentWrapper>
         <TopWrapper>
@@ -113,27 +155,28 @@ export default function Post({
           </Link>
           <span>
             <TiPencil onClick={() => setIsEditing(!isEditing)} />
-            <RiDeleteBin7Fill onClick={() => {
-              setIsModalVisible(!isModalVisible)
-              setPostIdDelete(id)
-            }} />
+            <RiDeleteBin7Fill
+              onClick={() => {
+                setIsModalVisible(!isModalVisible);
+                setPostIdDelete(id);
+              }}
+            />
           </span>
         </TopWrapper>
-        {
-          !isEditing
-            ? <ReactTagify tagStyle={tagStyle}>
-              <p>{description}</p>
-            </ReactTagify>
-            : <EditableInput
-              id={id}
-              setIsEditing={setIsEditing}
-              isEditing={isEditing}
-              description={description}
-              refresh={refresh}
-              setRefresh={setRefresh}
-            />
-
-        }
+        {!isEditing ? (
+          <ReactTagify tagStyle={tagStyle}>
+            <p>{description}</p>
+          </ReactTagify>
+        ) : (
+          <EditableInput
+            id={id}
+            setIsEditing={setIsEditing}
+            isEditing={isEditing}
+            description={description}
+            refresh={refresh}
+            setRefresh={setRefresh}
+          />
+        )}
         <MetadataWrapper href={link} target="_blank" rel="noreferrer">
           <div>
             <h1>{metadata.title}</h1>
@@ -157,6 +200,9 @@ const Container = styled.div`
   background-color: #171717;
   border-radius: 16px;
   margin-bottom: 16px;
+  .tooltip {
+    font-weight: 700;
+  }
   @media screen and (max-width: 600px) {
     min-height: 200px;
     border-radius: 0;
@@ -222,30 +268,6 @@ const ContentWrapper = styled.div`
     font-size: 17px;
     color: #b7b7b7;
   }
-  /* a:nth-child(3) {
-    margin-top: 13px;
-    max-width: 503px;
-    min-height: 155px;
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid #4d4d4d;
-    border-radius: 11px;
-    padding: 25px 182px 23px 19px;
-    position: relative;
-
-    span {
-      font-size: 11px;
-      color: #9b9595;
-      height: 50px;
-      width: 60%;
-    }
-
-    div {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-  } */
   img {
     object-fit: cover;
     height: 100%;
@@ -297,7 +319,7 @@ const TopWrapper = styled.span`
     color: #ffffff;
     margin-bottom: 8px;
   }
-  
+
   span {
     display: flex;
     gap: 0.5rem;
@@ -311,62 +333,61 @@ const TopWrapper = styled.span`
     h2 {
       font-size: 17px;
     }
-    
   }
-`
+`;
 
 const MetadataWrapper = styled.a`
-    margin-top: 13px;
-    max-width: 503px;
-    min-height: 155px;
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid #4d4d4d;
-    border-radius: 11px;
-    padding: 25px 182px 23px 19px;
-    position: relative;
+  margin-top: 13px;
+  max-width: 503px;
+  min-height: 155px;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #4d4d4d;
+  border-radius: 11px;
+  padding: 25px 182px 23px 19px;
+  position: relative;
 
-    span {
-      font-size: 11px;
-      color: #9b9595;
-      height: 50px;
-      width: 60%;
-    }
-    
-    div {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    @media screen and (max-width: 600px) {
-      width: 100%;
-      padding: 8px 122px 8px 11px;
-      /* min-height: 115px; */
-      span {
-        font-size: 9px;
-        height: 60px;
-        max-width: 150px;
-        min-width: 110px;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+  span {
+    font-size: 11px;
+    color: #9b9595;
+    height: 50px;
+    width: 60%;
   }
-`
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+    padding: 8px 122px 8px 11px;
+    /* min-height: 115px; */
+    span {
+      font-size: 9px;
+      height: 60px;
+      max-width: 150px;
+      min-width: 110px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+`;
 
 const ImageContainer = styled.div`
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    width: 155px;
-    height: calc(100% + 2px);
-    border-radius: 0px 11px 11px 0px;
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 155px;
+  height: calc(100% + 2px);
+  border-radius: 0px 11px 11px 0px;
 
-    @media screen and (max-width: 600px) {
-      width: 40%;
-      height: calc(100% + 2px);
-    }
-`
+  @media screen and (max-width: 600px) {
+    width: 40%;
+    height: calc(100% + 2px);
+  }
+`;
