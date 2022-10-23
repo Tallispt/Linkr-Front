@@ -20,7 +20,6 @@ export default function UserPage() {
   const [user, setUser] = useState({});
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
-
   const [refresh, setRefresh] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postIdDelete, setPostIdDelete] = useState();
@@ -55,7 +54,7 @@ export default function UserPage() {
         <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
         <MobileSearchBar />
         <PageContent>
-          <TimelineContainer>
+          <TimelineContainer isModalVisible={isModalVisible}>
             <UserTitle>
               <img src={user.image} alt="" />
               <span>{user.username}'s posts</span>
