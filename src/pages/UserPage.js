@@ -14,11 +14,16 @@ import {
   TimelineTitle,
 } from "../components/Timeline";
 import { getUserPosts } from "../services/linkr";
+import DeleteModal from "../components/DeleteModal";
 
 export default function UserPage() {
   const [user, setUser] = useState({});
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
+
+  const [refresh, setRefresh] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [postIdDelete, setPostIdDelete] = useState();
 
   const { id } = useParams();
 
@@ -42,7 +47,7 @@ export default function UserPage() {
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
-  }, [id]);
+  }, [id, refresh]);
 
   return (
     <Overlap onClick={handleIcon}>
@@ -82,10 +87,27 @@ export default function UserPage() {
                     description={value.description}
                     likes={value.likes}
                     hashtags={value.hashtags}
+                    refresh={refresh}
+                    setRefresh={setRefresh}
+                    isModalVisible={isModalVisible}
+                    setIsModalVisible={setIsModalVisible}
+                    setPostIdDelete={setPostIdDelete}
                   />
                 ))
               )}
             </PostsSection>
+            {isModalVisible ? (
+              <DeleteModal
+                isModalVisible={isModalVisible}
+                setIsModalVisible={setIsModalVisible}
+                postIdDelete={postIdDelete}
+                setPostIdDelete={setPostIdDelete}
+                refresh={refresh}
+                setRefresh={setRefresh}
+              />
+            ) : (
+              <></>
+            )}
           </TimelineContainer>
           <TrendSideBar />
         </PageContent>
