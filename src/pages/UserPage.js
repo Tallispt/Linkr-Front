@@ -24,10 +24,6 @@ export default function UserPage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postIdDelete, setPostIdDelete] = useState();
 
-  const [refresh, setRefresh] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [postIdDelete, setPostIdDelete] = useState();
-
   const { id } = useParams();
 
   const [alterIcon, setAlterIcon] = useState(false);

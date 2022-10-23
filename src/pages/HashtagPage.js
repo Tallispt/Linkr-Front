@@ -13,11 +13,15 @@ import {
 } from "../components/Timeline";
 import { getHashtagsPosts } from "../services/linkr";
 import TrendSideBar from "../components/TrendSideBar";
+import DeleteModal from "../components/DeleteModal";
 
 export default function HashtagPage() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [postIdDelete, setPostIdDelete] = useState();
 
   const { hashtag } = useParams();
 
@@ -41,7 +45,7 @@ export default function HashtagPage() {
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
-  }, [hashtag]);
+  }, [hashtag, refresh]);
 
   return (
     <Overlap onClick={handleIcon}>
@@ -49,7 +53,7 @@ export default function HashtagPage() {
         <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
         <MobileSearchBar />
         <PageContent>
-          <TimelineContainer>
+          <TimelineContainer isModalVisible={isModalVisible}>
             <HashtagTitle>
               <span>{"#" + hashtag}</span>
             </HashtagTitle>
@@ -80,10 +84,27 @@ export default function HashtagPage() {
                     description={value.description}
                     likes={value.likes}
                     hashtags={value.hashtags}
+                    refresh={refresh}
+                    setRefresh={setRefresh}
+                    isModalVisible={isModalVisible}
+                    setIsModalVisible={setIsModalVisible}
+                    setPostIdDelete={setPostIdDelete}
                   />
                 ))
               )}
             </PostsSection>
+            {isModalVisible ? (
+              <DeleteModal
+                isModalVisible={isModalVisible}
+                setIsModalVisible={setIsModalVisible}
+                postIdDelete={postIdDelete}
+                setPostIdDelete={setPostIdDelete}
+                refresh={refresh}
+                setRefresh={setRefresh}
+              />
+            ) : (
+              <></>
+            )}
           </TimelineContainer>
           <TrendSideBar />
         </PageContent>
