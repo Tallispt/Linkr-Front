@@ -12,8 +12,6 @@ export function Timeline() {
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  console.log(posts);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postIdDelete, setPostIdDelete] = useState();
 
