@@ -170,11 +170,11 @@ export default function Post({
           </span>
         </TopWrapper>
         {!isEditing ? (
-          <p>{description} {hashtags?.map((hashtag)=>(
+          <p>{description} {hashtags?.map((hashtag) => (
             <ReactTagify tagStyle={tagStyle}>
-           <Link to={`/hashtag/${hashtag}`}>
-             {`#${hashtag}`}
-             </Link>
+              <Link to={`/hashtag/${hashtag}`}>
+                {`#${hashtag}`}
+              </Link>
             </ReactTagify>))}</p>
         ) : (
           <EditableInput
