@@ -65,7 +65,7 @@ const DeleteModal = ({
 };
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   display: flex;
   background-color: #ffffff;
   color: #1877f2;
