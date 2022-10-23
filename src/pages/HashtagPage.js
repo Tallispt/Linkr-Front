@@ -53,7 +53,7 @@ export default function HashtagPage() {
         <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
         <MobileSearchBar />
         <PageContent>
-          <TimelineContainer isModalVisible={isModalVisible}>
+          <TimelineContainer>
             <HashtagTitle>
               <span>{"#" + hashtag}</span>
             </HashtagTitle>
