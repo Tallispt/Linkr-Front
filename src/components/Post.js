@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import mql from "@microlink/mql";
 import { Link } from "react-router-dom";
+// import Swal from 'sweetalert2';
 import ReactTooltip from "react-tooltip";
 import { TiPencil } from "react-icons/ti";
 import { RiDeleteBin7Fill } from "react-icons/ri";
@@ -24,7 +25,7 @@ export default function Post({
   setRefresh,
   isModalVisible,
   setIsModalVisible,
-  setPostIdDelete,
+  setPostIdDelete
 }) {
   const user = JSON.parse(localStorage.getItem("linkr"));
 
@@ -46,8 +47,20 @@ export default function Post({
     getMetadata();
   }, [link, userLiked]);
 
-  let tooltip;
+  // function handleModal() {
+  //   Swal.fire({
+  //     title: 'Are you sure you want to delete this post?',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#FFFFFF',
+  //     confirmButtonText: 'Yes, delete it',
+  //     cancelButtonColor: '#1877F2',
+  //     cancelButtonText: 'No, go back',
+  //     background: '#333333',
+  //     color: "#FFFFFF"
+  //   })
+  // }
 
+  let tooltip;
   switch (true) {
     case likeCount === 0:
       tooltip = "Nobody has ";
@@ -161,6 +174,7 @@ export default function Post({
                   onClick={() => {
                     setIsModalVisible(!isModalVisible);
                     setPostIdDelete(id);
+                    // handleModal()
                   }}
                 />
               </>

@@ -28,8 +28,8 @@ export default function TrendSideBar() {
         <h2>trending</h2>
       </div>
       <Hashtags>
-        {trends?.map((hashtag) => (
-          <ReactTagify tagStyle={tagStyle}>
+        {trends?.map((hashtag, index) => (
+          <ReactTagify key={index} tagStyle={tagStyle}>
             <Link to={`/hashtag/${hashtag.name}`}>{`#${hashtag.name}`}</Link>
           </ReactTagify>
         ))}
