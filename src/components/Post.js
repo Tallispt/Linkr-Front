@@ -82,6 +82,8 @@ export default function Post({
     cursor: "pointer",
   };
 
+  const descriptionWords = description.split(" ");
+
   async function LikeOrDislikePost(option) {
     if (option === "like" && disabled === false) {
       setDisabled(true);
@@ -170,12 +172,17 @@ export default function Post({
           </span>
         </TopWrapper>
         {!isEditing ? (
-          <p>{description} {hashtags?.map((hashtag) => (
-            <ReactTagify tagStyle={tagStyle}>
-              <Link to={`/hashtag/${hashtag}`}>
-                {`#${hashtag}`}
-              </Link>
-            </ReactTagify>))}</p>
+          <p>
+            {descriptionWords.map((word, i) => {
+              if (hashtags.includes(word.slice(1))) {
+                return (
+                  <ReactTagify key={i} tagStyle={tagStyle}>
+                    <Link to={`/hashtag/${word.slice(1)}`}>{`${word}`}</Link>
+                  </ReactTagify>
+                );
+              } else return <span key={i}>{`${word}`}</span>;
+            })}
+          </p>
         ) : (
           <EditableInput
             id={id}
