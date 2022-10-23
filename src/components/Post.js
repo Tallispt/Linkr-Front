@@ -180,7 +180,7 @@ export default function Post({
                     <Link to={`/hashtag/${word.slice(1)}`}>{`${word}`}</Link>
                   </ReactTagify>
                 );
-              } else return <span key={i}>{`${word}`}</span>;
+              } else return <span key={i}>{`${word} `}</span>;
             })}
           </p>
         ) : (
