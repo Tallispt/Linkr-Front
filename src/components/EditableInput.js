@@ -19,6 +19,12 @@ const EditableInput = ({
         }
     }, [isEditing,]);
 
+    function handleTextAreaHeight(event) {
+        event.target.style.height = 'inherit';
+        const height = event.target.scrollHeight
+        event.target.style.height = `${height}px`;
+    }
+
     async function handleKeyDown(event) {
         if (event.key === 'Enter') {
             if (inputText.trim() === "") return setIsEditing(!isEditing)
@@ -41,30 +47,34 @@ const EditableInput = ({
 
     return (
         <EditInput
-            type="text"
             ref={inputRef}
             value={inputText}
             onKeyDown={event => handleKeyDown(event)}
-            onChange={event => setInputText(event.target.value)}
-        />
+            onChange={event => {
+                setInputText(event.target.value)
+                handleTextAreaHeight(event)
+            }}
+            onFocus={event => handleTextAreaHeight(event)}
+            maxLength="500"
+        ></EditInput>
     )
 }
 
 const EditInput = styled.textarea`
     font-family: 'Lato';
-  background: #FFFFFF;
-  word-break: break-word;
-  border-radius: 7px;
-  border: none;
-  width: 100%;
-  min-height: fit-content;
-  height: auto;
-  padding: 8px 10px;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 17px;
-  color: #171717;
-  resize: none;
+    background: #FFFFFF;
+    border-radius: 7px;
+    border: none;
+    overflow: hidden;
+    resize: both;
+    max-width: 100%;
+    min-height: 30px;
+    padding: 8px 10px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 17px;
+    color: #171717;
+    resize: none;
 
   :focus {
     outline: none;
