@@ -96,7 +96,7 @@ export default function UserPage() {
                 ))
               )}
             </PostsSection>
-            {isModalVisible ? (
+            {/* {isModalVisible ? (
               <DeleteModal
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
@@ -107,7 +107,7 @@ export default function UserPage() {
               />
             ) : (
               <></>
-            )}
+            )} */}
           </TimelineContainer>
           <TrendSideBar />
         </PageContent>
