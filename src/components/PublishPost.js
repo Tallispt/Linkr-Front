@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
 import { device } from "../common/breakpoint";
+import UserContext from "../context/userContext";
 import { newPost } from "../services/linkr";
 
-export function PublishPost({ refresh, setRefresh }) {
+export function PublishPost() {
   const user = JSON.parse(localStorage.getItem("linkr"));
+  const { refresh, setRefresh } = useContext(UserContext)
 
   const [postBody, setPostBody] = useState({
     link: "",

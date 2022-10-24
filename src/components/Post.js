@@ -20,8 +20,6 @@ export default function Post({
   description,
   hashtags,
   likes,
-  refresh,
-  setRefresh,
   isModalVisible,
   setIsModalVisible,
   setPostIdDelete,
@@ -189,8 +187,6 @@ export default function Post({
             setIsEditing={setIsEditing}
             isEditing={isEditing}
             description={description}
-            refresh={refresh}
-            setRefresh={setRefresh}
           />
         )}
         <MetadataWrapper href={link} target="_blank" rel="noreferrer">

@@ -1,15 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../context/userContext";
 import { editPostDescription } from "../services/linkr";
 
 const EditableInput = ({
     id,
     isEditing,
     setIsEditing,
-    description,
-    setRefresh,
-    refresh
+    description
 }) => {
+    const { refresh, setRefresh } = useContext(UserContext)
     const [inputText, setInputText] = useState(description);
     const inputRef = useRef(null)
 

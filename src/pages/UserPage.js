@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 import styled from "styled-components";
@@ -15,14 +15,16 @@ import {
 } from "../components/Timeline";
 import { getUserPosts } from "../services/linkr";
 import DeleteModal from "../components/DeleteModal";
+import UserContext from "../context/userContext";
 
 export default function UserPage() {
   const [user, setUser] = useState({});
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
-  const [refresh, setRefresh] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postIdDelete, setPostIdDelete] = useState();
+
+  const { refresh } = useContext(UserContext)
 
   const { id } = useParams();
 
@@ -86,8 +88,6 @@ export default function UserPage() {
                     description={value.description}
                     likes={value.likes}
                     hashtags={value.hashtags}
-                    refresh={refresh}
-                    setRefresh={setRefresh}
                     isModalVisible={isModalVisible}
                     setIsModalVisible={setIsModalVisible}
                     setPostIdDelete={setPostIdDelete}
@@ -101,8 +101,6 @@ export default function UserPage() {
                 setIsModalVisible={setIsModalVisible}
                 postIdDelete={postIdDelete}
                 setPostIdDelete={setPostIdDelete}
-                refresh={refresh}
-                setRefresh={setRefresh}
               />
             ) : (
               <></>
