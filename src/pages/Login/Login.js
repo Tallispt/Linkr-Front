@@ -69,8 +69,8 @@ const Login = () => {
           <div className="text">
             <h1>linkr</h1>
             <p>
-              save, share and discoverb <br />
-              the best lins on the web
+              save, share and discover <br />
+              the best links on the web
             </p>
           </div>
         </Content>
