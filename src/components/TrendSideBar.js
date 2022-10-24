@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
 import { getTrends } from "../services/linkr";
 
@@ -16,12 +15,6 @@ export default function TrendSideBar() {
       });
   }, []);
 
-  const tagStyle = {
-    color: "#ffffff",
-    fontWeight: 700,
-    cursor: "pointer",
-  };
-
   return (
     <Sidebar>
       <div>
@@ -29,9 +22,10 @@ export default function TrendSideBar() {
       </div>
       <Hashtags>
         {trends?.map((hashtag, i) => (
-          <ReactTagify key={i} tagStyle={tagStyle}>
-            <Link to={`/hashtag/${hashtag.name}`}>{`#${hashtag.name}`}</Link>
-          </ReactTagify>
+          <Link
+            key={i}
+            to={`/hashtag/${hashtag.name}`}
+          >{`# ${hashtag.name}`}</Link>
         ))}
       </Hashtags>
     </Sidebar>
@@ -73,4 +67,10 @@ export const Hashtags = styled.div`
   padding: 20px;
   font-size: 20px;
   line-height: 28px;
+  row-gap: 3px;
+  a {
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+  }
 `;
