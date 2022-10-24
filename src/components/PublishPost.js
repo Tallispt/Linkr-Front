@@ -136,6 +136,8 @@ const Title = styled.h1`
   margin-bottom: 10px;
   margin-left: 60px;
   font-size: 20px;
+  font-weight: 300;
+
 
   @media screen and (${device.laptop}) {
     text-align: center;
