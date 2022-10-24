@@ -48,13 +48,21 @@ export function PublishPost({ refresh, setRefresh }) {
     setPostBody({ ...postBody, [e.target.name]: value });
   }
 
+  function handleDescriptionSize(e) {
+    const height = e.target.scrollHeight
+    e.target.style.height = `${height}px`;
+  }
+
   return (
     <Container>
       <ContentBox>
         <Title>What are you going to share today?</Title>
         <Box>
           <Image src={user.image} alt="Profile image" />
-          <Form onSubmit={sendForm}>
+          <Form onSubmit={e => {
+            sendForm(e)
+            e.target.children[1].style.height = '66px'
+          }}>
             <input
               disabled={loading}
               type="text"
@@ -64,13 +72,17 @@ export function PublishPost({ refresh, setRefresh }) {
               placeholder="http://"
               required
             />
-            <input
+            <Input
               disabled={loading}
               type="text"
               name="description"
               value={postBody.description}
-              onChange={handleInput}
+              onChange={e => {
+                handleInput(e)
+                handleDescriptionSize(e)
+              }}
               placeholder="Awesome article about #javascript"
+              maxLength="500"
             />
             {error.isError ? <h4>{error.message}</h4> : <></>}
             <Wrap>
@@ -158,10 +170,11 @@ const Form = styled.form`
     padding-left: 8px;
   }
 
-  input:nth-child(2) {
-    margin-top: 5px;
-    height: 67px;
-  }
+  input::placeholder{
+      font-family: 'Lato';
+      font-weight: 300;
+      color: #949494;
+    }
 
   h4 {
     font-size: 15px;
@@ -170,12 +183,6 @@ const Form = styled.form`
     margin-top: 8px;
     margin-bottom: 10px;
     text-align: center;
-  }
-
-  @media screen and (${device.laptop}) {
-    input:nth-child(2) {
-      height: 57px;
-    }
   }
 `;
 
@@ -203,3 +210,26 @@ const Button = styled.button`
     height: 22px;
   }
 `;
+
+const Input = styled.textarea`
+    font-family: 'Lato';
+    overflow: hidden;
+    resize: none;
+    margin-top: 5px;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #efefef;
+    height: 66px;
+    padding: 8px;
+
+    ::placeholder{
+      font-family: 'Lato';
+      font-weight: 300;
+      color: #949494;
+    }
+
+    @media screen and (${device.laptop}) {
+      height: 57px;
+  }
+`
