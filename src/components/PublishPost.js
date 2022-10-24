@@ -85,6 +85,9 @@ export function PublishPost() {
               }}
               placeholder="Awesome article about #javascript"
               maxLength="500"
+              onKeyDown={e => {
+                if (e.key === 'Enter') sendForm(e)
+              }}
             />
             {error.isError ? <h4>{error.message}</h4> : <></>}
             <Wrap>
