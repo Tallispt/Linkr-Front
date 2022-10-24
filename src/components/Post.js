@@ -272,6 +272,7 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  word-break: break-word;
   h2 {
     font-size: 19px;
     color: #ffffff;
@@ -293,8 +294,9 @@ const ContentWrapper = styled.div`
   h4 {
     font-size: 11px;
     color: #cecece;
-    margin-top: 13px;
-    width: 60%;
+    margin-top: 12px;
+    width: 100%;
+    height: 12px;
     max-width: 200px;
     white-space: nowrap;
     overflow: hidden;
@@ -364,7 +366,12 @@ const MetadataWrapper = styled.a`
     font-size: 11px;
     color: #9b9595;
     height: 50px;
-    width: 60%;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   div {
@@ -377,6 +384,9 @@ const MetadataWrapper = styled.a`
     width: 100%;
     padding: 8px 122px 8px 11px;
     /* min-height: 115px; */
+    div:first-child {
+      width: 60%;
+    }
     span {
       font-size: 9px;
       height: 60px;
