@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { HashLoader } from "react-spinners";
 import styled from "styled-components";
 import { device } from "../common/breakpoint";
+import UserContext from "../context/userContext";
 import { getTimeline } from "../services/linkr";
 import DeleteModal from "./DeleteModal";
 import Post from "./Post";
@@ -11,9 +12,9 @@ export function Timeline() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
-  const [refresh, setRefresh] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postIdDelete, setPostIdDelete] = useState();
+  const { refresh } = useContext(UserContext)
 
   useEffect(() => {
     setLoader(true);
@@ -34,7 +35,7 @@ export function Timeline() {
   return (
     <TimelineContainer isModalVisible={isModalVisible}>
       <TimelineTitle>timeline</TimelineTitle>
-      <PublishPost refresh={refresh} setRefresh={setRefresh} />
+      <PublishPost />
       <PostsSection>
         {loader ? (
           <>
@@ -62,8 +63,6 @@ export function Timeline() {
               description={value.description}
               hashtags={value.hashtags}
               likes={value.likes}
-              refresh={refresh}
-              setRefresh={setRefresh}
               isModalVisible={isModalVisible}
               setIsModalVisible={setIsModalVisible}
               setPostIdDelete={setPostIdDelete}
@@ -77,8 +76,6 @@ export function Timeline() {
           setIsModalVisible={setIsModalVisible}
           postIdDelete={postIdDelete}
           setPostIdDelete={setPostIdDelete}
-          refresh={refresh}
-          setRefresh={setRefresh}
         />
       ) : (
         <></>

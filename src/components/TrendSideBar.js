@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import UserContext from "../context/userContext";
 import { getTrends } from "../services/linkr";
 
 export default function TrendSideBar() {
+  const { refresh } = useContext(UserContext)
+
   const [trends, setTrends] = useState([]);
   useEffect(() => {
     getTrends()
@@ -13,7 +16,7 @@ export default function TrendSideBar() {
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  }, [refresh]);
 
   return (
     <Sidebar>

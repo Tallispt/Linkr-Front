@@ -17,6 +17,7 @@ import UserContext from "../context/userContext";
 import PrivatePage from "./PrivatePage";
 
 function App() {
+  const [refresh, setRefresh] = useState(false);
   const [dataUser, setDataUser] = useState({
     id: null,
     username: null,
@@ -24,12 +25,13 @@ function App() {
     token: null,
   });
 
+
   return (
     <>
       <ToastContainer autoclose={1000} />
       <GlobalStyle />
       <BrowserRouter>
-        <UserContext.Provider value={{ dataUser, setDataUser }}>
+        <UserContext.Provider value={{ dataUser, setDataUser, refresh, setRefresh }}>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/sign-up" element={<Registration />} />

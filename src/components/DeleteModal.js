@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { HashLoader } from "react-spinners";
 
 import { deletePost } from "../services/linkr";
 import { device } from "../common/breakpoint";
+import UserContext from "../context/userContext";
 
 const DeleteModal = ({
   isModalVisible,
   setIsModalVisible,
   postIdDelete,
-  setPostIdDelete,
-  refresh,
-  setRefresh,
+  setPostIdDelete
 }) => {
+  const { refresh, setRefresh } = useContext(UserContext)
   const [isLoading, setIsEditing] = useState(false);
 
   async function confirmDeletePost() {

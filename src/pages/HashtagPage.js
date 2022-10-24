@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 import styled from "styled-components";
@@ -14,16 +14,18 @@ import {
 import { getHashtagsPosts } from "../services/linkr";
 import TrendSideBar from "../components/TrendSideBar";
 import DeleteModal from "../components/DeleteModal";
+import UserContext from "../context/userContext";
 
 export default function HashtagPage() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
-  const [refresh, setRefresh] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postIdDelete, setPostIdDelete] = useState();
 
   const { hashtag } = useParams();
+  const { refresh } = useContext(UserContext)
+
 
   const [alterIcon, setAlterIcon] = useState(false);
 
@@ -84,8 +86,6 @@ export default function HashtagPage() {
                     description={value.description}
                     likes={value.likes}
                     hashtags={value.hashtags}
-                    refresh={refresh}
-                    setRefresh={setRefresh}
                     isModalVisible={isModalVisible}
                     setIsModalVisible={setIsModalVisible}
                     setPostIdDelete={setPostIdDelete}
@@ -99,8 +99,6 @@ export default function HashtagPage() {
                 setIsModalVisible={setIsModalVisible}
                 postIdDelete={postIdDelete}
                 setPostIdDelete={setPostIdDelete}
-                refresh={refresh}
-                setRefresh={setRefresh}
               />
             ) : (
               <></>
