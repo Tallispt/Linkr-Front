@@ -53,6 +53,7 @@ export function DesktopSearchBar({ placeholder }) {
             <Link key={i} to={`/user/${user.id}`}>
               <img src={user.image} alt={user.username} />
               <p>{user.username}</p>
+              {user.isFollowing ? <h5>• following</h5> : <></>}
             </Link>
           ))}
         </DataResult>
@@ -149,5 +150,11 @@ const DataResult = styled.section`
     border-radius: 50%;
     width: 39px;
     height: 39px;
+  }
+
+  h5 {
+    color: #c5c5c5;
+    font-size: 19px;
+    margin-left: 6px;
   }
 `;

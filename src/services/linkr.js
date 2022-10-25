@@ -43,8 +43,10 @@ function getTrends() {
   return promise;
 }
 async function getUsersBySearch(params) {
+  const config = createHeaders();
   const promise = await axios.get(
-    `${process.env.REACT_APP_API_BASE_URL}/search/${params}`
+    `${process.env.REACT_APP_API_BASE_URL}/search/${params}`,
+    config
   );
   return promise;
 }
@@ -60,18 +62,22 @@ async function newPost(body) {
 }
 
 async function editPostDescription({ body, id }) {
-  const config = createHeaders()
-  return await axios.put(`
+  const config = createHeaders();
+  return await axios.put(
+    `
   ${process.env.REACT_APP_API_BASE_URL}/posts/${id}`,
     body,
-    config)
+    config
+  );
 }
 
 async function deletePost(id) {
-  const config = createHeaders()
-  return await axios.delete(`
+  const config = createHeaders();
+  return await axios.delete(
+    `
   ${process.env.REACT_APP_API_BASE_URL}/posts/${id}`,
-    config)
+    config
+  );
 }
 
 function getUserPosts(id) {
