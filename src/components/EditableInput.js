@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import styled from "styled-components";
 import UserContext from "../context/userContext";
-import { editPostDescription } from "../services/linkr";
+import { editPostDescription, handleTextAreaHeight } from "../services/linkr";
 
 const EditableInput = ({
     id,
@@ -18,12 +18,6 @@ const EditableInput = ({
             inputRef.current.focus()
         }
     }, [isEditing,]);
-
-    function handleTextAreaHeight(event) {
-        event.target.style.height = 'inherit';
-        const height = event.target.scrollHeight
-        event.target.style.height = `${height}px`;
-    }
 
     async function handleKeyDown(event) {
         if (event.key === 'Enter') {
@@ -52,9 +46,9 @@ const EditableInput = ({
             onKeyDown={event => handleKeyDown(event)}
             onChange={event => {
                 setInputText(event.target.value)
-                handleTextAreaHeight(event)
+                handleTextAreaHeight(event, '30px')
             }}
-            onFocus={event => handleTextAreaHeight(event)}
+            onFocus={event => handleTextAreaHeight(event, '30px')}
             maxLength="500"
         ></EditInput>
     )
