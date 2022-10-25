@@ -1,8 +1,8 @@
 import axios from "axios";
 
-function handleTextAreaHeight(event, height = '39px') {
+function handleTextAreaHeight(event, height = "39px") {
   event.target.style.height = height;
-  const addHeight = event.target.scrollHeight
+  const addHeight = event.target.scrollHeight;
   event.target.style.height = `${addHeight}px`;
 }
 
@@ -26,9 +26,9 @@ function getHashtagsPosts(hashtag) {
   return promise;
 }
 
-function getTimeline() {
+async function getTimeline() {
   const config = createHeaders();
-  const promise = axios.get(
+  const promise = await axios.get(
     `${process.env.REACT_APP_API_BASE_URL}/timeline`,
     config
   );
@@ -134,6 +134,15 @@ async function commentOnPost({ body, id }) {
   return promise;
 }
 
+async function getFollowers() {
+  const config = createHeaders();
+  const promise = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/followers/user`,
+    config
+  );
+  return promise;
+}
+
 export {
   handleTextAreaHeight,
   newPost,
@@ -148,5 +157,6 @@ export {
   editPostDescription,
   deletePost,
   signUp,
-  commentOnPost
+  commentOnPost,
+  getFollowers,
 };
