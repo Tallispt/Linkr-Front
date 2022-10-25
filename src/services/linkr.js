@@ -1,5 +1,11 @@
 import axios from "axios";
 
+function handleTextAreaHeight(event, height = "39px") {
+  event.target.style.height = height;
+  const addHeight = event.target.scrollHeight;
+  event.target.style.height = `${addHeight}px`;
+}
+
 function createHeaders() {
   const auth = JSON.parse(localStorage.getItem("linkr"));
   const config = {
@@ -118,6 +124,16 @@ async function signUp(data) {
   return promise;
 }
 
+async function commentOnPost({ body, id }) {
+  const config = createHeaders();
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/comment/${id}`,
+    body,
+    config
+  );
+  return promise;
+}
+
 async function getFollowers() {
   const config = createHeaders();
   const promise = await axios.get(
@@ -128,6 +144,7 @@ async function getFollowers() {
 }
 
 export {
+  handleTextAreaHeight,
   newPost,
   getTimeline,
   getUsersBySearch,
@@ -140,5 +157,6 @@ export {
   editPostDescription,
   deletePost,
   signUp,
+  commentOnPost,
   getFollowers,
 };

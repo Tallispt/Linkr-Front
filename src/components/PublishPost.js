@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import styled from "styled-components";
 import { device } from "../common/breakpoint";
 import UserContext from "../context/userContext";
-import { newPost } from "../services/linkr";
+import { handleTextAreaHeight, newPost } from "../services/linkr";
 
 export function PublishPost() {
   const user = JSON.parse(localStorage.getItem("linkr"));
@@ -50,18 +50,13 @@ export function PublishPost() {
     setPostBody({ ...postBody, [e.target.name]: value });
   }
 
-  function handleDescriptionSize(e) {
-    const height = e.target.scrollHeight
-    e.target.style.height = `${height}px`;
-  }
-
   return (
     <Container>
       <ContentBox>
         <Title>What are you going to share today?</Title>
         <Box>
           <Image src={user.image} alt="Profile image" />
-          <Form onSubmit={e => {
+          <Form onSubmit={(e) => {
             sendForm(e)
             e.target.children[1].style.height = '66px'
           }}>
@@ -81,12 +76,15 @@ export function PublishPost() {
               value={postBody.description}
               onChange={e => {
                 handleInput(e)
-                handleDescriptionSize(e)
+                handleTextAreaHeight(e, '66px')
               }}
               placeholder="Awesome article about #javascript"
               maxLength="500"
               onKeyDown={e => {
-                if (e.key === 'Enter') sendForm(e)
+                if (e.key === 'Enter') {
+                  sendForm(e)
+                  e.target.style.height = '66px'
+                }
               }}
             />
             {error.isError ? <h4>{error.message}</h4> : <></>}
