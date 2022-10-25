@@ -20,9 +20,9 @@ function getHashtagsPosts(hashtag) {
   return promise;
 }
 
-function getTimeline() {
+async function getTimeline() {
   const config = createHeaders();
-  const promise = axios.get(
+  const promise = await axios.get(
     `${process.env.REACT_APP_API_BASE_URL}/timeline`,
     config
   );
@@ -118,6 +118,15 @@ async function signUp(data) {
   return promise;
 }
 
+async function getFollowers() {
+  const config = createHeaders();
+  const promise = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/followers/user`,
+    config
+  );
+  return promise;
+}
+
 export {
   newPost,
   getTimeline,
@@ -131,4 +140,5 @@ export {
   editPostDescription,
   deletePost,
   signUp,
+  getFollowers,
 };
