@@ -10,6 +10,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import EditableInput from "./EditableInput";
 import { dislikePost, likePost } from "../services/linkr";
 import { device } from "../common/breakpoint";
+import Comments from "./Comments";
 
 export default function Post({
   id,
@@ -108,99 +109,102 @@ export default function Post({
   }
 
   return (
-    <Container>
-      <LeftWrapper>
-        <Link to={`/user/${userId}`}>
-          <img src={image} alt="" />
-        </Link>
-        <LikeWrapper>
-          {like ? (
-            <AiFillHeart
-              cursor="pointer"
-              size={30}
-              color="#AC0000"
-              onClick={() => {
-                LikeOrDislikePost("dislike");
-                setLikeCount(likeCount - 1);
-              }}
-            />
+    <>
+      <Container>
+        <LeftWrapper>
+          <Link to={`/user/${userId}`}>
+            <img src={image} alt="" />
+          </Link>
+          <LikeWrapper>
+            {like ? (
+              <AiFillHeart
+                cursor="pointer"
+                size={30}
+                color="#AC0000"
+                onClick={() => {
+                  LikeOrDislikePost("dislike");
+                  setLikeCount(likeCount - 1);
+                }}
+              />
+            ) : (
+              <AiOutlineHeart
+                cursor="pointer"
+                size={30}
+                onClick={() => {
+                  LikeOrDislikePost("like");
+                  setLikeCount(likeCount + 1);
+                }}
+              />
+            )}
+            <p data-for="like" data-tip={tooltip}>
+              {likes.length > 1 ? `${likeCount} likes` : `${likeCount} like`}
+            </p>
+          </LikeWrapper>
+          <ReactTooltip
+            id="like"
+            place="bottom"
+            type="light"
+            effect="solid"
+            textColor="#505050"
+            multiline={true}
+            className="tooltip"
+          />
+        </LeftWrapper>
+        <ContentWrapper>
+          <TopWrapper>
+            <Link to={`/user/${userId}`}>
+              <h2>{username}</h2>
+            </Link>
+            <span>
+              {user.username === username ? (
+                <>
+                  <TiPencil onClick={() => setIsEditing(!isEditing)} />
+                  <RiDeleteBin7Fill
+                    onClick={() => {
+                      setIsModalVisible(!isModalVisible);
+                      setPostIdDelete(id);
+                    }}
+                  />
+                </>
+              ) : (
+                <></>
+              )}
+            </span>
+          </TopWrapper>
+          {!isEditing ? (
+            <p>
+              {descriptionWords.map((word, i) => {
+                if (hashtags.includes(word.slice(1))) {
+                  return (
+                    <ReactTagify key={i} tagStyle={tagStyle}>
+                      <Link to={`/hashtag/${word.slice(1)}`}>{`${word}`}</Link>
+                    </ReactTagify>
+                  );
+                } else return <span key={i}>{`${word} `}</span>;
+              })}
+            </p>
           ) : (
-            <AiOutlineHeart
-              cursor="pointer"
-              size={30}
-              onClick={() => {
-                LikeOrDislikePost("like");
-                setLikeCount(likeCount + 1);
-              }}
+            <EditableInput
+              id={id}
+              setIsEditing={setIsEditing}
+              isEditing={isEditing}
+              description={description}
             />
           )}
-          <p data-for="like" data-tip={tooltip}>
-            {likes.length > 1 ? `${likeCount} likes` : `${likeCount} like`}
-          </p>
-        </LikeWrapper>
-        <ReactTooltip
-          id="like"
-          place="bottom"
-          type="light"
-          effect="solid"
-          textColor="#505050"
-          multiline={true}
-          className="tooltip"
-        />
-      </LeftWrapper>
-      <ContentWrapper>
-        <TopWrapper>
-          <Link to={`/user/${userId}`}>
-            <h2>{username}</h2>
-          </Link>
-          <span>
-            {user.username === username ? (
-              <>
-                <TiPencil onClick={() => setIsEditing(!isEditing)} />
-                <RiDeleteBin7Fill
-                  onClick={() => {
-                    setIsModalVisible(!isModalVisible);
-                    setPostIdDelete(id);
-                  }}
-                />
-              </>
-            ) : (
-              <></>
-            )}
-          </span>
-        </TopWrapper>
-        {!isEditing ? (
-          <p>
-            {descriptionWords.map((word, i) => {
-              if (hashtags.includes(word.slice(1))) {
-                return (
-                  <ReactTagify key={i} tagStyle={tagStyle}>
-                    <Link to={`/hashtag/${word.slice(1)}`}>{`${word}`}</Link>
-                  </ReactTagify>
-                );
-              } else return <span key={i}>{`${word} `}</span>;
-            })}
-          </p>
-        ) : (
-          <EditableInput
-            id={id}
-            setIsEditing={setIsEditing}
-            isEditing={isEditing}
-            description={description}
-          />
-        )}
-        <MetadataWrapper href={link} target="_blank" rel="noreferrer">
-          <div>
-            <h1>{metadata.title}</h1>
-            <span>{metadata.description}</span>
-            <h4>{metadata.url}</h4>
-          </div>
-          <ImageContainer>
-            <img src={metadata.image?.url} alt="" />
-          </ImageContainer>
-        </MetadataWrapper>
-      </ContentWrapper>
-    </Container>
+          <MetadataWrapper href={link} target="_blank" rel="noreferrer">
+            <div>
+              <h1>{metadata.title}</h1>
+              <span>{metadata.description}</span>
+              <h4>{metadata.url}</h4>
+            </div>
+            <ImageContainer>
+              <img src={metadata.image?.url} alt="" />
+            </ImageContainer>
+          </MetadataWrapper>
+        </ContentWrapper>
+      </Container>
+      <Comments id={id} />
+    </>
   );
 }
 
