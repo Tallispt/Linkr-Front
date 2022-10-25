@@ -2,41 +2,64 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 import { HashLoader } from "react-spinners";
 
-import { deletePost } from "../services/linkr";
+import { deletePost, newRepost } from "../services/linkr";
 import { device } from "../common/breakpoint";
 import UserContext from "../context/userContext";
 
-const DeleteModal = ({
+const Modal = ({
   isModalVisible,
   setIsModalVisible,
-  postIdDelete,
-  setPostIdDelete
+  postId,
+  modalType
 }) => {
-  const { refresh, setRefresh } = useContext(UserContext)
-  const [isLoading, setIsEditing] = useState(false);
 
-  async function confirmDeletePost() {
-    setIsEditing(!isLoading);
+  const { refresh, setRefresh } = useContext(UserContext)
+  const [isLoading, setIsLoading] = useState(false);
+
+  const modalTypes = {
+    deleteModalTheme: {
+      title: "Are you sure you want to delete this post?",
+      cancelText: "No, go back",
+      confirmText: "Yes, delete it",
+      errorText: "Post could not be deleted"
+    },
+    repostModalTheme: {
+      title: "Do you want to re-post this link?",
+      cancelText: "No, cancel",
+      confirmText: "Yes, share!",
+      errorText: "Post could not be reposted"
+    }
+  }
+
+  const theme = modalType === 'deleteType' ? modalTypes.deleteModalTheme : modalTypes.repostModalTheme
+
+  async function handleConfirm() {
+    setIsLoading(!isLoading);
     try {
-      await deletePost(postIdDelete);
-      setIsEditing(!isLoading);
-      setPostIdDelete(undefined);
+      if (modalType === "deleteType") {
+        await deletePost(postId);
+      } else {
+        await newRepost(postId)
+      }
+
+      setIsLoading(!isLoading);
       setIsModalVisible(!isModalVisible);
       setRefresh(!refresh);
     } catch (error) {
+      console.log(error)
       setIsModalVisible(!isModalVisible);
-      alert("Post could not be deleted");
+      alert(theme.errorText);
     }
   }
 
   return (
-    <Container>
+    <Container >
       <div>
         {isLoading ? (
           <HashLoader color="#FFFFFF" size={100} />
         ) : (
           <>
-            <h2>Are you sure you want to delete this post?</h2>
+            <h2>{theme.title}</h2>
             <span>
               <button
                 style={{
@@ -45,16 +68,16 @@ const DeleteModal = ({
                 }}
                 onClick={() => setIsModalVisible(!isModalVisible)}
               >
-                No, go back
+                {theme.cancelText}
               </button>
               <button
                 style={{
                   backgroundColor: "#1877F2",
                   color: "#FFFFFF",
                 }}
-                onClick={confirmDeletePost}
+                onClick={handleConfirm}
               >
-                Yes, delete it
+                {theme.confirmText}
               </button>
             </span>
           </>
@@ -141,4 +164,4 @@ const Container = styled.div`
   }
 `;
 
-export default DeleteModal;
+export default Modal;

@@ -14,7 +14,7 @@ import {
   TimelineTitle,
 } from "../components/Timeline";
 import { getUserPosts } from "../services/linkr";
-import DeleteModal from "../components/DeleteModal";
+import Modal from "../components/Modal";
 import UserContext from "../context/userContext";
 
 export default function UserPage() {
@@ -22,7 +22,8 @@ export default function UserPage() {
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [postIdDelete, setPostIdDelete] = useState();
+  const [postId, setPostId] = useState();
+  const [modalType, setModalType] = useState('repostType')
 
   const { refresh } = useContext(UserContext);
 
@@ -77,35 +78,40 @@ export default function UserPage() {
               ) : user.posts?.length === 0 ? (
                 <Message>There are no posts yet</Message>
               ) : (
-                user.posts?.map((value) => (
+                user.posts?.map((value, index) => (
                   <Post
-                    key={value.id}
+                    key={index}
                     id={value.id}
                     username={value.username}
                     userId={value.user_id}
                     image={value.image}
                     link={value.link}
                     description={value.description}
-                    likes={value.likes}
                     hashtags={value.hashtags}
+                    likes={value.likes}
                     comments={value.comments}
+                    repostsNumber={value.repost_count}
+                    sharedById={value.shared_by_id}
+                    sharedByUsername={value.shared_by_username}
+                    setModalType={setModalType}
                     isModalVisible={isModalVisible}
                     setIsModalVisible={setIsModalVisible}
-                    setPostIdDelete={setPostIdDelete}
+                    setPostId={setPostId}
                   />
                 ))
               )}
             </PostsSection>
-            {isModalVisible ? (
-              <DeleteModal
-                isModalVisible={isModalVisible}
-                setIsModalVisible={setIsModalVisible}
-                postIdDelete={postIdDelete}
-                setPostIdDelete={setPostIdDelete}
-              />
-            ) : (
-              <></>
-            )}
+            {
+              isModalVisible ?
+                <Modal
+                  isModalVisible={isModalVisible}
+                  setIsModalVisible={setIsModalVisible}
+                  postId={postId}
+                  setPostId={setPostId}
+                  modalType={modalType}
+                /> :
+                <></>
+            }
           </TimelineContainer>
           <TrendSideBar />
         </PageContent>

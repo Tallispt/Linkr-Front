@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { device } from "../common/breakpoint";
 import UserContext from "../context/userContext";
 import { getFollowers, getTimeline } from "../services/linkr";
-import DeleteModal from "./DeleteModal";
+import Modal from "./Modal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 
@@ -14,7 +14,8 @@ export function Timeline() {
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [postIdDelete, setPostIdDelete] = useState();
+  const [modalType, setModalType] = useState('repostType')
+  const [postId, setPostId] = useState();
   const { refresh } = useContext(UserContext);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export function Timeline() {
   }, [refresh]);
 
   return (
-    <TimelineContainer isModalVisible={isModalVisible}>
+    <TimelineContainer >
       <TimelineTitle>timeline</TimelineTitle>
       <PublishPost />
       <PostsSection>
@@ -65,9 +66,9 @@ export function Timeline() {
         ) : posts.length === 0 && followers.length !== 0 ? (
           <Message>No posts found from your friends.</Message>
         ) : (
-          posts.map((value) => (
+          posts.map((value, index) => (
             <Post
-              key={value.id}
+              key={index}
               id={value.id}
               username={value.username}
               userId={value.user_id}
@@ -77,23 +78,28 @@ export function Timeline() {
               hashtags={value.hashtags}
               likes={value.likes}
               comments={value.comments}
+              repostsNumber={value.repost_count}
+              sharedById={value.shared_by_id}
+              sharedByUsername={value.shared_by_username}
+              setModalType={setModalType}
               isModalVisible={isModalVisible}
               setIsModalVisible={setIsModalVisible}
-              setPostIdDelete={setPostIdDelete}
+              setPostId={setPostId}
             />
           ))
         )}
       </PostsSection>
-      {isModalVisible ? (
-        <DeleteModal
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
-          postIdDelete={postIdDelete}
-          setPostIdDelete={setPostIdDelete}
-        />
-      ) : (
-        <></>
-      )}
+      {
+        isModalVisible ?
+          <Modal
+            isModalVisible={isModalVisible}
+            setIsModalVisible={setIsModalVisible}
+            postId={postId}
+            setPostId={setPostId}
+            modalType={modalType}
+          /> :
+          <></>
+      }
     </TimelineContainer>
   );
 }
