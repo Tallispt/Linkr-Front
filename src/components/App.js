@@ -24,6 +24,7 @@ function App() {
     image: null,
     token: null,
   });
+  const [ following, setFollowing ] = useState(null);
 
 
   return (
@@ -31,7 +32,7 @@ function App() {
       <ToastContainer autoclose={1000} />
       <GlobalStyle />
       <BrowserRouter>
-        <UserContext.Provider value={{ dataUser, setDataUser, refresh, setRefresh }}>
+        <UserContext.Provider value={{ dataUser, setDataUser, refresh, setRefresh, following, setFollowing }}>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/sign-up" element={<Registration />} />
