@@ -7,6 +7,7 @@ import { TiPencil } from "react-icons/ti";
 import { RiDeleteBin7Fill } from "react-icons/ri";
 import { ReactTagify } from "react-tagify";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { IoChatbubblesOutline, IoEllipsisHorizontal } from "react-icons/io5";
 import EditableInput from "./EditableInput";
 import { dislikePost, likePost } from "../services/linkr";
 import { device } from "../common/breakpoint";
@@ -21,6 +22,7 @@ export default function Post({
   description,
   hashtags,
   likes,
+  comments,
   isModalVisible,
   setIsModalVisible,
   setPostIdDelete,
@@ -32,6 +34,7 @@ export default function Post({
   const [likeCount, setLikeCount] = useState(likes.length);
   const [disabled, setDisabled] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   const userLiked = likes.filter((like) => like === user.username).length;
   useEffect(() => {
@@ -109,7 +112,7 @@ export default function Post({
   }
 
   return (
-    <>
+    <PostWrapper>
       <Container>
         <LeftWrapper>
           <Link to={`/user/${userId}`}>
@@ -149,6 +152,17 @@ export default function Post({
             multiline={true}
             className="tooltip"
           />
+          <CommentWrapper>
+            <div onClick={() => setShowComments(!showComments)}>
+              <IoChatbubblesOutline />
+              <IoEllipsisHorizontal />
+            </div>
+            <p>
+              {comments.length > 1
+                ? `${comments.length} comments`
+                : `${comments.length} comment`}
+            </p>
+          </CommentWrapper>
         </LeftWrapper>
         <ContentWrapper>
           <TopWrapper>
@@ -203,32 +217,51 @@ export default function Post({
           </MetadataWrapper>
         </ContentWrapper>
       </Container>
-      <Comments id={id} />
-    </>
+      <Comments
+        id={id}
+        comments={comments}
+        postUser={username}
+        showComments={showComments}
+      />
+    </PostWrapper>
   );
 }
+
+const PostWrapper = styled.div`
+  width: 100%;
+  min-height: 240px;
+  border-radius: 16px;
+  background-color: #1e1e1e;
+  @media screen and (${device.tablet}) {
+    min-height: 200px;
+    border-radius: 0;
+  }
+`;
 
 const Container = styled.div`
   width: 100%;
   min-height: 240px;
-  padding: 17px 21px 20px 18px;
+  padding: 17px 21px 20px 0px;
   display: flex;
   background-color: #171717;
   border-radius: 16px;
-  margin-bottom: 16px;
   .tooltip {
     font-weight: 700;
   }
   @media screen and (${device.tablet}) {
     min-height: 200px;
     border-radius: 0;
-    padding: 9px 18px 15px 15px;
+    padding: 9px 18px 15px 0px;
   }
 `;
 
 const LeftWrapper = styled.div`
   height: 100%;
-  width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 86px;
+  max-width: 86px;
   img {
     width: 50px;
     height: 50px;
@@ -236,7 +269,8 @@ const LeftWrapper = styled.div`
     margin-bottom: 19px;
   }
   @media screen and (${device.tablet}) {
-    width: 40px;
+    min-width: 68px;
+    max-width: 68px;
     img {
       width: 40px;
       height: 40px;
@@ -269,8 +303,24 @@ const LikeWrapper = styled.div`
   }
 `;
 
+const CommentWrapper = styled(LikeWrapper)`
+  margin-top: 15px;
+  div {
+    position: relative;
+  }
+  svg {
+    font-size: 22px;
+    transform: scaleX(-1);
+  }
+  svg:nth-child(2) {
+    font-size: 7.5px;
+    position: absolute;
+    top: 5px;
+    left: 6px;
+  }
+`;
+
 const ContentWrapper = styled.div`
-  margin-left: 18px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -308,7 +358,6 @@ const ContentWrapper = styled.div`
   }
 
   @media screen and (${device.tablet}) {
-    margin-left: 14px;
     width: calc(100% - 40px);
     p {
       font-size: 15px;

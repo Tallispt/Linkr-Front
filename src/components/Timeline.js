@@ -76,6 +76,7 @@ export function Timeline() {
               description={value.description}
               hashtags={value.hashtags}
               likes={value.likes}
+              comments={value.comments}
               isModalVisible={isModalVisible}
               setIsModalVisible={setIsModalVisible}
               setPostIdDelete={setPostIdDelete}
@@ -125,7 +126,7 @@ export const PostsSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  // row-gap: 16px;
+  row-gap: 16px;
   @media screen and (${device.tablet}) {
     margin-top: 16px;
   }

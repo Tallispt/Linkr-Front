@@ -24,7 +24,7 @@ export default function UserPage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postIdDelete, setPostIdDelete] = useState();
 
-  const { refresh } = useContext(UserContext)
+  const { refresh } = useContext(UserContext);
 
   const { id } = useParams();
 
@@ -88,6 +88,7 @@ export default function UserPage() {
                     description={value.description}
                     likes={value.likes}
                     hashtags={value.hashtags}
+                    comments={value.comments}
                     isModalVisible={isModalVisible}
                     setIsModalVisible={setIsModalVisible}
                     setPostIdDelete={setPostIdDelete}

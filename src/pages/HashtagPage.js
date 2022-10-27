@@ -24,8 +24,7 @@ export default function HashtagPage() {
   const [postIdDelete, setPostIdDelete] = useState();
 
   const { hashtag } = useParams();
-  const { refresh } = useContext(UserContext)
-
+  const { refresh } = useContext(UserContext);
 
   const [alterIcon, setAlterIcon] = useState(false);
 
@@ -86,6 +85,7 @@ export default function HashtagPage() {
                     description={value.description}
                     likes={value.likes}
                     hashtags={value.hashtags}
+                    comments={value.comments}
                     isModalVisible={isModalVisible}
                     setIsModalVisible={setIsModalVisible}
                     setPostIdDelete={setPostIdDelete}
