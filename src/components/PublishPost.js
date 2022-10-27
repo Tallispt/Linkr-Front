@@ -6,7 +6,7 @@ import { handleTextAreaHeight, newPost } from "../services/linkr";
 
 export function PublishPost() {
   const user = JSON.parse(localStorage.getItem("linkr"));
-  const { refresh, setRefresh } = useContext(UserContext)
+  const { refresh, setRefresh } = useContext(UserContext);
 
   const [postBody, setPostBody] = useState({
     link: "",
@@ -56,10 +56,12 @@ export function PublishPost() {
         <Title>What are you going to share today?</Title>
         <Box>
           <Image src={user.image} alt="Profile image" />
-          <Form onSubmit={(e) => {
-            sendForm(e)
-            e.target.children[1].style.height = '66px'
-          }}>
+          <Form
+            onSubmit={(e) => {
+              sendForm(e);
+              e.target.children[1].style.height = "66px";
+            }}
+          >
             <input
               disabled={loading}
               type="text"
@@ -74,16 +76,16 @@ export function PublishPost() {
               type="text"
               name="description"
               value={postBody.description}
-              onChange={e => {
-                handleInput(e)
-                handleTextAreaHeight(e, '66px')
+              onChange={(e) => {
+                handleInput(e);
+                handleTextAreaHeight(e, "66px");
               }}
               placeholder="Awesome article about #javascript"
               maxLength="500"
-              onKeyDown={e => {
-                if (e.key === 'Enter') {
-                  sendForm(e)
-                  e.target.style.height = '66px'
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  sendForm(e);
+                  e.target.style.height = "66px";
                 }
               }}
             />
@@ -116,7 +118,7 @@ const Container = styled.section`
     width: 611px;
   }
 
-  @media screen and (${device.laptop}) {
+  @media screen and (${device.tablet}) {
     border-radius: 0;
   }
 `;
@@ -128,7 +130,7 @@ const Box = styled.div`
 const ContentBox = styled.div`
   padding: 20px;
 
-  @media screen and (${device.laptop}) {
+  @media screen and (${device.tablet}) {
     padding: 14px;
   }
 `;
@@ -141,8 +143,7 @@ const Title = styled.h1`
   font-size: 20px;
   font-weight: 300;
 
-
-  @media screen and (${device.laptop}) {
+  @media screen and (${device.tablet}) {
     text-align: center;
     font-size: 17px;
     margin-left: 0px;
@@ -156,7 +157,7 @@ const Image = styled.img`
   border-radius: 50%;
   margin-right: 15px;
 
-  @media screen and (${device.laptop}) {
+  @media screen and (${device.tablet}) {
     display: none;
   }
 `;
@@ -175,11 +176,11 @@ const Form = styled.form`
     padding-left: 8px;
   }
 
-  input::placeholder{
-      font-family: 'Lato';
-      font-weight: 300;
-      color: #949494;
-    }
+  input::placeholder {
+    font-family: "Lato";
+    font-weight: 300;
+    color: #949494;
+  }
 
   h4 {
     font-size: 15px;
@@ -211,30 +212,30 @@ const Button = styled.button`
   font-weight: 500;
   background-color: ${(props) => (props.disabled ? "#87b8f8" : "#1877F2")};
 
-  @media screen and (${device.laptop}) {
+  @media screen and (${device.tablet}) {
     height: 22px;
   }
 `;
 
 const Input = styled.textarea`
-    font-family: 'Lato';
-    overflow: hidden;
-    resize: none;
-    margin-top: 5px;
-    font-size: 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #efefef;
-    height: 66px;
-    padding: 8px;
+  font-family: "Lato";
+  overflow: hidden;
+  resize: none;
+  margin-top: 5px;
+  font-size: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #efefef;
+  height: 66px;
+  padding: 8px;
 
-    ::placeholder{
-      font-family: 'Lato';
-      font-weight: 300;
-      color: #949494;
-    }
-
-    @media screen and (${device.laptop}) {
-      height: 57px;
+  ::placeholder {
+    font-family: "Lato";
+    font-weight: 300;
+    color: #949494;
   }
-`
+
+  @media screen and (${device.tablet}) {
+    height: 57px;
+  }
+`;
