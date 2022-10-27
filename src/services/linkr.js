@@ -17,19 +17,19 @@ function createHeaders() {
   return config;
 }
 
-function getHashtagsPosts(hashtag) {
+function getHashtagsPosts(hashtag,cut) {
   const config = createHeaders();
   const promise = axios.get(
-    `${process.env.REACT_APP_API_BASE_URL}/hashtag/${hashtag}`,
+    `${process.env.REACT_APP_API_BASE_URL}/hashtag/${hashtag}?cut=${cut}`,
     config
   );
   return promise;
 }
 
-async function getTimeline() {
+async function getTimeline(cut) {
   const config = createHeaders();
   const promise = await axios.get(
-    `${process.env.REACT_APP_API_BASE_URL}/timeline`,
+    `${process.env.REACT_APP_API_BASE_URL}/timeline?cut=${cut}`,
     config
   );
   return promise;
@@ -80,10 +80,10 @@ async function deletePost(id) {
   );
 }
 
-function getUserPosts(id) {
+function getUserPosts(id,cut) {
   const config = createHeaders();
   const promise = axios.get(
-    `${process.env.REACT_APP_API_BASE_URL}/user/${id}`,
+    `${process.env.REACT_APP_API_BASE_URL}/user/${id}?cut=${cut}`,
     config
   );
   return promise;
