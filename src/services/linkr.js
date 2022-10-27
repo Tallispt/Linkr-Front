@@ -1,8 +1,8 @@
 import axios from "axios";
 
-function handleTextAreaHeight(event, height = '39px') {
+function handleTextAreaHeight(event, height = "39px") {
   event.target.style.height = height;
-  const addHeight = event.target.scrollHeight
+  const addHeight = event.target.scrollHeight;
   event.target.style.height = `${addHeight}px`;
 }
 
@@ -26,9 +26,9 @@ function getHashtagsPosts(hashtag) {
   return promise;
 }
 
-function getTimeline() {
+async function getTimeline() {
   const config = createHeaders();
-  const promise = axios.get(
+  const promise = await axios.get(
     `${process.env.REACT_APP_API_BASE_URL}/timeline`,
     config
   );
@@ -156,13 +156,22 @@ async function unfollow(data) {
   return promise;
 }
 
-async function verifyFollower() {
+async function verifyFollowers() {
   const config = createHeaders();
   const promise = await axios.get(
-    `${process.env.REACT_APP_API_BASE_URL}/verifyFollower`,
+    `${process.env.REACT_APP_API_BASE_URL}/verifyFollowers`,
     config
   );
 
+  return promise;
+}
+
+async function getFollowers() {
+  const config = createHeaders();
+  const promise = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/followers/user`,
+    config
+  );
   return promise;
 }
 
@@ -183,5 +192,6 @@ export {
   commentOnPost,
   follow,
   unfollow,
-  verifyFollower
-};
+  verifyFollowers,
+  getFollowers
+}

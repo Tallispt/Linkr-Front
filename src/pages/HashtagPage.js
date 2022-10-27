@@ -15,7 +15,7 @@ import { getHashtagsPosts } from "../services/linkr";
 import TrendSideBar from "../components/TrendSideBar";
 import DeleteModal from "../components/DeleteModal";
 import UserContext from "../context/userContext";
-import { verifyFollower } from "../services/linkr";
+import { verifyFollowers } from "../services/linkr";
 export default function HashtagPage() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
@@ -30,7 +30,7 @@ export default function HashtagPage() {
   useEffect(() => {
     (async() => {
         try {
-          const response = (await verifyFollower()).data;
+          const response = (await verifyFollowers()).data;
 
           const { followers_id } = response;
 
@@ -105,6 +105,7 @@ export default function HashtagPage() {
                     description={value.description}
                     likes={value.likes}
                     hashtags={value.hashtags}
+                    comments={value.comments}
                     isModalVisible={isModalVisible}
                     setIsModalVisible={setIsModalVisible}
                     setPostIdDelete={setPostIdDelete}

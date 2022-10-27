@@ -5,7 +5,7 @@ import { Header } from "../components/Header";
 import { MobileSearchBar } from "../components/SearchBar/MobileSearchBar";
 import TrendSideBar from "../components/TrendSideBar";
 import UserContext from "../context/userContext";
-import { verifyFollower } from "../services/linkr";
+import { verifyFollowers } from "../services/linkr";
 export function Homepage() {
   const [alterIcon, setAlterIcon] = useState(false);
 
@@ -14,7 +14,7 @@ export function Homepage() {
   useEffect(() => {
     (async() => {
         try {
-          const response = (await verifyFollower()).data;
+          const response = (await verifyFollowers()).data;
 
           const { followers_id } = response;
 

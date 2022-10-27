@@ -19,16 +19,21 @@ import UserContext from "../context/userContext";
 import { toast } from "react-toastify";
 import ClipLoader from "react-spinners/ClipLoader";
 import BeatLoader from "react-spinners/BeatLoader";
-import { verifyFollower } from "../services/linkr";
+import { verifyFollowers } from "../services/linkr";
+
+let userId;
 
 export default function UserPage() {
   const { refresh } = useContext(UserContext);
 
   const { id } = useParams();
 
+  console.log(typeof Number(id));
+  console.log(typeof userId)
+
   async function VerifyFollower(id) {
     try {
-        const response = (await verifyFollower()).data;
+        const response = (await verifyFollowers()).data;
 
         const { followers_id } = response;
 
@@ -46,6 +51,7 @@ export default function UserPage() {
     VerifyFollower(id);
     setLoadingPage(false);
     setLoading(false);
+    userId = JSON.parse(localStorage.getItem("linkr")).id;
   }, [id]);
 
   const [user, setUser] = useState({});
@@ -57,6 +63,7 @@ export default function UserPage() {
   const [ loading, setLoading ] = useState(true);
   const [ loadingPage, setLoadingPage ] = useState(true);
   
+
   const [alterIcon, setAlterIcon] = useState(false);
 
   function handleIcon() {
@@ -143,116 +150,120 @@ export default function UserPage() {
   return (
     <Overlap onClick={handleIcon}>
       <MainWrapper>
-        <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
+      <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
         <MobileSearchBar />
         {
           loadingPage && loadingPage === true ? 
-                  <Loader>
-                      <ClipLoader
-                        color={"#FFFFFF"}
-                        loading={loadingPage}
-                        cssOverride={""}
-                        size={80}
-                        aria-label="Loading Spinner"
-                        data-testid="loader"
-                      />
-                  </Loader>
+            <Loader>
+              <ClipLoader
+                color={"#FFFFFF"}
+                loading={loadingPage}
+                cssOverride={""}
+                size={80}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            </Loader>
+          :
+          <PageContent>
+            <TimelineContainer isModalVisible={isModalVisible}>
+              <UserTitle>
+                <div className="infoUser">
+                  <img src={user.image} alt="" />
+                  <span>{user.username}'s posts</span>
+                </div>
+                {
+                  userId === Number(id) ?
+                  ""
                   :
-                  <PageContent>
-                    <TimelineContainer isModalVisible={isModalVisible}>
-                      <UserTitle>
-                        <div className="infoUser">
-                          <img src={user.image} alt="" />
-                          <span>{user.username}'s posts</span>
-                        </div>
-                        {
-                          followOrUnfollow ? 
-                                            <button 
-                                              className={`unfollow ${loading && loading === true ? "disabled_button" : ""}`} 
-                                              onClick={handleFollow}
-                                              disabled={loading && loading === true ? true : false}
-                                            >
-                                              {loading && loading === true ? (
-                                                <BeatLoader
-                                                  color={"#1877F2"}
-                                                  loading={loading}
-                                                  cssOverride={""}
-                                                  size={10}
-                                                  aria-label="Loading Spinner"
-                                                  data-testid="loader"
-                                                />
-                                              ) : (
-                                                "Unfollow"
-                                              )}
-                                            </button>
-                                          :
-                                          <button 
-                                            className={`follow ${loading && loading === true ? "disabled_button" : ""}`} 
-                                            onClick={handleFollow}
-                                            disabled={loading && loading === true ? true : false}
-                                          >
-                                            {loading && loading === true ? (
-                                              <BeatLoader
-                                                color={"#FFFFFF"}
-                                                loading={loading}
-                                                cssOverride={""}
-                                                size={10}
-                                                aria-label="Loading Spinner"
-                                                data-testid="loader"
-                                              />
-                                            ) : (
-                                              "Follow"
-                                            )}
-                                          </button>
-                        }
-                      </UserTitle>
-                      <PostsSection>
-                        {loader ? (
-                          <>
-                            <HashLoader
-                              color="#ffffff"
-                              loading={loader}
-                              cssOverride={true}
-                              size={50}
-                            />
-                            <Message>Loading</Message>
-                          </>
-                        ) : error ? (
-                          <Message>{error}</Message>
-                        ) : user.posts?.length === 0 ? (
-                          <Message>There are no posts yet</Message>
-                        ) : (
-                          user.posts?.map((value) => (
-                            <Post
-                              key={value.id}
-                              id={value.id}
-                              username={value.username}
-                              userId={value.user_id}
-                              image={value.image}
-                              link={value.link}
-                              description={value.description}
-                              likes={value.likes}
-                              hashtags={value.hashtags}
-                              isModalVisible={isModalVisible}
-                              setIsModalVisible={setIsModalVisible}
-                              setPostIdDelete={setPostIdDelete}
-                            />
-                          ))
-                        )}
-                      </PostsSection>
-                      {isModalVisible ? (
-                        <DeleteModal
-                          isModalVisible={isModalVisible}
-                          setIsModalVisible={setIsModalVisible}
-                          postIdDelete={postIdDelete}
-                          setPostIdDelete={setPostIdDelete}
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </TimelineContainer>
-                    <TrendSideBar />
-                  </PageContent>
+                  followOrUnfollow ? 
+                                    <button 
+                                      className={`unfollow ${loading && loading === true ? "disabled_button" : ""}`} 
+                                      onClick={handleFollow}
+                                      disabled={loading && loading === true ? true : false}
+                                    >
+                                      {loading && loading === true ? (
+                                        <BeatLoader
+                                          color={"#1877F2"}
+                                          loading={loading}
+                                          cssOverride={""}
+                                          size={10}
+                                          aria-label="Loading Spinner"
+                                          data-testid="loader"
+                                        />
+                                      ) : (
+                                        "Unfollow"
+                                      )}
+                                    </button>
+                                  :
+                                    <button 
+                                      className={`follow ${loading && loading === true ? "disabled_button" : ""}`} 
+                                      onClick={handleFollow}
+                                      disabled={loading && loading === true ? true : false}
+                                    >
+                                      {loading && loading === true ? (
+                                        <BeatLoader
+                                          color={"#FFFFFF"}
+                                          loading={loading}
+                                          cssOverride={""}
+                                          size={10}
+                                          aria-label="Loading Spinner"
+                                          data-testid="loader"
+                                        />
+                                      ) : (
+                                        "Follow"
+                                      )}
+                                    </button>
+                }
+              </UserTitle>
+              <PostsSection>
+                {loader ? (
+                  <>
+                    <HashLoader
+                      color="#ffffff"
+                      loading={loader}
+                      cssOverride={true}
+                      size={50}
+                    />
+                    <Message>Loading</Message>
+                  </>
+                ) : error ? (
+                  <Message>{error}</Message>
+                ) : user.posts?.length === 0 ? (
+                  <Message>There are no posts yet</Message>
+                ) : (
+                  user.posts?.map((value) => (
+                    <Post
+                      key={value.id}
+                      id={value.id}
+                      username={value.username}
+                      userId={value.user_id}
+                      image={value.image}
+                      link={value.link}
+                      description={value.description}
+                      likes={value.likes}
+                      hashtags={value.hashtags}
+                      comments={value.comments}
+                      isModalVisible={isModalVisible}
+                      setIsModalVisible={setIsModalVisible}
+                      setPostIdDelete={setPostIdDelete}
+                    />
+                  ))
+                )}
+              </PostsSection>
+              {isModalVisible ? (
+                <DeleteModal
+                  isModalVisible={isModalVisible}
+                  setIsModalVisible={setIsModalVisible}
+                  postIdDelete={postIdDelete}
+                  setPostIdDelete={setPostIdDelete}
+                />
+              ) : (
+                <></>
+              )}
+            </TimelineContainer>
+            <TrendSideBar />
+        </PageContent>
         }
       </MainWrapper>
     </Overlap>

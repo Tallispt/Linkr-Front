@@ -44,6 +44,7 @@ const Login = () => {
         token: data.token,
         image: data.image,
         username: data.username,
+        id: data.id
       });
       localStorage.setItem("linkr", JSONauth);
 

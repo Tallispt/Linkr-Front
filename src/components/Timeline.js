@@ -3,13 +3,14 @@ import { HashLoader } from "react-spinners";
 import styled from "styled-components";
 import { device } from "../common/breakpoint";
 import UserContext from "../context/userContext";
-import { getTimeline } from "../services/linkr";
+import { getFollowers, getTimeline } from "../services/linkr";
 import DeleteModal from "./DeleteModal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 
 export function Timeline() {
   const [posts, setPosts] = useState([]);
+  const [followers, setFollowers] = useState([]);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -18,18 +19,26 @@ export function Timeline() {
 
   useEffect(() => {
     setLoader(true);
-    getTimeline()
-      .then((res) => {
-        setPosts(res.data);
+
+    const fetchData = async () => {
+      try {
+        const timelineData = (await getTimeline()).data;
+        const followersData = (await getFollowers()).data;
+        setPosts(timelineData);
+        setFollowers(followersData);
+
         setLoader(false);
-      })
-      .catch((err) => {
-        console.log(err.message);
+      } catch (error) {
+        console.log(error.message);
+
         setLoader(false);
         setError(
           "An error occured while trying to fetch the posts, please refresh the page"
         );
-      });
+      }
+    };
+
+    fetchData();
   }, [refresh]);
 
   return (
@@ -49,8 +58,12 @@ export function Timeline() {
           </>
         ) : error ? (
           <Message>{error}</Message>
-        ) : posts.length === 0 ? (
-          <Message>There are no posts yet</Message>
+        ) : posts.length === 0 && followers.length === 0 ? (
+          <Message>
+            You don't follow anyone yet. Search for new friends!
+          </Message>
+        ) : posts.length === 0 && followers.length !== 0 ? (
+          <Message>No posts found from your friends.</Message>
         ) : (
           posts.map((value) => (
             <Post
@@ -63,6 +76,7 @@ export function Timeline() {
               description={value.description}
               hashtags={value.hashtags}
               likes={value.likes}
+              comments={value.comments}
               isModalVisible={isModalVisible}
               setIsModalVisible={setIsModalVisible}
               setPostIdDelete={setPostIdDelete}
@@ -112,7 +126,7 @@ export const PostsSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  // row-gap: 16px;
+  row-gap: 16px;
   @media screen and (${device.tablet}) {
     margin-top: 16px;
   }
