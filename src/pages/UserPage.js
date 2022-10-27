@@ -16,6 +16,10 @@ import {
 import { getUserPosts } from "../services/linkr";
 import DeleteModal from "../components/DeleteModal";
 import UserContext from "../context/userContext";
+import InfiniteScroll from 'react-infinite-scroller';
+
+
+
 
 export default function UserPage() {
   const [user, setUser] = useState({});
@@ -29,6 +33,9 @@ export default function UserPage() {
   const { id } = useParams();
 
   const [alterIcon, setAlterIcon] = useState(false);
+  const [cut, setCut] = useState(0);
+  const [areMorePosts, setAreMorePosts] = useState(true);
+  const [posts, setPosts] = useState([]);
 
   function handleIcon() {
     if (alterIcon === true) setAlterIcon(false);
@@ -36,10 +43,12 @@ export default function UserPage() {
 
   useEffect(() => {
     setLoader(true);
-    getUserPosts(id)
+    getUserPosts(id,cut)
       .then((res) => {
         setUser(res.data);
+        setPosts(res.data.posts);
         setLoader(false);
+        setCut(cut + res.data.posts.length);
       })
       .catch((err) => {
         console.log(err.message);
@@ -49,6 +58,29 @@ export default function UserPage() {
         );
       });
   }, [id, refresh]);
+
+  async function morePosts() {
+  
+    try {
+      const newData = (await  getUserPosts(id,cut)).data;
+      setLoader(false);
+
+      setPosts([...posts, ...newData.posts]);
+      
+        if (newData.posts.length === 0) {
+          setAreMorePosts(false);
+      }
+      setCut(cut + newData.posts.length);
+      console.log(cut);
+    } catch (error) {
+      console.log(error.message);
+
+      setLoader(false);
+      setError(
+        "An error occured while trying to fetch the posts, please refresh the page"
+      );
+    }  
+}
 
   return (
     <Overlap onClick={handleIcon}>
@@ -61,6 +93,11 @@ export default function UserPage() {
               <img src={user.image} alt="" />
               <span>{user.username}'s posts</span>
             </UserTitle>
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={morePosts}
+               hasMore={areMorePosts}
+                loader={<Warning key={0}>Loading more posts...</Warning>}>
             <PostsSection>
               {loader ? (
                 <>
@@ -74,10 +111,10 @@ export default function UserPage() {
                 </>
               ) : error ? (
                 <Message>{error}</Message>
-              ) : user.posts?.length === 0 ? (
+              ) : posts?.length === 0 ? (
                 <Message>There are no posts yet</Message>
               ) : (
-                user.posts?.map((value) => (
+                posts?.map((value) => (
                   <Post
                     key={value.id}
                     id={value.id}
@@ -96,6 +133,7 @@ export default function UserPage() {
                 ))
               )}
             </PostsSection>
+            </InfiniteScroll>
             {isModalVisible ? (
               <DeleteModal
                 isModalVisible={isModalVisible}
@@ -150,3 +188,16 @@ const PageContent = styled.div`
   display: flex;
   min-height: calc(100vh - 72px);
 `;
+const Warning = styled.div`
+    color:white;
+    width: 100%;
+    margin-bottom: 200px;    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Lato;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0.05em;
+`
