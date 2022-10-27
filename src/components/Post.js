@@ -152,8 +152,8 @@ export default function Post({
             multiline={true}
             className="tooltip"
           />
-          <CommentWrapper>
-            <div onClick={() => setShowComments(!showComments)}>
+          <CommentWrapper onClick={() => setShowComments(!showComments)}>
+            <div>
               <IoChatbubblesOutline />
               <IoEllipsisHorizontal />
             </div>
