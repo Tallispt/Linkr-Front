@@ -15,7 +15,7 @@ import { getHashtagsPosts } from "../services/linkr";
 import TrendSideBar from "../components/TrendSideBar";
 import DeleteModal from "../components/DeleteModal";
 import UserContext from "../context/userContext";
-
+import { verifyFollower } from "../services/linkr";
 export default function HashtagPage() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
@@ -24,8 +24,27 @@ export default function HashtagPage() {
   const [postIdDelete, setPostIdDelete] = useState();
 
   const { hashtag } = useParams();
-  const { refresh } = useContext(UserContext)
+  const { refresh, setFollowing, following } = useContext(UserContext);
 
+
+  useEffect(() => {
+    (async() => {
+        try {
+          const response = (await verifyFollower()).data;
+
+          const { followers_id } = response;
+
+          setFollowing([...followers_id])
+      
+      } catch (error) {
+      
+          console.log(error);
+      
+      }
+    })();
+  }, [setFollowing]);
+
+  console.log(following);
 
   const [alterIcon, setAlterIcon] = useState(false);
 

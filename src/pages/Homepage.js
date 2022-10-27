@@ -1,11 +1,34 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { Timeline } from "../components/Timeline";
 import { Header } from "../components/Header";
 import { MobileSearchBar } from "../components/SearchBar/MobileSearchBar";
 import TrendSideBar from "../components/TrendSideBar";
+import UserContext from "../context/userContext";
+import { verifyFollower } from "../services/linkr";
 export function Homepage() {
   const [alterIcon, setAlterIcon] = useState(false);
+
+  const { setFollowing, following } = useContext(UserContext);
+
+  useEffect(() => {
+    (async() => {
+        try {
+          const response = (await verifyFollower()).data;
+
+          const { followers_id } = response;
+
+          setFollowing([...followers_id])
+      
+      } catch (error) {
+      
+          console.log(error);
+      
+      }
+    })();
+  }, [setFollowing]);
+
+  console.log(following);
 
   function handleIcon() {
     if (alterIcon === true) setAlterIcon(false);

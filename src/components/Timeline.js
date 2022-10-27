@@ -14,7 +14,7 @@ export function Timeline() {
   const [loader, setLoader] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postIdDelete, setPostIdDelete] = useState();
-  const { refresh } = useContext(UserContext)
+  const { refresh } = useContext(UserContext);
 
   useEffect(() => {
     setLoader(true);

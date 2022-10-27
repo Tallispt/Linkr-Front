@@ -134,6 +134,38 @@ async function commentOnPost({ body, id }) {
   return promise;
 }
 
+async function follow(data) {
+  const config = createHeaders();
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/follow`,
+    data,
+    config
+  );
+
+  return promise;
+}
+
+async function unfollow(data) {
+  const config = createHeaders();
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/unfollow`,
+    data,
+    config
+  );
+
+  return promise;
+}
+
+async function verifyFollower() {
+  const config = createHeaders();
+  const promise = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/verifyFollower`,
+    config
+  );
+
+  return promise;
+}
+
 export {
   handleTextAreaHeight,
   newPost,
@@ -148,5 +180,8 @@ export {
   editPostDescription,
   deletePost,
   signUp,
-  commentOnPost
+  commentOnPost,
+  follow,
+  unfollow,
+  verifyFollower
 };

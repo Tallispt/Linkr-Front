@@ -53,6 +53,7 @@ const Login = () => {
         image: data.image,
         token: data.token,
       });
+
       setLoading(false);
       navigate("/timeline");
     } catch (error) {
