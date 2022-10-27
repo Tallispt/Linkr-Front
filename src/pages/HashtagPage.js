@@ -15,6 +15,8 @@ import { getHashtagsPosts } from "../services/linkr";
 import TrendSideBar from "../components/TrendSideBar";
 import DeleteModal from "../components/DeleteModal";
 import UserContext from "../context/userContext";
+import InfiniteScroll from 'react-infinite-scroller';
+
 
 export default function HashtagPage() {
   const [posts, setPosts] = useState([]);
@@ -27,6 +29,8 @@ export default function HashtagPage() {
   const { refresh } = useContext(UserContext);
 
   const [alterIcon, setAlterIcon] = useState(false);
+  const [cut, setCut] = useState(0);
+  const [areMorePosts, setAreMorePosts] = useState(true);
 
   function handleIcon() {
     if (alterIcon === true) setAlterIcon(false);
@@ -34,7 +38,7 @@ export default function HashtagPage() {
 
   useEffect(() => {
     setLoader(true);
-    getHashtagsPosts(hashtag)
+    getHashtagsPosts(hashtag,cut)
       .then((res) => {
         setPosts(res.data);
         setLoader(false);
@@ -47,6 +51,29 @@ export default function HashtagPage() {
         );
       });
   }, [hashtag, refresh]);
+  async function morePosts() {
+  
+    try {
+      const newData = (await getHashtagsPosts(hashtag,cut)).data;
+      setLoader(false);
+
+      setPosts([...posts, ...newData]);
+      console.log(cut);
+        if (newData.length === 0) {
+          setAreMorePosts(false);
+      }
+      setCut(cut + newData.length);
+    } catch (error) {
+      console.log(error.message);
+
+      setLoader(false);
+      setError(
+        "An error occured while trying to fetch the posts, please refresh the page"
+      );
+    }
+   
+   
+}
 
   return (
     <Overlap onClick={handleIcon}>
@@ -58,6 +85,12 @@ export default function HashtagPage() {
             <HashtagTitle>
               <span>{"#" + hashtag}</span>
             </HashtagTitle>
+            <InfiniteScroll
+     pageStart={0}
+     loadMore={morePosts}
+     hasMore={areMorePosts}
+     loader={<Warning key={0}>Loading more posts...</Warning>}
+      >
             <PostsSection>
               {loader ? (
                 <>
@@ -93,6 +126,7 @@ export default function HashtagPage() {
                 ))
               )}
             </PostsSection>
+            </InfiniteScroll>
             {isModalVisible ? (
               <DeleteModal
                 isModalVisible={isModalVisible}
@@ -134,3 +168,16 @@ const PageContent = styled.div`
   display: flex;
   min-height: calc(100vh - 72px);
 `;
+const Warning = styled.div`
+    color:white;
+    width: 100%;
+    margin-bottom: 200px;    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Lato;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0.05em;
+`
