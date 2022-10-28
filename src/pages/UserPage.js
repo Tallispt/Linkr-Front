@@ -13,8 +13,8 @@ import {
   TimelineContainer,
   TimelineTitle,
 } from "../components/Timeline";
+import Modal from "../components/Modal";
 import { getUserPosts, follow, unfollow } from "../services/linkr";
-import DeleteModal from "../components/DeleteModal";
 import UserContext from "../context/userContext";
 import InfiniteScroll from 'react-infinite-scroller';
 import { toast } from "react-toastify";
@@ -25,28 +25,23 @@ import { verifyFollowers } from "../services/linkr";
 let userId;
 
 export default function UserPage() {
-  const { refresh } = useContext(UserContext);
 
+  const { refresh } = useContext(UserContext);
   const { id } = useParams();
 
-  console.log(typeof Number(id));
-  console.log(typeof userId)
-
-  async function VerifyFollower(id) {
-    try {
-        const response = (await verifyFollowers()).data;
-
-        const { followers_id } = response;
-
-        if(followers_id.includes(Number(id))) return setFollowOrUnfollow(true);
-        else return setFollowOrUnfollow(false);
-    
-    } catch (error) {
-    
-        console.log(error);
-    
-    }
-  };
+  const [user, setUser] = useState({});
+  const [error, setError] = useState("");
+  const [loader, setLoader] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [postId, setPostId] = useState();
+  const [modalType, setModalType] = useState('repostType')
+  const [followOrUnfollow, setFollowOrUnfollow] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(true);
+  const [alterIcon, setAlterIcon] = useState(false);
+  const [cut, setCut] = useState(0);
+  const [areMorePosts, setAreMorePosts] = useState(true);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     VerifyFollower(id);
@@ -55,37 +50,49 @@ export default function UserPage() {
     userId = JSON.parse(localStorage.getItem("linkr")).id;
   }, [id]);
 
-  const [user, setUser] = useState({});
-  const [error, setError] = useState("");
-  const [loader, setLoader] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [postIdDelete, setPostIdDelete] = useState();
-  const [ followOrUnfollow, setFollowOrUnfollow ] = useState(null);
-  const [ loading, setLoading ] = useState(true);
-  const [ loadingPage, setLoadingPage ] = useState(true);
-  
+  useEffect(() => {
+    setLoader(true);
+    getUserPosts(id, cut)
+      .then((res) => {
+        setUser(res.data);
+        setPosts(res.data.posts);
+        setLoader(false);
+        setCut(cut + res.data.posts.length);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        setLoader(false);
+        setError(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        );
+      });
+  }, [id, refresh]);
 
-  const [alterIcon, setAlterIcon] = useState(false);
-  const [cut, setCut] = useState(0);
-  const [areMorePosts, setAreMorePosts] = useState(true);
-  const [posts, setPosts] = useState([]);
+  async function VerifyFollower(id) {
+    try {
+      const response = (await verifyFollowers()).data;
+
+      const { followers_id } = response;
+
+      if (followers_id.includes(Number(id))) return setFollowOrUnfollow(true);
+      else return setFollowOrUnfollow(false);
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  };
 
   function handleIcon() {
     if (alterIcon === true) setAlterIcon(false);
   }
 
-  /*
-    function timeInterval() {
-      setLoading(false);
-    }
-  */
-
   async function handleFollow() {
     const body = { id: id }
-
     setLoading(true);
 
-    if(followOrUnfollow) {
+    if (followOrUnfollow) {
 
       try {
 
@@ -95,12 +102,10 @@ export default function UserPage() {
 
         setLoading(false);
 
-        // setTimeout(timeInterval, 2000);
-
         setFollowOrUnfollow(false);
-        
+
       } catch (error) {
-        
+
         const { response } = error;
 
         toast.error(response.data.message);
@@ -119,12 +124,10 @@ export default function UserPage() {
 
         setLoading(false);
 
-        // setTimeout(timeInterval, 2000);
-
         setFollowOrUnfollow(true)
-        
+
       } catch (error) {
-        
+
         const { response } = error;
 
         toast.error(response.data.message);
@@ -135,34 +138,16 @@ export default function UserPage() {
     }
   }
 
-  useEffect(() => {
-    setLoader(true);
-    getUserPosts(id,cut)
-      .then((res) => {
-        setUser(res.data);
-        setPosts(res.data.posts);
-        setLoader(false);
-        setCut(cut + res.data.posts.length);
-      })
-      .catch((err) => {
-        console.log(err.message);
-        setLoader(false);
-        setError(
-          "An error occured while trying to fetch the posts, please refresh the page"
-        );
-      });
-  }, [id, refresh]);
-
   async function morePosts() {
-  
+
     try {
-      const newData = (await  getUserPosts(id,cut)).data;
+      const newData = (await getUserPosts(id, cut)).data;
       setLoader(false);
 
       setPosts([...posts, ...newData.posts]);
-      
-        if (newData.posts.length === 0) {
-          setAreMorePosts(false);
+
+      if (newData.posts.length === 0) {
+        setAreMorePosts(false);
       }
       setCut(cut + newData.posts.length);
       console.log(cut);
@@ -173,16 +158,16 @@ export default function UserPage() {
       setError(
         "An error occured while trying to fetch the posts, please refresh the page"
       );
-    }  
-}
+    }
+  }
 
   return (
     <Overlap onClick={handleIcon}>
       <MainWrapper>
-      <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
+        <Header alterIcon={alterIcon} setAlterIcon={setAlterIcon} />
         <MobileSearchBar />
         {
-          loadingPage && loadingPage === true ? 
+          loadingPage && loadingPage === true ?
             <Loader>
               <ClipLoader
                 color={"#FFFFFF"}
@@ -193,115 +178,120 @@ export default function UserPage() {
                 data-testid="loader"
               />
             </Loader>
-          :
-          <PageContent>
-            <TimelineContainer isModalVisible={isModalVisible}>
-              <UserTitle>
-                <div className="infoUser">
-                  <img src={user.image} alt="" />
-                  <span>{user.username}'s posts</span>
-                </div>
-                {
-                  userId === Number(id) ?
-                  ""
-                  :
-                  followOrUnfollow ? 
-                                    <button 
-                                      className={`unfollow ${loading && loading === true ? "disabled_button" : ""}`} 
-                                      onClick={handleFollow}
-                                      disabled={loading && loading === true ? true : false}
-                                    >
-                                      {loading && loading === true ? (
-                                        <BeatLoader
-                                          color={"#1877F2"}
-                                          loading={loading}
-                                          cssOverride={""}
-                                          size={10}
-                                          aria-label="Loading Spinner"
-                                          data-testid="loader"
-                                        />
-                                      ) : (
-                                        "Unfollow"
-                                      )}
-                                    </button>
-                                  :
-                                    <button 
-                                      className={`follow ${loading && loading === true ? "disabled_button" : ""}`} 
-                                      onClick={handleFollow}
-                                      disabled={loading && loading === true ? true : false}
-                                    >
-                                      {loading && loading === true ? (
-                                        <BeatLoader
-                                          color={"#FFFFFF"}
-                                          loading={loading}
-                                          cssOverride={""}
-                                          size={10}
-                                          aria-label="Loading Spinner"
-                                          data-testid="loader"
-                                        />
-                                      ) : (
-                                        "Follow"
-                                      )}
-                                    </button>
-                }
-              </UserTitle>
-              <InfiniteScroll
-                pageStart={0}
-                loadMore={morePosts}
-                hasMore={areMorePosts}
-                loader={<Warning key={0}>Loading more posts...</Warning>}>
-                <PostsSection>
-                  {loader ? (
-                    <>
-                      <HashLoader
-                        color="#ffffff"
-                        loading={loader}
-                        cssOverride={true}
-                        size={50}
-                      />
-                      <Message>Loading</Message>
-                    </>
-                  ) : error ? (
-                    <Message>{error}</Message>
-                  ) : user.posts?.length === 0 ? (
-                    <Message>There are no posts yet</Message>
-                  ) : (
-                    user.posts?.map((value) => (
-                      <Post
-                        key={value.id}
-                        id={value.id}
-                        username={value.username}
-                        userId={value.user_id}
-                        image={value.image}
-                        link={value.link}
-                        description={value.description}
-                        likes={value.likes}
-                        hashtags={value.hashtags}
-                        comments={value.comments}
-                        isModalVisible={isModalVisible}
-                        setIsModalVisible={setIsModalVisible}
-                        setPostIdDelete={setPostIdDelete}
-                      />
-                    ))
-                  )}
-                </PostsSection>
-              </InfiniteScroll>
-              {isModalVisible ? (
-                <DeleteModal
-                  isModalVisible={isModalVisible}
-                  setIsModalVisible={setIsModalVisible}
-                  postIdDelete={postIdDelete}
-                  setPostIdDelete={setPostIdDelete}
-                />
-              ) : (
-                <></>
-              )}
-            </TimelineContainer>
-            <TrendSideBar />
-        </PageContent>
+            :
+            <PageContent>
+              <TimelineContainer isModalVisible={isModalVisible}>
+                <UserTitle>
+                  <div className="infoUser">
+                    <img src={user.image} alt="" />
+                    <span>{user.username}'s posts</span>
+                  </div>
+                  {
+                    userId === Number(id) ?
+                      ""
+                      :
+                      followOrUnfollow ?
+                        <button
+                          className={`unfollow ${loading && loading === true ? "disabled_button" : ""}`}
+                          onClick={handleFollow}
+                          disabled={loading && loading === true ? true : false}
+                        >
+                          {loading && loading === true ? (
+                            <BeatLoader
+                              color={"#1877F2"}
+                              loading={loading}
+                              cssOverride={""}
+                              size={10}
+                              aria-label="Loading Spinner"
+                              data-testid="loader"
+                            />
+                          ) : (
+                            "Unfollow"
+                          )}
+                        </button>
+                        :
+                        <button
+                          className={`follow ${loading && loading === true ? "disabled_button" : ""}`}
+                          onClick={handleFollow}
+                          disabled={loading && loading === true ? true : false}
+                        >
+                          {loading && loading === true ? (
+                            <BeatLoader
+                              color={"#FFFFFF"}
+                              loading={loading}
+                              cssOverride={""}
+                              size={10}
+                              aria-label="Loading Spinner"
+                              data-testid="loader"
+                            />
+                          ) : (
+                            "Follow"
+                          )}
+                        </button>
+                  }
+                </UserTitle>
+                <InfiniteScroll
+                  pageStart={0}
+                  loadMore={morePosts}
+                  hasMore={areMorePosts}
+                  loader={<Warning key={0}>Loading more posts...</Warning>}>
+                  <PostsSection>
+                    {loader ? (
+                      <>
+                        <HashLoader
+                          color="#ffffff"
+                          loading={loader}
+                          cssOverride={true}
+                          size={50}
+                        />
+                        <Message>Loading</Message>
+                      </>
+                    ) : error ? (
+                      <Message>{error}</Message>
+                    ) : user.posts?.length === 0 ? (
+                      <Message>There are no posts yet</Message>
+                    ) : (
+                      user.posts?.map((value, index) => (
+                        <Post
+                          key={index}
+                          id={value.id}
+                          username={value.username}
+                          userId={value.user_id}
+                          image={value.image}
+                          link={value.link}
+                          description={value.description}
+                          hashtags={value.hashtags}
+                          likes={value.likes}
+                          comments={value.comments}
+                          repostsNumber={value.repost_count}
+                          sharedById={value.shared_by_id}
+                          sharedByUsername={value.shared_by_username}
+                          setModalType={setModalType}
+                          isModalVisible={isModalVisible}
+                          setIsModalVisible={setIsModalVisible}
+                          setPostId={setPostId}
+                        />
+                      ))
+                    )}
+                  </PostsSection>
+                </InfiniteScroll>
+                {isModalVisible ? (
+                  <Modal
+                    isModalVisible={isModalVisible}
+                    setIsModalVisible={setIsModalVisible}
+                    postId={postId}
+                    setPostId={setPostId}
+                    modalType={modalType}
+                  />
+                ) : (
+                  <></>
+                )}
+              </TimelineContainer>
+              <TrendSideBar />
+            </PageContent>
         }
       </MainWrapper>
-    </Overlap>
+    </Overlap >
   );
 }
 

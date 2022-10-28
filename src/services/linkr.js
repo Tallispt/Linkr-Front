@@ -17,7 +17,7 @@ function createHeaders() {
   return config;
 }
 
-function getHashtagsPosts(hashtag,cut) {
+function getHashtagsPosts(hashtag, cut) {
   const config = createHeaders();
   const promise = axios.get(
     `${process.env.REACT_APP_API_BASE_URL}/hashtag/${hashtag}?cut=${cut}`,
@@ -80,7 +80,7 @@ async function deletePost(id) {
   );
 }
 
-function getUserPosts(id,cut) {
+function getUserPosts(id, cut) {
   const config = createHeaders();
   const promise = axios.get(
     `${process.env.REACT_APP_API_BASE_URL}/user/${id}?cut=${cut}`,
@@ -175,6 +175,15 @@ async function getFollowers() {
   return promise;
 }
 
+async function newRepost(postId) {
+  const config = createHeaders();
+  const promise = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/share/${postId}`, {},
+    config
+  );
+  return promise;
+}
+
 export {
   handleTextAreaHeight,
   newPost,
@@ -193,5 +202,6 @@ export {
   follow,
   unfollow,
   verifyFollowers,
-  getFollowers
+  getFollowers,
+  newRepost
 }

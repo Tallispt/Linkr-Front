@@ -8,6 +8,7 @@ import { RiDeleteBin7Fill } from "react-icons/ri";
 import { ReactTagify } from "react-tagify";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { IoChatbubblesOutline, IoEllipsisHorizontal } from "react-icons/io5";
+import { TbRepeat } from "react-icons/tb"
 import EditableInput from "./EditableInput";
 import { dislikePost, likePost } from "../services/linkr";
 import { device } from "../common/breakpoint";
@@ -23,9 +24,13 @@ export default function Post({
   hashtags,
   likes,
   comments,
+  repostsNumber,
+  sharedById,
+  sharedByUsername,
+  setModalType,
   isModalVisible,
   setIsModalVisible,
-  setPostIdDelete,
+  setPostId,
 }) {
   const user = JSON.parse(localStorage.getItem("linkr"));
 
@@ -113,6 +118,21 @@ export default function Post({
 
   return (
     <PostWrapper>
+      {
+        sharedById
+          ? <RepostTopWrapper>
+            <TbRepeat />
+            Reposted by
+            {
+              sharedById === userId
+                ? <strong>you</strong>
+                : <Link to={`/user/${sharedById}`}>
+                  <strong>{sharedByUsername}</strong>
+                </Link>
+            }
+          </RepostTopWrapper>
+          : null
+      }
       <Container>
         <LeftWrapper>
           <Link to={`/user/${userId}`}>
@@ -153,7 +173,7 @@ export default function Post({
             className="tooltip"
           />
           <CommentWrapper onClick={() => setShowComments(!showComments)}>
-            <div>
+            <div >
               <IoChatbubblesOutline />
               <IoEllipsisHorizontal />
             </div>
@@ -163,26 +183,35 @@ export default function Post({
                 : `${comments.length} comment`}
             </p>
           </CommentWrapper>
+          <RepostWrapper >
+            <TbRepeat
+              cursor="pointer"
+              onClick={() => {
+                setPostId(id)
+                setModalType('repostType')
+                setIsModalVisible(!isModalVisible)
+              }}
+            />
+            <p>{repostsNumber > 1
+              ? `${repostsNumber} re-posts`
+              : `${repostsNumber} re-post`
+            }</p>
+          </RepostWrapper>
         </LeftWrapper>
         <ContentWrapper>
-          <TopWrapper>
+          <TopWrapper user={user.username} username={username}>
             <Link to={`/user/${userId}`}>
               <h2>{username}</h2>
             </Link>
             <span>
-              {user.username === username ? (
-                <>
-                  <TiPencil onClick={() => setIsEditing(!isEditing)} />
-                  <RiDeleteBin7Fill
-                    onClick={() => {
-                      setIsModalVisible(!isModalVisible);
-                      setPostIdDelete(id);
-                    }}
-                  />
-                </>
-              ) : (
-                <></>
-              )}
+              <TiPencil onClick={() => setIsEditing(!isEditing)} />
+              <RiDeleteBin7Fill
+                onClick={() => {
+                  setPostId(id)
+                  setModalType('deleteType')
+                  setIsModalVisible(!isModalVisible);
+                }}
+              />
             </span>
           </TopWrapper>
           {!isEditing ? (
@@ -223,7 +252,7 @@ export default function Post({
         postUser={username}
         showComments={showComments}
       />
-    </PostWrapper>
+    </PostWrapper >
   );
 }
 
@@ -232,6 +261,13 @@ const PostWrapper = styled.div`
   min-height: 240px;
   border-radius: 16px;
   background-color: #1e1e1e;
+  
+  strong {
+    color: #FFFFFF;
+    margin-left: 0.18rem;
+    font-weight: bold;
+  }
+
   @media screen and (${device.tablet}) {
     min-height: 200px;
     border-radius: 0;
@@ -262,6 +298,7 @@ const LeftWrapper = styled.div`
   align-items: center;
   min-width: 86px;
   max-width: 86px;
+  gap: 15px;
   img {
     width: 50px;
     height: 50px;
@@ -304,9 +341,9 @@ const LikeWrapper = styled.div`
 `;
 
 const CommentWrapper = styled(LikeWrapper)`
-  margin-top: 15px;
   div {
     position: relative;
+    cursor: pointer;
   }
   svg {
     font-size: 22px;
@@ -319,6 +356,17 @@ const CommentWrapper = styled(LikeWrapper)`
     left: 6px;
   }
 `;
+
+const RepostWrapper = styled(LikeWrapper)``
+
+const RepostTopWrapper = styled.div`
+  color: #FFFFFF;
+  padding: 10px 13px;
+
+  svg {
+    margin-right: 0.5rem;
+  }
+`
 
 const ContentWrapper = styled.div`
   width: 100%;
@@ -381,15 +429,15 @@ const TopWrapper = styled.span`
   color: #ffffff;
   display: flex;
   justify-content: space-between;
-
+  
   h2 {
     font-size: 19px;
     color: #ffffff;
     margin-bottom: 8px;
   }
-
+  
   span {
-    display: flex;
+    display: ${props => props.user === props.username ? 'flex' : 'none'};
     gap: 0.5rem;
     font-size: 20px;
   }

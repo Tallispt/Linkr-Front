@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { device } from "../common/breakpoint";
 import UserContext from "../context/userContext";
 import { getFollowers, getTimeline } from "../services/linkr";
-import DeleteModal from "./DeleteModal";
+import Modal from "./Modal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 import InfiniteScroll from 'react-infinite-scroller';
@@ -15,7 +15,8 @@ export function Timeline() {
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [postIdDelete, setPostIdDelete] = useState();
+  const [modalType, setModalType] = useState('repostType')
+  const [postId, setPostId] = useState();
   const { refresh } = useContext(UserContext);
   const [cut, setCut] = useState(0);
   const [areMorePosts, setAreMorePosts] = useState(true);
@@ -26,7 +27,7 @@ export function Timeline() {
 
     const fetchData = async () => {
       try {
-        
+
         const timelineData = (await getTimeline(0)).data;
         const followersData = (await getFollowers()).data;
         setPosts(timelineData);
@@ -35,8 +36,8 @@ export function Timeline() {
         setCut(cut + timelineData.length);
         if (timelineData.length === 0) {
           setAreMorePosts(false);
-      }
-      
+        }
+
       } catch (error) {
         console.log(error.message);
 
@@ -51,15 +52,15 @@ export function Timeline() {
   }, [refresh]);
 
   async function morePosts() {
-  
+
     try {
       const newData = (await getTimeline(cut)).data;
       setLoader(false);
 
       setPosts([...posts, ...newData]);
       console.log(cut);
-        if (newData.length === 0) {
-          setAreMorePosts(false);
+      if (newData.length === 0) {
+        setAreMorePosts(false);
       }
       setCut(cut + newData.length);
     } catch (error) {
@@ -70,67 +71,72 @@ export function Timeline() {
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     }
-   
-   
-}
+
+
+  }
 
   return (
-    <TimelineContainer isModalVisible={isModalVisible}>
+    <TimelineContainer >
       <TimelineTitle>timeline</TimelineTitle>
       <PublishPost />
       <InfiniteScroll
-     pageStart={0}
-     loadMore={morePosts}
-     hasMore={areMorePosts}
-     loader={<Warning key={0}>Loading more posts...</Warning>}
+        pageStart={0}
+        loadMore={morePosts}
+        hasMore={areMorePosts}
+        loader={<Warning key={0}>Loading more posts...</Warning>}
       >
-      <PostsSection>
-       
-        {loader ? (
-          <>
-            <HashLoader
-              color="#ffffff"
-              loading={loader}
-              cssOverride={true}
-              size={50}
-            />
-            <Message>Loading</Message>
-          </>
-        ) : error ? (
-          <Message>{error}</Message>
-        ) : posts.length === 0 && followers.length === 0 ? (
-          <Message>
-            You don't follow anyone yet. Search for new friends!
-          </Message>
-        ) : posts.length === 0 && followers.length !== 0 ? (
-          <Message>No posts found from your friends.</Message>
-        ) : (
-          posts.map((value) => (
-            <Post
-              key={value.id}
-              id={value.id}
-              username={value.username}
-              userId={value.user_id}
-              image={value.image}
-              link={value.link}
-              description={value.description}
-              hashtags={value.hashtags}
-              likes={value.likes}
-              comments={value.comments}
-              isModalVisible={isModalVisible}
-              setIsModalVisible={setIsModalVisible}
-              setPostIdDelete={setPostIdDelete}
-            />
-          ))
-        )}
-        
-      </PostsSection></InfiniteScroll>
+        <PostsSection>
+
+          {loader ? (
+            <>
+              <HashLoader
+                color="#ffffff"
+                loading={loader}
+                cssOverride={true}
+                size={50}
+              />
+              <Message>Loading</Message>
+            </>
+          ) : error ? (
+            <Message>{error}</Message>
+          ) : posts.length === 0 && followers.length === 0 ? (
+            <Message>
+              You don't follow anyone yet. Search for new friends!
+            </Message>
+          ) : posts.length === 0 && followers.length !== 0 ? (
+            <Message>No posts found from your friends.</Message>
+          ) : (
+            posts.map((value, index) => (
+              <Post
+                key={index}
+                id={value.id}
+                username={value.username}
+                userId={value.user_id}
+                image={value.image}
+                link={value.link}
+                description={value.description}
+                hashtags={value.hashtags}
+                likes={value.likes}
+                comments={value.comments}
+                repostsNumber={value.repost_count}
+                sharedById={value.shared_by_id}
+                sharedByUsername={value.shared_by_username}
+                setModalType={setModalType}
+                isModalVisible={isModalVisible}
+                setIsModalVisible={setIsModalVisible}
+                setPostId={setPostId}
+              />
+            ))
+          )}
+
+        </PostsSection></InfiniteScroll>
       {isModalVisible ? (
-        <DeleteModal
+        <Modal
           isModalVisible={isModalVisible}
           setIsModalVisible={setIsModalVisible}
-          postIdDelete={postIdDelete}
-          setPostIdDelete={setPostIdDelete}
+          postId={postId}
+          setPostId={setPostId}
+          modalType={modalType}
         />
       ) : (
         <></>
