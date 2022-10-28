@@ -1,7 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../context/userContext";
-import { commentOnPost, handleTextAreaHeight } from "../services/linkr";
+import {
+  commentOnPost,
+  getFollowers,
+  handleTextAreaHeight,
+} from "../services/linkr";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 
 const Comments = ({ id, comments, postUser, showComments }) => {
@@ -10,6 +14,16 @@ const Comments = ({ id, comments, postUser, showComments }) => {
   const [following, setFollowing] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("linkr"));
+
+  useEffect(() => {
+    getFollowers()
+      .then((res) => {
+        setFollowing(res.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
 
   async function handleSubmit() {
     const body = { comment };
@@ -26,7 +40,7 @@ const Comments = ({ id, comments, postUser, showComments }) => {
       setRefresh(!refresh);
     }
   }
-
+  console.log(following);
   return (
     <Wrapper showComments={showComments}>
       {comments.map((value) => (
@@ -38,7 +52,7 @@ const Comments = ({ id, comments, postUser, showComments }) => {
               <span>
                 {value.username === postUser
                   ? "• post's author"
-                  : following.includes(value.username)
+                  : following.some((v) => v.username === value.username)
                   ? "• following"
                   : ""}
               </span>
