@@ -56,6 +56,7 @@ export default function UserPage() {
       .then((res) => {
         setUser(res.data);
         setPosts(res.data.posts);
+        setCut(res.data.posts?.length)
         setLoader(false);
       })
       .catch((err) => {

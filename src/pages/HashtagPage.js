@@ -62,6 +62,7 @@ export default function HashtagPage() {
     getHashtagsPosts(hashtag, 0)
       .then((res) => {
         setPosts(res.data);
+        setCut(res.data.length)
         setLoader(false);
       })
       .catch((err) => {
