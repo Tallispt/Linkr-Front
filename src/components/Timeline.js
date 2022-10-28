@@ -96,6 +96,8 @@ export function Timeline() {
       console.log(newData);
       console.log(cut);
       console.log(lastPostsUpdate);
+
+
     } catch (error) {
       console.log(error.message);
     }
