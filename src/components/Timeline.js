@@ -14,13 +14,15 @@ export function Timeline() {
   const [followers, setFollowers] = useState([]);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalType, setModalType] = useState('repostType')
-  const [postId, setPostId] = useState();
-  const { refresh } = useContext(UserContext);
+
   const [cut, setCut] = useState(0);
   const [areMorePosts, setAreMorePosts] = useState(true);
 
+  const [postId, setPostId] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalType, setModalType] = useState('repostType')
+
+  const { refresh } = useContext(UserContext);
 
   useEffect(() => {
     setLoader(true);
@@ -49,7 +51,7 @@ export function Timeline() {
     };
 
     fetchData();
-  }, [refresh, cut]);
+  }, [refresh]);
 
   async function morePosts() {
 
@@ -58,7 +60,6 @@ export function Timeline() {
       setLoader(false);
 
       setPosts([...posts, ...newData]);
-      console.log(cut);
       if (newData.length === 0) {
         setAreMorePosts(false);
       }

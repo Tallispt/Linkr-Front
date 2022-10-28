@@ -23,15 +23,34 @@ export default function HashtagPage() {
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [postId, setPostId] = useState();
-  const [modalType, setModalType] = useState('repostType')
+  const [postIdDelete, setPostIdDelete] = useState();
+  const [alterIcon, setAlterIcon] = useState(false);
+  const [cut, setCut] = useState(0);
+  const [areMorePosts, setAreMorePosts] = useState(true);
 
   const { hashtag } = useParams();
   const { refresh, setFollowing, following } = useContext(UserContext);
 
-  const [alterIcon, setAlterIcon] = useState(false);
-  const [cut, setCut] = useState(0);
-  const [areMorePosts, setAreMorePosts] = useState(true);
+
+  // useEffect(() => {
+  //   (async() => {
+  //       try {
+  //         const response = (await verifyFollowers()).data;
+
+  //         const { followers_id } = response;
+
+  //         setFollowing([...followers_id])
+
+  //     } catch (error) {
+
+  //         console.log(error);
+
+  //     }
+  //   })();
+  // }, [setFollowing]);
+
+  // console.log(following);
+
 
   function handleIcon() {
     if (alterIcon === true) setAlterIcon(false);
@@ -39,14 +58,6 @@ export default function HashtagPage() {
 
   useEffect(() => {
     setLoader(true);
-
-    verifyFollowers()
-      .then(response => {
-        const { followers_id } = response.data;
-        setFollowing([...followers_id])
-      })
-      .catch(error => console.log(error))
-
     getHashtagsPosts(hashtag, cut)
       .then((res) => {
         setPosts(res.data);
@@ -60,7 +71,6 @@ export default function HashtagPage() {
         );
       });
   }, [hashtag, refresh]);
-
   async function morePosts() {
 
     try {
@@ -126,16 +136,12 @@ export default function HashtagPage() {
                       image={value.image}
                       link={value.link}
                       description={value.description}
-                      hashtags={value.hashtags}
                       likes={value.likes}
+                      hashtags={value.hashtags}
                       comments={value.comments}
-                      repostsNumber={value.repost_count}
-                      sharedById={value.shared_by_id}
-                      sharedByUsername={value.shared_by_username}
-                      setModalType={setModalType}
                       isModalVisible={isModalVisible}
                       setIsModalVisible={setIsModalVisible}
-                      setPostId={setPostId}
+                      setPostIdDelete={setPostIdDelete}
                     />
                   ))
                 )}
@@ -145,9 +151,8 @@ export default function HashtagPage() {
               <Modal
                 isModalVisible={isModalVisible}
                 setIsModalVisible={setIsModalVisible}
-                postId={postId}
-                setPostId={setPostId}
-                modalType={modalType}
+                postIdDelete={postIdDelete}
+                setPostIdDelete={setPostIdDelete}
               />
             ) : (
               <></>
