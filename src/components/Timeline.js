@@ -93,9 +93,12 @@ export function Timeline() {
       console.log(newData.length);
       setNumberOfNewposts(numberOfNewposts + newData.length);
       setCut(cut + newData.length);
+
       console.log(newData);
       console.log(cut);
       console.log(lastPostsUpdate);
+
+
     } catch (error) {
       console.log(error.message);
     }
