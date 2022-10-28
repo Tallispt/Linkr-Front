@@ -48,7 +48,7 @@ export default function UserPage() {
     setLoadingPage(false);
     setLoading(false);
     userId = JSON.parse(localStorage.getItem("linkr")).id;
-  }, [id, refresh]);
+  }, [id]);
 
   useEffect(() => {
     setLoader(true);
@@ -66,7 +66,7 @@ export default function UserPage() {
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
-  }, [id, refresh, cut]);
+  }, [id, refresh]);
 
   async function VerifyFollower(id) {
     try {
