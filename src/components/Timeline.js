@@ -7,7 +7,7 @@ import { getFollowers, getTimeline } from "../services/linkr";
 import Modal from "./Modal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
-import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from "react-infinite-scroller";
 
 export function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -15,19 +15,17 @@ export function Timeline() {
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalType, setModalType] = useState('repostType')
+  const [modalType, setModalType] = useState("repostType");
   const [postId, setPostId] = useState();
   const { refresh } = useContext(UserContext);
   const [cut, setCut] = useState(0);
   const [areMorePosts, setAreMorePosts] = useState(true);
 
-
   useEffect(() => {
     setLoader(true);
-
+    setAreMorePosts(true);
     const fetchData = async () => {
       try {
-
         const timelineData = (await getTimeline(0)).data;
         const followersData = (await getFollowers()).data;
         setPosts(timelineData);
@@ -37,10 +35,9 @@ export function Timeline() {
         if (timelineData.length === 0) {
           setAreMorePosts(false);
         }
-
       } catch (error) {
         console.log(error.message);
-
+        setAreMorePosts(false);
         setLoader(false);
         setError(
           "An error occured while trying to fetch the posts, please refresh the page"
@@ -52,7 +49,6 @@ export function Timeline() {
   }, [refresh]);
 
   async function morePosts() {
-
     try {
       const newData = (await getTimeline(cut)).data;
       setLoader(false);
@@ -71,12 +67,10 @@ export function Timeline() {
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     }
-
-
   }
 
   return (
-    <TimelineContainer >
+    <TimelineContainer>
       <TimelineTitle>timeline</TimelineTitle>
       <PublishPost />
       <InfiniteScroll
@@ -86,7 +80,6 @@ export function Timeline() {
         loader={<Warning key={0}>Loading more posts...</Warning>}
       >
         <PostsSection>
-
           {loader ? (
             <>
               <HashLoader
@@ -128,8 +121,8 @@ export function Timeline() {
               />
             ))
           )}
-
-        </PostsSection></InfiniteScroll>
+        </PostsSection>
+      </InfiniteScroll>
       {isModalVisible ? (
         <Modal
           isModalVisible={isModalVisible}
@@ -187,15 +180,15 @@ export const Message = styled.h6`
   max-width: 300px;
 `;
 const Warning = styled.div`
-    color:white;
-    width: 100%;
-    margin-bottom: 200px;    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Lato;
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 26px;
-    letter-spacing: 0.05em;
-`
+  color: white;
+  width: 100%;
+  margin-bottom: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Lato;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0.05em;
+`;

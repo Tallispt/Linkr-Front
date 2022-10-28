@@ -15,7 +15,7 @@ import { getHashtagsPosts } from "../services/linkr";
 import TrendSideBar from "../components/TrendSideBar";
 import Modal from "../components/Modal";
 import UserContext from "../context/userContext";
-import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from "react-infinite-scroller";
 import { verifyFollowers } from "../services/linkr";
 
 export default function HashtagPage() {
@@ -24,11 +24,10 @@ export default function HashtagPage() {
   const [loader, setLoader] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [postId, setPostId] = useState();
-  const [modalType, setModalType] = useState('repostType')
+  const [modalType, setModalType] = useState("repostType");
 
   const { hashtag } = useParams();
   const { refresh, setFollowing, following } = useContext(UserContext);
-
 
   useEffect(() => {
     (async () => {
@@ -37,12 +36,9 @@ export default function HashtagPage() {
 
         const { followers_id } = response;
 
-        setFollowing([...followers_id])
-
+        setFollowing([...followers_id]);
       } catch (error) {
-
         console.log(error);
-
       }
     })();
   }, [setFollowing]);
@@ -59,22 +55,26 @@ export default function HashtagPage() {
 
   useEffect(() => {
     setLoader(true);
+    setAreMorePosts(true);
     getHashtagsPosts(hashtag, 0)
       .then((res) => {
         setPosts(res.data);
-        setCut(res.data.length)
+        setCut(res.data.length);
+        if (res.data.length === 0) {
+          setAreMorePosts(false);
+        }
         setLoader(false);
       })
       .catch((err) => {
         console.log(err.message);
         setLoader(false);
+        setAreMorePosts(false);
         setError(
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
   }, [hashtag, refresh]);
   async function morePosts() {
-
     try {
       const newData = (await getHashtagsPosts(hashtag, cut)).data;
       setLoader(false);
@@ -93,8 +93,6 @@ export default function HashtagPage() {
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     }
-
-
   }
 
   return (
@@ -196,15 +194,15 @@ const PageContent = styled.div`
   min-height: calc(100vh - 72px);
 `;
 const Warning = styled.div`
-    color:white;
-    width: 100%;
-    margin-bottom: 200px;    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Lato;
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 26px;
-    letter-spacing: 0.05em;
-`
+  color: white;
+  width: 100%;
+  margin-bottom: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Lato;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0.05em;
+`;
