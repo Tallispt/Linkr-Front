@@ -91,8 +91,8 @@ export function Timeline() {
       setLastPostsUpdate(time);
       const newData = (await getNewPosts(lastPostsUpdate)).data;
       console.log(newData.length);
-      setNumberOfNewposts(numberOfNewposts + newData.length);
-      setCut(cut + newData.length);
+      setNumberOfNewposts((num)=>{return num + newData.length});
+      setCut((newcut) =>{return newcut+ newData.length});
       console.log(newData);
       console.log(cut);
       console.log(lastPostsUpdate);

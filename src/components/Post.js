@@ -118,18 +118,19 @@ export default function Post({
 
   return (
     <PostWrapper>
-      {
+
+    {
         sharedById
           ? <RepostTopWrapper>
             <TbRepeat />
             Reposted by
-            {
-              sharedById === userId
-                ? <strong>you</strong>
-                : <Link to={`/user/${sharedById}`}>
-                  <strong>{sharedByUsername}</strong>
-                </Link>
-            }
+            <Link to={`/user/${sharedById}`}>
+              {
+                sharedById === user.id
+                  ? <strong>you</strong>
+                  : <strong>{sharedByUsername}</strong>
+              }
+            </Link>
           </RepostTopWrapper>
           : null
       }
