@@ -15,9 +15,7 @@ import Modal from "./Modal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 import InfiniteScroll from "react-infinite-scroller";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import advancedFormat from "dayjs/plugin/advancedFormat";
+
 
 export function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -32,8 +30,7 @@ export function Timeline() {
   const [areMorePosts, setAreMorePosts] = useState(true);
 
   const [numberOfNewposts, setNumberOfNewposts] = useState(0);
-  dayjs.extend(utc);
-  dayjs.extend(advancedFormat);
+
   const [lastPostsUpdate, setLastPostsUpdate] = useState();
 
   useEffect(() => {
