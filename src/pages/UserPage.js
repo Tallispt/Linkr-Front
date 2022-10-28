@@ -251,7 +251,7 @@ export default function UserPage() {
                     ) : user.posts?.length === 0 ? (
                       <Message>There are no posts yet</Message>
                     ) : (
-                      user.posts?.map((value) => (
+                      user.posts?.map((value, index) => (
                         <Post
                           key={index}
                           id={value.id}
