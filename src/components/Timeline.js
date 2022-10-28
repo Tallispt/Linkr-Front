@@ -1,13 +1,18 @@
 import { useEffect, useState, useContext } from "react";
 import { HashLoader } from "react-spinners";
 import styled from "styled-components";
+import { BsArrowCounterclockwise } from "react-icons/bs";
+import useInterval from "use-interval";
 import { device } from "../common/breakpoint";
 import UserContext from "../context/userContext";
-import { getFollowers, getTimeline } from "../services/linkr";
+import { getFollowers, getNewPosts, getTimeline } from "../services/linkr";
 import Modal from "./Modal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 import InfiniteScroll from "react-infinite-scroller";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import advancedFormat from "dayjs/plugin/advancedFormat";
 
 export function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -17,11 +22,17 @@ export function Timeline() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalType, setModalType] = useState("repostType");
   const [postId, setPostId] = useState();
-  const { refresh } = useContext(UserContext);
+  const { refresh, setRefresh } = useContext(UserContext);
   const [cut, setCut] = useState(0);
   const [areMorePosts, setAreMorePosts] = useState(true);
 
+  const [numberOfNewposts, setNumberOfNewposts] = useState(0);
+  dayjs.extend(utc);
+  dayjs.extend(advancedFormat);
+  const [lastPostsUpdate, setLastPostsUpdate] = useState(dayjs().format("x"));
+
   useEffect(() => {
+    window.scrollTo(0, 0);
     setLoader(true);
     setAreMorePosts(true);
     const fetchData = async () => {
@@ -68,6 +79,20 @@ export function Timeline() {
     }
   }
 
+  useInterval(async () => {
+    try {
+      const newData = (await getNewPosts(lastPostsUpdate)).data;
+      console.log(newData.length);
+      setNumberOfNewposts(numberOfNewposts + newData.length);
+      setCut(cut + newData.length);
+      let now = dayjs().format("x");
+      console.log(now);
+      setLastPostsUpdate(now);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, 15000);
+
   return (
     <TimelineContainer>
       <TimelineTitle>timeline</TimelineTitle>
@@ -79,6 +104,19 @@ export function Timeline() {
         loader={<Warning key={0}>Loading more posts...</Warning>}
       >
         <PostsSection>
+          {numberOfNewposts === 0 ? (
+            ""
+          ) : (
+            <WarningNewPosts
+              onClick={() => {
+                setRefresh(!refresh);
+                setNumberOfNewposts(0);
+              }}
+            >
+              {numberOfNewposts} new posts, load more!
+              <BsArrowCounterclockwise color="#FFFFFF" />
+            </WarningNewPosts>
+          )}
           {loader ? (
             <>
               <HashLoader
@@ -190,4 +228,19 @@ const Warning = styled.div`
   font-weight: 400;
   line-height: 26px;
   letter-spacing: 0.05em;
+`;
+
+const WarningNewPosts = styled.div`
+  height: 61px;
+  width: 100%;
+  left: 241px;
+  top: 481px;
+  border-radius: 16px;
+  background-color: #1877f2;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 16px;
 `;

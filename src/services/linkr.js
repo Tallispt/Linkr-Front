@@ -187,7 +187,17 @@ async function getFollowers() {
 async function newRepost(postId) {
   const config = createHeaders();
   const promise = await axios.post(
-    `${process.env.REACT_APP_API_BASE_URL}/share/${postId}`, {},
+    `${process.env.REACT_APP_API_BASE_URL}/share/${postId}`,
+    {},
+    config
+  );
+  return promise;
+}
+
+async function getNewPosts(time) {
+  const config = createHeaders();
+  const promise = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/timeline?time=${time}`,
     config
   );
   return promise;
@@ -213,5 +223,6 @@ export {
   unfollow,
   verifyFollowers,
   getFollowers,
-  newRepost
-}
+  newRepost,
+  getNewPosts,
+};
