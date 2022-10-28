@@ -35,8 +35,9 @@ export function Timeline() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setNumberOfNewposts(0);
     setLoader(true);
-    setAreMorePosts(true);
+    setAreMorePosts(true); 
     const fetchData = async () => {
       try {
         const timelineData = (await getTimeline(0)).data;
@@ -92,6 +93,12 @@ export function Timeline() {
       console.log(newData.length);
       setNumberOfNewposts(numberOfNewposts + newData.length);
       setCut(cut + newData.length);
+
+      console.log(newData);
+      console.log(cut);
+      console.log(lastPostsUpdate);
+
+
     } catch (error) {
       console.log(error.message);
     }
