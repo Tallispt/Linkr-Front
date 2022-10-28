@@ -5,14 +5,17 @@ import { BsArrowCounterclockwise } from "react-icons/bs";
 import useInterval from "use-interval";
 import { device } from "../common/breakpoint";
 import UserContext from "../context/userContext";
-import { getFollowers, getNewPosts, getTimeline } from "../services/linkr";
+import {
+  getFollowers,
+  getNewPosts,
+  getTime,
+  getTimeline,
+} from "../services/linkr";
 import Modal from "./Modal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 import InfiniteScroll from "react-infinite-scroller";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import advancedFormat from "dayjs/plugin/advancedFormat";
+
 
 export function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -27,9 +30,8 @@ export function Timeline() {
   const [areMorePosts, setAreMorePosts] = useState(true);
 
   const [numberOfNewposts, setNumberOfNewposts] = useState(0);
-  dayjs.extend(utc);
-  dayjs.extend(advancedFormat);
-  const [lastPostsUpdate, setLastPostsUpdate] = useState(dayjs().format("x"));
+
+  const [lastPostsUpdate, setLastPostsUpdate] = useState();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,6 +41,8 @@ export function Timeline() {
       try {
         const timelineData = (await getTimeline(0)).data;
         const followersData = (await getFollowers()).data;
+        const time = (await getTime()).data;
+        setLastPostsUpdate(time);
         setPosts(timelineData);
         setFollowers(followersData);
         setLoader(false);
@@ -82,13 +86,12 @@ export function Timeline() {
 
   useInterval(async () => {
     try {
+      const time = (await getTime()).data;
+      setLastPostsUpdate(time);
       const newData = (await getNewPosts(lastPostsUpdate)).data;
       console.log(newData.length);
       setNumberOfNewposts(numberOfNewposts + newData.length);
       setCut(cut + newData.length);
-      let now = dayjs().format("x");
-      console.log(now);
-      setLastPostsUpdate(now);
     } catch (error) {
       console.log(error.message);
     }

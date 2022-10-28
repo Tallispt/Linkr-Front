@@ -194,6 +194,15 @@ async function getNewPosts(time) {
   return promise;
 }
 
+async function getTime() {
+  const config = createHeaders();
+  const promise = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/time`,
+    config
+  );
+  return promise;
+}
+
 export {
   handleTextAreaHeight,
   newPost,
@@ -215,4 +224,5 @@ export {
   getFollowers,
   newRepost,
   getNewPosts,
+  getTime,
 };
