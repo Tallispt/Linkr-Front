@@ -54,7 +54,6 @@ export function Timeline() {
       setLoader(false);
 
       setPosts([...posts, ...newData]);
-      console.log(cut);
       if (newData.length === 0) {
         setAreMorePosts(false);
       }

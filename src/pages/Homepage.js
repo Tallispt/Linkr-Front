@@ -9,26 +9,23 @@ import { verifyFollowers } from "../services/linkr";
 export function Homepage() {
   const [alterIcon, setAlterIcon] = useState(false);
 
-  const { setFollowing, following } = useContext(UserContext);
+  const { setFollowing } = useContext(UserContext);
 
   useEffect(() => {
-    (async() => {
-        try {
-          const response = (await verifyFollowers()).data;
+    (async () => {
+      try {
+        const response = (await verifyFollowers()).data;
 
-          const { followers_id } = response;
+        const { followers_id } = response;
 
-          setFollowing([...followers_id])
-      
+        setFollowing([...followers_id])
+
       } catch (error) {
-      
-          console.log(error);
-      
+        console.log(error.message);
+
       }
     })();
   }, [setFollowing]);
-
-  console.log(following);
 
   function handleIcon() {
     if (alterIcon === true) setAlterIcon(false);

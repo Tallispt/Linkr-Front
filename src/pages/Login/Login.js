@@ -58,7 +58,7 @@ const Login = () => {
       setLoading(false);
       navigate("/timeline");
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       toast.error("Error. Try again later!");
       setLoading(false);
     }

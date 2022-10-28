@@ -27,7 +27,7 @@ export default function HashtagPage() {
   const [modalType, setModalType] = useState("repostType");
 
   const { hashtag } = useParams();
-  const { refresh, setFollowing, following } = useContext(UserContext);
+  const { refresh, setFollowing } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
@@ -38,12 +38,10 @@ export default function HashtagPage() {
 
         setFollowing([...followers_id]);
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
       }
     })();
   }, [setFollowing]);
-
-  console.log(following);
 
   const [alterIcon, setAlterIcon] = useState(false);
   const [cut, setCut] = useState(0);
@@ -80,7 +78,6 @@ export default function HashtagPage() {
       setLoader(false);
 
       setPosts([...posts, ...newData]);
-      console.log(cut);
       if (newData.length === 0) {
         setAreMorePosts(false);
       }

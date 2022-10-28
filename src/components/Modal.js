@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 import { HashLoader } from "react-spinners";
 
-import { deletePost, newRepost } from "../services/linkr";
+import { deletePost, deleteSharedPost, newRepost } from "../services/linkr";
 import { device } from "../common/breakpoint";
 import UserContext from "../context/userContext";
 
@@ -12,7 +12,6 @@ const Modal = ({
   postId,
   modalType
 }) => {
-
   const { refresh, setRefresh } = useContext(UserContext)
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,6 +22,12 @@ const Modal = ({
       confirmText: "Yes, delete it",
       errorText: "Post could not be deleted"
     },
+    deleteShareModalTheme: {
+      title: "Are you sure you want to delete this re-post?",
+      cancelText: "No, go back",
+      confirmText: "Yes, delete it",
+      errorText: "Re-post could not be deleted"
+    },
     repostModalTheme: {
       title: "Do you want to re-post this link?",
       cancelText: "No, cancel",
@@ -31,13 +36,29 @@ const Modal = ({
     }
   }
 
-  const theme = modalType === 'deleteType' ? modalTypes.deleteModalTheme : modalTypes.repostModalTheme
+  let theme
+  switch (true) {
+    case modalType === 'deleteType':
+      theme = modalTypes.deleteModalTheme
+      break;
+    case modalType === 'deleteShareType':
+      theme = modalTypes.deleteShareModalTheme
+      break;
+    case modalType === 'repostType':
+      theme = modalTypes.repostModalTheme
+      break;
+    default:
+      break;
+  }
 
   async function handleConfirm() {
     setIsLoading(!isLoading);
     try {
       if (modalType === "deleteType") {
         await deletePost(postId);
+      } if (modalType === 'deleteShareType') {
+        console.log('deleteShare')
+        await deleteSharedPost(postId)
       } else {
         await newRepost(postId)
       }
@@ -46,7 +67,7 @@ const Modal = ({
       setIsModalVisible(!isModalVisible);
       setRefresh(!refresh);
     } catch (error) {
-      console.log(error)
+      console.log(error.message)
       setIsModalVisible(!isModalVisible);
       alert(theme.errorText);
     }

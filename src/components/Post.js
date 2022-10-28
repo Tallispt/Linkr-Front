@@ -100,7 +100,7 @@ export default function Post({
         setDisabled(false);
       } catch (error) {
         setDisabled(false);
-        console.log(error);
+        console.log(error.message);
       }
     }
     if (option === "dislike" && disabled === false) {
@@ -111,7 +111,7 @@ export default function Post({
         setDisabled(false);
       } catch (error) {
         setDisabled(false);
-        console.log(error);
+        console.log(error.message);
       }
     }
   }
@@ -123,13 +123,13 @@ export default function Post({
           ? <RepostTopWrapper>
             <TbRepeat />
             Reposted by
-            {
-              sharedById === userId
-                ? <strong>you</strong>
-                : <Link to={`/user/${sharedById}`}>
-                  <strong>{sharedByUsername}</strong>
-                </Link>
-            }
+            <Link to={`/user/${sharedById}`}>
+              {
+                sharedById === user.id
+                  ? <strong>you</strong>
+                  : <strong>{sharedByUsername}</strong>
+              }
+            </Link>
           </RepostTopWrapper>
           : null
       }
@@ -199,7 +199,11 @@ export default function Post({
           </RepostWrapper>
         </LeftWrapper>
         <ContentWrapper>
-          <TopWrapper user={user.username} username={username}>
+          <TopWrapper
+            user={user.username}
+            username={username}
+            sharedByUsername={sharedByUsername}
+          >
             <Link to={`/user/${userId}`}>
               <h2>{username}</h2>
             </Link>
@@ -207,8 +211,8 @@ export default function Post({
               <TiPencil onClick={() => setIsEditing(!isEditing)} />
               <RiDeleteBin7Fill
                 onClick={() => {
-                  setPostId(id)
-                  setModalType('deleteType')
+                  !sharedById ? setPostId(id) : setPostId(sharedById)
+                  !sharedById ? setModalType('deleteType') : setModalType('deleteShareType')
                   setIsModalVisible(!isModalVisible);
                 }}
               />
@@ -303,7 +307,7 @@ const LeftWrapper = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin-bottom: 19px;
+    margin-bottom: 4px;
   }
   @media screen and (${device.tablet}) {
     min-width: 68px;
@@ -437,7 +441,7 @@ const TopWrapper = styled.span`
   }
   
   span {
-    display: ${props => props.user === props.username ? 'flex' : 'none'};
+    display: ${props => (props.user === props.username || props.user === props.sharedByUsername) ? 'flex' : 'none'};
     gap: 0.5rem;
     font-size: 20px;
   }
@@ -445,6 +449,9 @@ const TopWrapper = styled.span`
     cursor: pointer;
   }
 
+  svg:nth-child(1){
+    display: ${props => (props.user === props.sharedByUsername) ? 'none' : 'inehit'};;
+  }
   @media screen and (${device.tablet}) {
     h2 {
       font-size: 17px;

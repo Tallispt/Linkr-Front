@@ -46,8 +46,7 @@ const Registration = () => {
       navigate("/");
     } catch (error) {
       const { response } = error;
-
-      console.log(error);
+      console.log(error.message);
 
       if (response.data.message === "Usuário já cadastrado!") {
         toast.warn("Email entered already registered!");

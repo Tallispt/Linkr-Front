@@ -80,6 +80,15 @@ async function deletePost(id) {
   );
 }
 
+async function deleteSharedPost(id) {
+  const config = createHeaders();
+  return await axios.delete(
+    `
+  ${process.env.REACT_APP_API_BASE_URL}/share/${id}`, {},
+    config
+  );
+}
+
 function getUserPosts(id, cut) {
   const config = createHeaders();
   const promise = axios.get(
@@ -197,6 +206,7 @@ export {
   dislikePost,
   editPostDescription,
   deletePost,
+  deleteSharedPost,
   signUp,
   commentOnPost,
   follow,

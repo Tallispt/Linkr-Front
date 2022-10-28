@@ -62,8 +62,8 @@ export default function UserPage() {
         }
         setLoader(false);
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch((error) => {
+        console.log(error.message);
         setLoader(false);
         setAreMorePosts(false);
         setError(
@@ -81,7 +81,7 @@ export default function UserPage() {
       if (followers_id.includes(Number(id))) return setFollowOrUnfollow(true);
       else return setFollowOrUnfollow(false);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   }
 
@@ -132,7 +132,6 @@ export default function UserPage() {
     try {
       const newData = (await getUserPosts(id, cut)).data?.posts;
       setLoader(false);
-      console.log(newData);
 
       setPosts([...posts, ...newData]);
 
@@ -140,7 +139,6 @@ export default function UserPage() {
         setAreMorePosts(false);
       }
       setCut(cut + newData.length);
-      console.log(cut);
     } catch (error) {
       console.log(error.message);
 
@@ -179,9 +177,8 @@ export default function UserPage() {
                   ""
                 ) : followOrUnfollow ? (
                   <button
-                    className={`unfollow ${
-                      loading && loading === true ? "disabled_button" : ""
-                    }`}
+                    className={`unfollow ${loading && loading === true ? "disabled_button" : ""
+                      }`}
                     onClick={handleFollow}
                     disabled={loading && loading === true ? true : false}
                   >
@@ -200,9 +197,8 @@ export default function UserPage() {
                   </button>
                 ) : (
                   <button
-                    className={`follow ${
-                      loading && loading === true ? "disabled_button" : ""
-                    }`}
+                    className={`follow ${loading && loading === true ? "disabled_button" : ""
+                      }`}
                     onClick={handleFollow}
                     disabled={loading && loading === true ? true : false}
                   >
