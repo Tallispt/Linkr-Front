@@ -59,9 +59,10 @@ export default function HashtagPage() {
 
   useEffect(() => {
     setLoader(true);
-    getHashtagsPosts(hashtag, cut)
+    getHashtagsPosts(hashtag, 0)
       .then((res) => {
         setPosts(res.data);
+        setCut(res.data.length)
         setLoader(false);
       })
       .catch((err) => {

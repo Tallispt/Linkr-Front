@@ -33,7 +33,7 @@ export function Timeline() {
         setPosts(timelineData);
         setFollowers(followersData);
         setLoader(false);
-        setCut(cut + timelineData.length);
+        setCut(timelineData.length);
         if (timelineData.length === 0) {
           setAreMorePosts(false);
         }
