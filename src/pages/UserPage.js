@@ -52,12 +52,11 @@ export default function UserPage() {
 
   useEffect(() => {
     setLoader(true);
-    getUserPosts(id, cut)
+    getUserPosts(id, 0)
       .then((res) => {
         setUser(res.data);
         setPosts(res.data.posts);
         setLoader(false);
-        setCut(cut + res.data.posts.length);
       })
       .catch((err) => {
         console.log(err.message);
