@@ -22,7 +22,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import BeatLoader from "react-spinners/BeatLoader";
 import { verifyFollowers } from "../services/linkr";
 
-let userId;
+let name;
 
 export default function UserPage() {
 
@@ -44,14 +44,11 @@ export default function UserPage() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    setLoader(true);
     VerifyFollower(id);
     setLoadingPage(false);
     setLoading(false);
-    userId = JSON.parse(localStorage.getItem("linkr")).id;
-  }, [id]);
-
-  useEffect(() => {
-    setLoader(true);
+    name = JSON.parse(localStorage.getItem("linkr")).username;
     getUserPosts(id, cut)
       .then((res) => {
         setUser(res.data);
@@ -187,7 +184,7 @@ export default function UserPage() {
                     <span>{user.username}'s posts</span>
                   </div>
                   {
-                    userId === Number(id) ?
+                    name === user.username ?
                       ""
                       :
                       followOrUnfollow ?
@@ -251,7 +248,7 @@ export default function UserPage() {
                     ) : user.posts?.length === 0 ? (
                       <Message>There are no posts yet</Message>
                     ) : (
-                      user.posts?.map((value) => (
+                      user.posts?.map((value, index) => (
                         <Post
                           key={index}
                           id={value.id}

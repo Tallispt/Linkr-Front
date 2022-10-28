@@ -49,7 +49,7 @@ export function Timeline() {
     };
 
     fetchData();
-  }, [refresh]);
+  }, [refresh, cut]);
 
   async function morePosts() {
 

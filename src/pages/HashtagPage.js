@@ -29,26 +29,6 @@ export default function HashtagPage() {
   const { hashtag } = useParams();
   const { refresh, setFollowing, following } = useContext(UserContext);
 
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = (await verifyFollowers()).data;
-
-        const { followers_id } = response;
-
-        setFollowing([...followers_id])
-
-      } catch (error) {
-
-        console.log(error);
-
-      }
-    })();
-  }, [setFollowing]);
-
-  console.log(following);
-
   const [alterIcon, setAlterIcon] = useState(false);
   const [cut, setCut] = useState(0);
   const [areMorePosts, setAreMorePosts] = useState(true);
@@ -59,6 +39,14 @@ export default function HashtagPage() {
 
   useEffect(() => {
     setLoader(true);
+
+    verifyFollowers()
+      .then(response => {
+        const { followers_id } = response.data;
+        setFollowing([...followers_id])
+      })
+      .catch(error => console.log(error))
+
     getHashtagsPosts(hashtag, cut)
       .then((res) => {
         setPosts(res.data);
@@ -72,6 +60,7 @@ export default function HashtagPage() {
         );
       });
   }, [hashtag, refresh]);
+
   async function morePosts() {
 
     try {
