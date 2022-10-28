@@ -45,7 +45,7 @@ export default function HashtagPage() {
 
       }
     })();
-  }, [setFollowing]);
+  }, [setFollowing, refresh]);
 
   console.log(following);
 
@@ -71,7 +71,7 @@ export default function HashtagPage() {
           "An error occured while trying to fetch the posts, please refresh the page"
         );
       });
-  }, [hashtag, refresh]);
+  }, [hashtag, refresh, cut]);
   async function morePosts() {
 
     try {
