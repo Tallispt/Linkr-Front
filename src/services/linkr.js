@@ -34,6 +34,15 @@ async function getTimeline(cut) {
   );
   return promise;
 }
+async function getNewPosts(time) {
+  const config = createHeaders();
+  const promise = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/timeline?time=${time}`,
+    config
+  );
+  return promise;
+}
+
 function getTrends() {
   const config = createHeaders();
   const promise = axios.get(
@@ -159,4 +168,5 @@ export {
   signUp,
   commentOnPost,
   getFollowers,
+  getNewPosts
 };

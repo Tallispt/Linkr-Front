@@ -3,11 +3,14 @@ import { HashLoader } from "react-spinners";
 import styled from "styled-components";
 import { device } from "../common/breakpoint";
 import UserContext from "../context/userContext";
-import { getFollowers, getTimeline } from "../services/linkr";
+import { getFollowers, getNewPosts, getTimeline } from "../services/linkr";
 import DeleteModal from "./DeleteModal";
 import Post from "./Post";
 import { PublishPost } from "./PublishPost";
 import InfiniteScroll from 'react-infinite-scroller';
+import { BsArrowCounterclockwise } from 'react-icons/bs';
+import useInterval from 'use-interval';
+
 
 export function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -19,6 +22,10 @@ export function Timeline() {
   const { refresh } = useContext(UserContext);
   const [cut, setCut] = useState(0);
   const [areMorePosts, setAreMorePosts] = useState(true);
+  const [numberOfNewposts, setNumberOfNewposts] = useState(0);
+  const [lastPostsUpdate, setLastPostsUpdate] = useState('-infinity');
+  const [newposts, setNewposts] = useState([]);
+  
 
 
   useEffect(() => {
@@ -70,14 +77,31 @@ export function Timeline() {
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     }
+  }
    
-   
-}
+  
+  useInterval(() => {
+    
+   const newData = getNewPosts(lastPostsUpdate).data;   
+   setNewposts([...newData, ...newposts]);
+   setNumberOfNewposts(numberOfNewposts + newData.length);
+   setCut(cut + newData.length);
+  let now=Date.now();
+   setLastPostsUpdate(now);
+  
 
+      
+      
+          
+  }, 15000);
+   
+   
   return (
     <TimelineContainer isModalVisible={isModalVisible}>
       <TimelineTitle>timeline</TimelineTitle>
       <PublishPost />
+       
+      
       <InfiniteScroll
      pageStart={0}
      loadMore={morePosts}
@@ -85,7 +109,12 @@ export function Timeline() {
      loader={<Warning key={0}>Loading more posts...</Warning>}
       >
       <PostsSection>
-       
+      {numberOfNewposts === 0 ? '' : <WarningNewPosts onClick={() => {
+       setPosts([...newposts, ...posts]);
+         setNewposts([]);
+         setNumberOfNewposts(0);
+         }}>{numberOfNewposts} new posts, load more!<BsArrowCounterclockwise color="#FFFFFF" />
+         </WarningNewPosts>}
         {loader ? (
           <>
             <HashLoader
@@ -192,4 +221,18 @@ const Warning = styled.div`
     font-weight: 400;
     line-height: 26px;
     letter-spacing: 0.05em;
+`
+export const WarningNewPosts = styled.div`
+    height: 61px;
+    width: 100%;
+    left: 241px;
+    top: 481px;
+    border-radius: 16px;
+    background-color: #1877F2;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 16px;
 `
