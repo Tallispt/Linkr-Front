@@ -44,6 +44,7 @@ const Login = () => {
         token: data.token,
         image: data.image,
         username: data.username,
+        id: data.id
       });
       localStorage.setItem("linkr", JSONauth);
 
@@ -53,6 +54,7 @@ const Login = () => {
         image: data.image,
         token: data.token,
       });
+
       setLoading(false);
       navigate("/timeline");
     } catch (error) {
