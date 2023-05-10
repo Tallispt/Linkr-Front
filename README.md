@@ -1,6 +1,6 @@
 # Linkr
 
-An front-end React project made
+A React JS project for for sharing links between friends. Follow, like, comment, Linkr!
 
 Here you can find the respective repository for the api: [**Linkr API**](https://github.com/Tallispt/Linkr-Back)
 
@@ -19,7 +19,6 @@ Here you can find the respective repository for the api: [**Linkr API**](https:/
 - [React tagify](https://github.com/yairEO/tagify)
 
 ## Usage
-
 
 1. Configure the **.env** file as the **.env.exemple**:
   > *REACT_APP_API_BASE_URL*: api url (local default is http://localhost:5000 )
